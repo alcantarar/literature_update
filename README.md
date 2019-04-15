@@ -9,6 +9,14 @@ Dependencies:
 
 Let's say you want to include fish biomechanics in your search. remove `NOT fish` from:
 
-`results = search('(biomech*[Title/Abstract] OR locomot*[Title/Abstract]) AND bone*[Title/Abstract] NOT mice NOT fish NOT bird NOT rat NOT zoo')`
+`search_results = search('(biomech*[Title/Abstract] OR locomot*[Title/Abstract]) AND bone*[Title/Abstract] NOT mice NOT fish NOT bird NOT rat NOT zoo')`
 
-or completely change the `search()` parameters as you would for an advanced pubmed search.
+or completely change the `search()` parameters as you would for an advanced pubmed search:
+
+`search_results = search('(running) AND biomechanics')`
+
+## Change date range of search
+
+Change the numerical value for `reldate` :  
+`reldate = 14, #only within two weeks from now`
+
