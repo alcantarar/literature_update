@@ -1,0 +1,11 @@
+# Netbeans folders#
+###################
+/nbproject/
+
+# Sass cache files #
+#######################
+/<path to sass cache>/.sass-cache/
+
+# Temp-files folders#
+###################
+/temp-files/
