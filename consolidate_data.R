@@ -1,13 +1,20 @@
-data <- read.csv('/Users/ryanalcantara/Professional Drive/Subreddit/code_repo/literature_update/RYANDATA_no_PoW.csv', stringsAsFactors = F)
+data <- read.csv('/Users/ryanalcantara/Professional Drive/Subreddit/code_repo/literature_update/RYANDATA_consolidated.csv', stringsAsFactors = F)
 
 data.complete <- data[(complete.cases(data$topic)),]
 nrow(data.complete)
-unique(data.complete$topic)
+table(data.complete$topic)
 
+#combine categories
 data.complete$topic[grepl('ORTHO',data.complete$topic)] <- 'ORTHOPAEDICS'
 data.complete$topic[grepl('ANIMAL',data.complete$topic)] <- 'COMPARATIVE'
 data.complete$topic[grepl('COMPARATIVE',data.complete$topic)] <- 'COMPARATIVE'
 data.complete$topic[grepl('VETERINARY',data.complete$topic)] <- 'COMPARATIVE'
+data.complete$topic[grepl('EVOLUTION', data.complete$topic)] <- 'COMPARATIVE'
+data.complete$topic[grepl('COMPARATIVE', data.complete$topic)] <- 'EVO/COMP'
+data.complete$topic[grepl('DENTAL', data.complete$topic)] <- 'HEAD'
+data.complete$topic[grepl('VISUAL', data.complete$topic)] <- 'HEAD'
+
+#remove low-occurance categories
 data.complete$topic[grepl('BIOMECHANICS IN EDUCATION',data.complete$topic)] <- NA
 data.complete$topic[grepl('DIGESTIVE',data.complete$topic)] <- NA
 data.complete$topic[grepl('WHEELCHAIR',data.complete$topic)] <- NA
