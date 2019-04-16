@@ -1,3 +1,5 @@
+library(plyr)
+
 data <- read.csv('/Users/ryanalcantara/Professional Drive/Subreddit/code_repo/literature_update/RYANDATA_consolidated.csv', stringsAsFactors = F)
 
 data.complete <- data[(complete.cases(data$topic)),]
@@ -29,3 +31,8 @@ table(data.complete$topic)
 data.complete <- data.complete[(complete.cases(data.complete$topic)),]
 nrow(data.complete)
 write.csv(data.complete, file = 'RYANDATA_consolidated.csv')
+
+
+data.trim <- ddply(data.complete,.(topic), function(x) x[sample(nrow(x),400),])
+table(data.trim$topic)
+write.csv(data.trim, file = 'RYANDATA_trim.csv')
