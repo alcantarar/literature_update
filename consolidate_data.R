@@ -1,6 +1,6 @@
 library(plyr)
 
-data <- read.csv('/Users/ryanalcantara/Professional Drive/Subreddit/code_repo/literature_update/RYANDATA_consolidated.csv', stringsAsFactors = F)
+data <- read.csv('/Users/ryanalcantara/Professional Drive/Subreddit/code_repo/literature_update/RYANDATA.csv', stringsAsFactors = F)
 
 data.complete <- data[(complete.cases(data$topic)),]
 nrow(data.complete)
@@ -26,13 +26,33 @@ data.complete$topic[grepl('POSTURE',data.complete$topic)] <- NA
 data.complete$topic[grepl('HAND',data.complete$topic)] <- NA
 data.complete$topic[grepl('BOTANY',data.complete$topic)] <- NA
 data.complete$topic[grepl('TRAUMA',data.complete$topic)] <- NA
+data.complete$topic[grepl('UNIQUE',data.complete$topic)] <- NA
 
+#some are too loosely defined
+data.complete$topic[grepl('GAIT',data.complete$topic)] <- NA
+data.complete$topic[grepl('METHOD', data.complete$topic)] <- NA
+data.complete$topic[grepl('MATERIAL', data.complete$topic)] <- NA
+
+
+#rename long names
+data.complete$topic[grepl('CARDIO',data.complete$topic)] <- 'CARDIO'
+data.complete$topic[grepl('TISSUE',data.complete$topic)] <- 'BIOMATERIAL'
+data.complete$topic[grepl('CARDIO',data.complete$topic)] <- 'CARDIO'
+data.complete$topic[grepl('CELL',data.complete$topic)] <- 'CELLULAR'
+data.complete$topic[grepl('HAND',data.complete$topic)] <- 'HAND/FOOT'
+data.complete$topic[grepl('TRAUMA',data.complete$topic)] <- 'IMPACT/TRAUMA'
+
+
+
+# consolidate data ----
+#save csv of changes above
 table(data.complete$topic)
 data.complete <- data.complete[(complete.cases(data.complete$topic)),]
 nrow(data.complete)
 write.csv(data.complete, file = 'RYANDATA_consolidated.csv')
 
-
+## trim data ----
+#laptop memory couldn't handle more than 400 per section
 data.trim <- ddply(data.complete,.(topic), function(x) x[sample(nrow(x),400),])
 table(data.trim$topic)
 write.csv(data.trim, file = 'RYANDATA_trim.csv')
