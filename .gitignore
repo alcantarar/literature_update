@@ -78,4 +78,7 @@ Rplots.pdf
 ### Other things to ignore ###
 .DS_Store
 
+### Jupyter files
+.ipynb*
+
 # End of https://www.gitignore.io/api/r,matlab
