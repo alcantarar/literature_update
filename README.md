@@ -11,7 +11,7 @@ Let's say you want to include fish biomechanics in your search. remove `NOT fish
 
 `search_results = search('(biomech*[Title/Abstract] OR locomot*[Title/Abstract]) AND bone*[Title/Abstract] NOT mice NOT fish NOT bird NOT rat NOT zoo')`
 
-or completely change the `search()` parameters as you would for an advanced pubmed search:
+or completely change the `search()` parameters as you would for an [advanced pubmed search](https://www.ncbi.nlm.nih.gov/pubmed/advanced):
 
 `search_results = search('(running) AND biomechanics')`
 
