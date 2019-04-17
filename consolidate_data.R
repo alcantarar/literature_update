@@ -1,6 +1,6 @@
 library(plyr)
 
-data <- read.csv('/Users/ryanalcantara/Professional Drive/Subreddit/code_repo/literature_update/RYANDATA.csv', stringsAsFactors = F)
+data <- read.csv('RYANDATA_consolidated.csv', stringsAsFactors = F)
 
 data.complete <- data[(complete.cases(data$topic)),]
 nrow(data.complete)
