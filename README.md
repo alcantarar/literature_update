@@ -1,5 +1,3 @@
-![image](biomchL_predict_plot.png)
-
 # literature_update
 Jupyter script performs pubmed search and prints citation where title hyperlinks to pubmed page via in markdown format. 
 
