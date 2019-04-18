@@ -1,13 +1,12 @@
 library(plyr)
 
-data <- read.csv('RYANDATA_consolidated.csv', stringsAsFactors = F)
+data <- read.csv('RYANDATA.csv', stringsAsFactors = F)
 
 data.complete <- data[(complete.cases(data$topic)),]
 nrow(data.complete)
 table(data.complete$topic)
-
+unique(data.complete$topic)
 #combine categories
-data.complete$topic[grepl('ORTHO',data.complete$topic)] <- 'ORTHOPAEDICS'
 data.complete$topic[grepl('ANIMAL',data.complete$topic)] <- 'COMPARATIVE'
 data.complete$topic[grepl('COMPARATIVE',data.complete$topic)] <- 'COMPARATIVE'
 data.complete$topic[grepl('VETERINARY',data.complete$topic)] <- 'COMPARATIVE'
@@ -41,6 +40,8 @@ data.complete$topic[grepl('CARDIO',data.complete$topic)] <- 'CARDIO'
 data.complete$topic[grepl('CELL',data.complete$topic)] <- 'CELLULAR'
 data.complete$topic[grepl('HAND',data.complete$topic)] <- 'HAND/FOOT'
 data.complete$topic[grepl('TRAUMA',data.complete$topic)] <- 'IMPACT/TRAUMA'
+data.complete$topic[grepl('ORTHO',data.complete$topic)] <- 'ORTHOPAEDICS'
+
 
 
 
