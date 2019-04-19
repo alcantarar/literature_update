@@ -1,6 +1,21 @@
 # -*- coding: utf-8 -*-
 """
-Created on Wed Apr 17 12:20:59 2019
+This script will fit a CNN to our webscrapped data saved in "RYANDATA_filt.csv'
+
+The titles from the csv need to be converted into sparse matrices that reprsent
+    the number of occurances of each word from the global bag of words present
+    in each of the titles.
+    
+The topics from the csv need to be converted into a sparse matrix with number
+     of columns equal to the number of unique topics.
+     
+Once fit it saves the model:      model.json
+    Also saves the label encoder: LabelEncoder.npy
+    and the vectorizer:           Vectorizer.pkl
+    
+To test the model run keras_eval.py
+    The testing data needs to be input as a list of strings, which is converted
+    to a data frame, then the sparse matrix.
 
 @author: Gary
 """
@@ -9,17 +24,20 @@ import pandas as pd
 import numpy as np
 import string
 
+#========================= Read in the Data ===================================
 data = pd.read_csv('RYANDATA_filt.csv')
 data.columns = ['num','topic','authors','title','Journals','Years','Vol_Isue','DOI']
 
 papers = pd.DataFrame(data['title'])
 topic = pd.DataFrame(data['topic'])
 author = pd.DataFrame(data['authors'])
-
 print("Number of Papers: " + str(len(papers)))
-
 topic['topic'].unique()
 
+#========================= Formatting Data ====================================
+# Convert the data in the a sparse matrix.
+# X is size Number of Articles by Number of Words in bag
+# Y is size Number of Articles by Number of Unique Topics
 from sklearn.preprocessing import LabelEncoder
 from sklearn.preprocessing import OneHotEncoder
 from sklearn.externals import joblib
@@ -28,15 +46,12 @@ feat = ['topic']
 for x in feat:
     le = LabelEncoder()
     le.fit(list(topic[x].values))
-#    topic[x] = le.transform(list(topic[x]))
 
 np.save('LabelEncoder.npy',le.classes_)
 print('Saved Label Encoder: LabelEncoder.npy')
 
-data['everything'] = pd.DataFrame(data['title'])# + ' ' + data['authors'])
+data['everything'] = pd.DataFrame(data['title'])
 print(data['everything'].head(5))
-#data = data.sample(n=30)
-#topic = topic.sample(n=30)
 
 def change(t):
     t = t.split()
@@ -52,18 +67,16 @@ data['everything'].apply(change)
 
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
-from sklearn.feature_extraction.text import TfidfVectorizer
-from keras.preprocessing.text import Tokenizer
 
-vectorizer = TfidfVectorizer(min_df=1, max_features=70000, strip_accents='unicode',lowercase =True,
-                            analyzer='word', token_pattern=r'\w+', use_idf=True, 
-                            smooth_idf=True, sublinear_tf=True, stop_words = 'english')
-vectors = vectorizer.fit_transform(data['everything'])
-vectors.shape
+#from sklearn.feature_extraction.text import TfidfVectorizer
+#vectorizer = TfidfVectorizer(min_df=1, max_features=70000, strip_accents='unicode',lowercase =True,
+#                            analyzer='word', token_pattern=r'\w+', use_idf=True, 
+#                            smooth_idf=True, sublinear_tf=True, stop_words = 'english')
+#vectors = vectorizer.fit_transform(data['everything'])
+#vectors.shape
 
 vect = CountVectorizer()
 vect.fit(data['everything'])
-from sklearn.externals import joblib
 joblib.dump(vect,'Vectorizer.pkl')
 print('Saved Vectorizer: Vectorizer.pkl')
 
@@ -72,20 +85,6 @@ vectors = vect.transform(data['everything'])
 encoder = OneHotEncoder(sparse = True)
 topic = encoder.fit_transform(topic)
 
-#vectors = vectorizer.fit_transform(test['title'])
-#vectors.shape
-
-#tokenizer = Tokenizer(num_words=70000)
-#tokenizer.fit_on_texts(data['everything'])
-#vectors = tokenizer.texts_to_sequences(data['everything'])
-#tokenizer.texts_to_sequences(test['title'])
-# NEED TO CONVERT THE VECTORS TO SPARSE MATRIX
-
-from sklearn.naive_bayes import MultinomialNB
-from sklearn import metrics
-from sklearn.model_selection import StratifiedKFold, cross_val_score, train_test_split
-from keras.utils import np_utils
-
 X_train, X_test, y_train, y_test = train_test_split(vectors,
                                                     topic,#topic['topic'],
                                                     test_size=0.1,
@@ -93,16 +92,15 @@ X_train, X_test, y_train, y_test = train_test_split(vectors,
 
 input_dim = X_train.shape[1]  # Number of features
 num_words = X_train.shape[1]
-#y_train = np_utils.to_categorical(y_train, 27)
-#y_test = np_utils.to_categorical(y_test, 27)
 
+#========================= Fit the Neural net =================================
+# Have 3 layers, first layer with 500 units, next two with 100 each.
+# Output layer needs to have the same number of units as Num Topics
 from keras.models import Sequential
 from keras import layers
 from keras.layers import LSTM, Dense, Dropout, Masking, Embedding
 
 model = Sequential()
-#model.add(LSTM(64, input_shape = X_test.shape, return_sequences=True, 
-#               dropout=0.1, recurrent_dropout=0.1))
 model.add(layers.Dense(500, input_dim=input_dim, activation='relu'))
 model.add(Dropout(0.5))
 model.add(layers.Dense(100, input_dim=input_dim, activation='relu'))
@@ -111,33 +109,13 @@ model.add(layers.Dense(100, input_dim=input_dim, activation='relu'))
 model.add(Dropout(0.5))
 model.add(layers.Dense(27, activation='sigmoid'))
 
-## Recurrent layer
-#model = Sequential()
-#model.add(LSTM(64, return_sequences=False, 
-#               dropout=0.1, recurrent_dropout=0.1))
-#
-## Fully connected layer
-#model.add(Dense(64, activation='relu'))
-#
-## Dropout for regularization
-#model.add(Dropout(0.5))
-#
-## Output layer
-#model.add(Dense(num_words, activation='softmax'))
-#
-## Compile the model
-#model.compile(
-#    optimizer='adam', loss='categorical_crossentropy', metrics=['accuracy'])
-#
 model.compile(loss='binary_crossentropy', 
     optimizer='adam', 
     metrics=['accuracy'])
 model.summary()
 
-# Batch size is how many samples to train on
-# For 1000 samples, then batch=100 means 10 trainings per epoch
 history = model.fit(X_train, y_train,
-                    epochs=100,
+                    epochs=500,
                     verbose=2,
                     validation_data=(X_test, y_test),
                     batch_size=3000)
@@ -156,7 +134,6 @@ plt.ylabel('Accuracy')
 plt.xlabel('Epoch')
 plt.legend(['Train', 'Test'], loc='upper left')
 plt.show()
-
 
 #========================= Save the Model =====================================
 from keras.models import model_from_json
