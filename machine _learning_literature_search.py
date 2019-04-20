@@ -96,11 +96,14 @@ X_train, X_test, y_train, y_test, indices_train, indices_test = train_test_split
 model.fit(X_train, y_train)
 y_pred = model.predict(X_test)
 from sklearn.metrics import confusion_matrix
+import numpy as np
 plt.rc('xtick',labelsize = 6)
 plt.rc('ytick',labelsize = 6)
 conf_mat = confusion_matrix(y_test, y_pred)
 conf_mat_rowsum = [sum(row) for row in conf_mat]
-conf_mat_perc = conf_mat / conf_mat_rowsum
+conf_mat_perc = [row/sum(row) for row in conf_mat]
+conf_mat_perc = np.stack(conf_mat_perc = [row/sum(row) for row in conf_mat])
+
 fig, ax = plt.subplots(figsize=(10,10))
 sns.set(font_scale=1.2) #font size multiplier
 sns.heatmap(conf_mat_perc, annot=True, fmt='.3f', cmap = 'magma', annot_kws={"size": 8},

@@ -136,23 +136,74 @@ plt.legend(['Train', 'Test'], loc='upper left')
 plt.show()
 
 #========================= Save the Model =====================================
-from keras.models import model_from_json
-model_json = model.to_json()
-with open("model.json", "w") as json_file:
-    json_file.write(model_json)
-# serialize weights to HDF5
-model.save_weights("model.h5")
-print("Saved model to disk: model.h5")
-import os
-if os.path.isfile('LabelEncoder.npy'):
-    print('Saved Label Encoder: LabelEncoder.npy')
-else:
-    print('NO LABEL ENCODER SAVED')
-    
-if os.path.isfile('LabelEncoder.npy'):
-    print('Saved Vectorizer: Vectorizer.pkl')
-else:
-    print('NO VECTORIZER SAVED')
+#from keras.models import model_from_json
+#model_json = model.to_json()
+#with open("model.json", "w") as json_file:
+#    json_file.write(model_json)
+## serialize weights to HDF5
+#model.save_weights("model.h5")
+#print("Saved model to disk: model.h5")
+#import os
+#if os.path.isfile('LabelEncoder.npy'):
+#    print('Saved Label Encoder: LabelEncoder.npy')
+#else:
+#    print('NO LABEL ENCODER SAVED')
+#    
+#if os.path.isfile('LabelEncoder.npy'):
+#    print('Saved Vectorizer: Vectorizer.pkl')
+#else:
+#    print('NO VECTORIZER SAVED')
+
+from sklearn.metrics import confusion_matrix
+import pickle
+import numpy as np
+import pandas as pd
+from sklearn.preprocessing import LabelEncoder
+
+vect = pickle.load(open('Vectorizer.pkl','rb'))
+le = LabelEncoder()
+le.classes_   = np.load('LabelEncoder.npy')
+print('Loaded Vectorizer')
+
+text = ['neuromechanical effort, + = proxies estimation computational',
+        'testing this other thing']
+
+text = [text.lower() for text in text]
+test = pd.DataFrame(data = {'title': text})
+test = vect.transform(test['title'])
+prediction_val = model.predict(test)
+topics2 = [le.inverse_transform([np.argmax(top_val)])[0] for top_val in model.predict(X_test)]
+y_test_array = [le.inverse_transform([np.argmax(top_val)])[0] for top_val in y_test]
+
+import seaborn as sns
+import matplotlib.pyplot as plt
+data['topic_id'] = data['topic'].factorize()[0]
+topic_id_df = data[['topic',
+                  'topic_id']].drop_duplicates().sort_values('topic_id')
+topic_to_id = dict(topic_id_df.values)
+id_to_topic = dict(topic_id_df[['topic_id','topic']].values)
+data.sample(5)
+
+conf_mat = confusion_matrix(y_test_array, topics2)
+conf_mat_rowsum = [sum(row) for row in conf_mat]
+conf_mat_perc = [row/sum(row) for row in conf_mat]
+conf_mat_perc = np.stack(conf_mat_perc = [row/sum(row) for row in conf_mat])
+
+fig, ax = plt.subplots(figsize=(10,10))
+sns.set(font_scale=1.2) #font size multiplier
+sns.heatmap(conf_mat_perc, annot=True, fmt='.3f', cmap = 'magma', annot_kws={"size": 8},
+            xticklabels=topic_id_df.topic.values, yticklabels=topic_id_df.topic.values)
+
+plt.ylabel('Actual',fontsize = 20)
+plt.xlabel('Predicted',fontsize = 20)
+plt.yticks(size = 7)
+plt.xticks(size = 7, rotation=30,ha='right')
+plt.title('Percent Predicted Correct', fontsize = 26)
+plt.yticks( rotation='horizontal')
+fig.tight_layout(pad = 2)
+
+plt.savefig('biomchL_predict_plot.png')
+
     
 
 
