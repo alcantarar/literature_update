@@ -4,6 +4,14 @@ BONE
 ----
 <br> 
 
+* [Computational Modeling of Bone Cells and Their Biomechanical Behaviors in Responses to Mechanical Stimuli.](https://www.ncbi.nlm.nih.gov/pubmed/31002595)
+Wang L, Dong J, Xian CJ,
+*Critical reviews in eukaryotic gene expression*.  
+
+* [Computational modal analysis of a composite pelvic bone: convergence and validation studies.](https://www.ncbi.nlm.nih.gov/pubmed/30999766)
+Henyš P, Čapek L,
+*Computer methods in biomechanics and biomedical engineering*.  
+
 * [Erythropoietin does not improve fracture healing in aged mice.](https://www.ncbi.nlm.nih.gov/pubmed/30998964)
 Orth M, Baudach J, Scheuer C, Osche D, Veith NT, Braun BJ, Rollmann MF, Herath SC, Pohlemann T, Menger MD, Histing T,
 *Experimental gerontology*.  
@@ -41,6 +49,10 @@ CARDIOVASCULAR/CARDIOPULMONARY
 ----
 <br> 
 
+* [Human genotyping and an experimental model reveal NPR-C as a possible contributor to morbidity in coarctation of the aorta.](https://www.ncbi.nlm.nih.gov/pubmed/31002586)
+LaDisa JF, Tomita-Mitchell A, Stamm KD, Bazan K, Mahnke DK, Goetsch MA, Wegter BJ, Gerringer JW, Repp K, Palygin O, Zietara AP, Krolikowski MM, Eddinger TJ, Alli AA, Mitchell ME,
+*Physiological genomics*.  
+
 * [Identification of circumferential regional heterogeneity of ascending thoracic aneurysmal aorta by biaxial mechanical testing.](https://www.ncbi.nlm.nih.gov/pubmed/30998978)
 Di Giuseppe M, Alotta G, Agnese V, Bellavia D, Raffa GM, Vetri V, Zingales M, Pasta S, Pilato M,
 *Journal of molecular and cellular cardiology*.  
@@ -69,6 +81,22 @@ Kodama Y, Aoki H, Yamagata Y, Tsubota K,
 CELLULAR/SUBCELLULAR
 ----
 <br> 
+
+* [Cryopreservation of tendon tissue using dimethyl sulfoxide combines conserved cell vitality with maintained biomechanical features.](https://www.ncbi.nlm.nih.gov/pubmed/31002728)
+Hochstrat E, Müller M, Frank A, Michel P, Hansen U, Raschke MJ, Kronenberg D, Stange R,
+*PloS one*.  
+
+* [Fluid supplementation accelerates epithelial repair during chemical colitis.](https://www.ncbi.nlm.nih.gov/pubmed/31002683)
+Burgueño JF, Lang JK, Santander AM, Fernández I, Fernández E, Zaias J, Abreu MT,
+*PloS one*.  
+
+* [Flax (<i>Linum usitatissimum</i> L.) Fibers for Composite Reinforcement: Exploring the Link Between Plant Growth, Cell Walls Development, and Fiber Properties.](https://www.ncbi.nlm.nih.gov/pubmed/31001310)
+Goudenhooft C, Bourmaud A, Baley C,
+*Frontiers in plant science*.  
+
+* [Fascia Is Able to Actively Contract and May Thereby Influence Musculoskeletal Dynamics: A Histochemical and Mechanographic Investigation.](https://www.ncbi.nlm.nih.gov/pubmed/31001134)
+Schleip R, Gabbiani G, Wilke J, Naylor I, Hinz B, Zorn A, Jäger H, Breul R, Schreiner S, Klingler W,
+*Frontiers in physiology*.  
 
 * [Biophysical and ultrasonographic changes in lichen planus compared with uninvolved skin.](https://www.ncbi.nlm.nih.gov/pubmed/30997382)
 Yazdanparast T, Yazdani K, Humbert P, Khatami A, Ahmad Nasrollahi S, Zartab H, Izadi Firouzabadi L, Firooz A,
@@ -253,6 +281,10 @@ METHODS
 ----
 <br> 
 
+* [Imaging localized neuronal activity at fast time scales through biomechanics.](https://www.ncbi.nlm.nih.gov/pubmed/31001585)
+Patz S, Fovargue D, Schregel K, Nazari N, Palotai M, Barbone PE, Fabry B, Hammers A, Holm S, Kozerke S, Nordsletten D, Sinkus R,
+*Science advances*.  
+
 * [Experimental investigations of a manually versus an electrically driven skull drill for bedside usage.](https://www.ncbi.nlm.nih.gov/pubmed/30998712)
 Carolus A, Richter W, Fritzen CP, Schmieder K, Brenke C,
 *PloS one*.  
@@ -278,6 +310,10 @@ MODELING
 ----
 <br> 
 
+* [A screening method to analyse the sensitivity of a lower limb multibody kinematic model.](https://www.ncbi.nlm.nih.gov/pubmed/30999767)
+Jacquelin E, Brizard D, Dumas R,
+*Computer methods in biomechanics and biomedical engineering*.  
+
 * [Learning soft tissue behavior of organs for surgical navigation with convolutional neural networks.](https://www.ncbi.nlm.nih.gov/pubmed/30993520)
 Pfeiffer M, Riediger C, Weitz J, Speidel S,
 *International journal of computer assisted radiology and surgery*.  
@@ -295,6 +331,10 @@ MUSCLE
 ----
 <br> 
 
+* [Assessment of predisposing factors in myofascial pain syndrome and the analgesic effect of trigger point injections - A primary therapeutic interventional clinical trial.](https://www.ncbi.nlm.nih.gov/pubmed/31000895)
+Parthasarathy S, Sundar S, Mishra G,
+*Indian journal of anaesthesia*.  
+
 * [Skeletal muscles of hibernating black bears show minimal atrophy and phenotype shifting despite prolonged physical inactivity and starvation.](https://www.ncbi.nlm.nih.gov/pubmed/30998788)
 Miyazaki M, Shimozuru M, Tsubota T,
 *PloS one*.  
@@ -307,6 +347,10 @@ Edama M, Takabayashi T, Inai T, Kikumoto T, Hirabayashi R, Ito W, Nakamura E, Ik
 NEURAL
 ----
 <br> 
+
+* [MiR-543-3p promotes locomotor function recovery after spinal cord injury by inhibiting the expression of tumor necrosis factor superfamily member 15 in rats.](https://www.ncbi.nlm.nih.gov/pubmed/31002119)
+Li XZ, Lv CL, Shi JG, Zhang CX,
+*European review for medical and pharmacological sciences*.  
 
 * [Neuronal Activity in Non-LNv Clock Cells Is Required to Produce Free-Running Rest:Activity Rhythms in Drosophila.](https://www.ncbi.nlm.nih.gov/pubmed/30994046)
 Bulthuis N, Spontak KR, Kleeman B, Cavanaugh DJ,
@@ -385,6 +429,14 @@ ORTHOPAEDICS/SPINE
 ----
 <br> 
 
+* [Validation of a freehand technique for cortical bone trajectory screws in the lumbar spine.](https://www.ncbi.nlm.nih.gov/pubmed/31003218)
+Tan Z, McLachlin S, Whyne C, Finkelstein J,
+*Journal of neurosurgery. Spine*.  
+
+* [Clinicians' Ability to Detect a Palpable Difference in Spinal Stiffness Compared With a Mechanical Device.](https://www.ncbi.nlm.nih.gov/pubmed/31000343)
+Kawchuk GN, Miazga S, Pagé I, Swain M, De Carvalho D, Funabashi M, Breen A, Wong A,
+*Journal of manipulative and physiological therapeutics*.  
+
 * [Experimental cervical interspinous ligament pain altered cervical joint motion during dynamic extension movement.](https://www.ncbi.nlm.nih.gov/pubmed/30991232)
 Qu N, Lindstrøm R, Graven-Nielsen T, Hirata RP,
 *Clinical biomechanics (Bristol, Avon)*.  
@@ -429,6 +481,10 @@ Ratzlaff TD, Diesbourg TL, McAllister MJ, von Hacht M, Brissette AR, Bona MD,
 ORTHOPAEDICS/SURGERY
 ----
 <br> 
+
+* [Biomechanical Analysis of Medial-Row All-Suture Suture Anchor Fixation for Rotator Cuff Repair in a Pair-Matched Cadaveric Model.](https://www.ncbi.nlm.nih.gov/pubmed/31000387)
+Bernardoni ED, Frank RM, Veera SS, Waterman BR, Griffin JW, Shewman EF, Cole BJ, Romeo AA, Verma NN,
+*Arthroscopy : the journal of arthroscopic & related surgery : official publication of the Arthroscopy Association of North America and the International Arthroscopy Association*.  
 
 * [Cannulated Screw Prominence in Tension Band Wiring of Patella Fractures Increases Fracture Gapping: A Cadaver Study.](https://www.ncbi.nlm.nih.gov/pubmed/30998643)
 Avery MC, Jo S, Chang A, Ricci WM, McAndrew C, Miller AN, Tang S,
@@ -601,6 +657,14 @@ TISSUE/BIOMATERIAL
 ----
 <br> 
 
+* [Short and long-term effects of bisphenol S (BPS) exposure during pregnancy and lactation on plasma lipids, hormones, and behavior in rats.](https://www.ncbi.nlm.nih.gov/pubmed/31003143)
+da Silva BS, Pietrobon CB, Bertasso IM, Lopes BP, Carvalho JC, Peixoto-Silva N, Santos TR, Claudio-Neto S, Manhães AC, Oliveira E, de Moura EG, Lisboa PC,
+*Environmental pollution (Barking, Essex : 1987)*.  
+
+* [An analytical poroelastic model of a spherical tumor embedded in normal tissue under creep compression.](https://www.ncbi.nlm.nih.gov/pubmed/31000348)
+Islam MT, Righetti R,
+*Journal of biomechanics*.  
+
 * [Experimental study of a new original mesh developed for pelvic floor reconstructive surgery.](https://www.ncbi.nlm.nih.gov/pubmed/30997545)
 Ai FF, Mao M, Zhang Y, Kang J, Zhu L,
 *International urogynecology journal*.  
@@ -634,6 +698,10 @@ TRAUMA/IMPACTTESTING
 ----
 <br> 
 
+* [An assessment of the utility and functionality of wearable head impact sensors in Australian Football.](https://www.ncbi.nlm.nih.gov/pubmed/31000457)
+McIntosh AS, Willmott C, Patton DA, Mitra B, Brennan JH, Dimech-Betancourt B, Howard TS, Rosenfeld JV,
+*Journal of science and medicine in sport*.  
+
 * [Studies on long term behavioural changes in group-housed rat models of brain and spinal cord injury using an automated home cage recording system.](https://www.ncbi.nlm.nih.gov/pubmed/30991030)
 Yip PK, Chapman GE, Sillito RR, Ip THR, Akhigbe G, Becker SC, Price AW, Michael-Titus AT, Armstrong JD, Tremoleda JL,
 *Journal of neuroscience methods*.  
@@ -651,6 +719,10 @@ Zeng N, Johnson SL, Boles RE, Bellows LL,
 VETERINARY/AGRICULTURAL
 ----
 <br> 
+
+* [Three-dimensional finite element analysis to evaluate biomechanical effects of different alveolar decortication approaches on rate of canine retraction.](https://www.ncbi.nlm.nih.gov/pubmed/31000446)
+Gupta S, Ahuja S, Bhambri E, Jaura BS, Ahuja V,
+*International orthodontics*.  
 
 * [Kinematics and electromyographic activity of horse riders during various cross-country jumps in equestrian.](https://www.ncbi.nlm.nih.gov/pubmed/30994050)
 Fortier Guillaume J, Laroche D, Babault N,
