@@ -1,4 +1,4 @@
-Literature Update:  2019_4_20_lit_update.csv
+Literature Update:  2019-4-20
 ----
 BONE
 ----
