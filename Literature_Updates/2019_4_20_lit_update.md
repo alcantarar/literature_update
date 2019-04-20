@@ -1,4 +1,5 @@
-Literature Update:  2019-4-20
+Literature Update:  2019-4-20   
+Created by: [Ryan Alcantara](alcantarar.github.io) & [Gary Bruening](https://github.com/GBruening)
 ----
 BONE
 ----
