@@ -1,6 +1,6 @@
 # Biomechanics Literature Update
 #### Ryan Alcantara & Gary Bruening
-We developed use [Machine Learning](ML.gif) to predict the general topic of a biomechanics-related paper given its title. To accomplish this, we:
+We developed use [Machine Learning](Assets/ML.gif) to predict the general topic of a biomechanics-related paper given its title. To accomplish this, we:
 
 1. Developed an HTML web scraper to extract the paper information and assigned paper topic from every [Biomch-L](https://biomch-l.isbweb.org/forums/7-Literature-Update) Literature Update since 2010. (`webscraper.py`)
 2. Trained and compared multiple classification Machine Learning algorithms (`keras_1.py` & `test_many_ML_algorithms.ipynb`)
