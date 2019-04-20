@@ -187,7 +187,7 @@ data.sample(5)
 conf_mat = confusion_matrix(y_test_array, topics2)
 conf_mat_rowsum = [sum(row) for row in conf_mat]
 conf_mat_perc = [row/sum(row) for row in conf_mat]
-conf_mat_perc = np.stack(conf_mat_perc = [row/sum(row) for row in conf_mat])
+conf_mat_perc = np.stack(conf_mat_perc)
 
 fig, ax = plt.subplots(figsize=(10,10))
 sns.set(font_scale=1.2) #font size multiplier

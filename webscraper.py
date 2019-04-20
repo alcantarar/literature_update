@@ -105,7 +105,7 @@ for page in np.arange(1,22):
                 
                 if not titles_temp in titles:
                     authors.append(authors_temp)
-                    titles.append(titles.temp)
+                    titles.append(titles_temp)
                     catagories.append(cur_cat)
                     try:
                         year_nan = entry.find('NaN')
@@ -170,7 +170,8 @@ filtered_data = pd.DataFrame(data =  {'Catagory': [],
                                       'DOI': []})
 
 for cat in cat_lengths.Catagory.unique():
-    filtered_data = pd.concat([filtered_data,data[data.Catagory==cat and data]])
+    if not cat == 'UNIQUETOPIC':
+        filtered_data = pd.concat([filtered_data,data[data.Catagory==cat]])
 
 filtered_data.to_csv('RYANDATA_filt.csv')
 
