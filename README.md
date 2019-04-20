@@ -7,7 +7,7 @@ We developed use [Machine Learning](Assets/ML.gif) to predict the general topic 
 3. Created a python script (`literature_search.ipynb`) that: 
     1. Searches [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/) for Biomechanics-related papers published in the past week,
     2. Uses the top-performing Machine Learning model (`keras-1`, a Covolutional Neural Network) to predict the paper topic for the week’s papers,
-    3. Compiles papers, formats their citation, and organizes them by topic, saving to .md file: `YYYY_MM_DD_lit_update.md`.
+    3. Compiles papers, formats their citation, and organizes them by topic, saving to .md file here: [Literature Updates](/Literature_Updates).
 
 ### Packages
 * [Bioython](https://biopython.org/wiki/Download) is used to access PubMed
