@@ -1,5 +1,5 @@
 Literature Update:  2019-4-20   
-Created by: [Ryan Alcantara](https://alcantarar.github.io) & [Gary Bruening](https://github.com/GBruening)
+### Created by: [Ryan Alcantara](https://alcantarar.github.io) & [Gary Bruening](https://github.com/GBruening) - University of Colorado Boulder
 ----
 BONE
 ----
