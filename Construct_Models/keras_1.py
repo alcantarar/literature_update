@@ -47,7 +47,7 @@ for x in feat:
     le = LabelEncoder()
     le.fit(list(topic[x].values))
 
-np.save('keras_LabelEncoder.npy',le.classes_)
+np.save('../Model_Files/keras_LabelEncoder.npy',le.classes_)
 print('Saved Label Encoder: LabelEncoder.npy')
 
 data['everything'] = pd.DataFrame(data['title'])
@@ -77,7 +77,7 @@ from sklearn.feature_extraction.text import CountVectorizer
 
 vect = CountVectorizer()
 vect.fit(data['everything'])
-joblib.dump(vect,'keras_Vectorizer.pkl')
+joblib.dump(vect,'../Model_Files/keras_Vectorizer.pkl')
 print('Saved Vectorizer: Vectorizer.pkl')
 
 vectors = vect.transform(data['everything'])
@@ -138,18 +138,18 @@ plt.show()
 #========================= Save the Model =====================================
 from keras.models import model_from_json
 model_json = model.to_json()
-with open("keras_model.json", "w") as json_file:
+with open("../Model_Files/keras_model.json", "w") as json_file:
     json_file.write(model_json)
 # serialize weights to HDF5
-model.save_weights("keras_model.h5")
+model.save_weights("../Model_Files/keras_model.h5")
 print("Saved model to disk: model.h5")
 import os
-if os.path.isfile('keras_LabelEncoder.npy'):
+if os.path.isfile('../Model_Files/keras_LabelEncoder.npy'):
     print('Saved Label Encoder: LabelEncoder.npy')
 else:
     print('NO LABEL ENCODER SAVED')
     
-if os.path.isfile('keras_LabelEncoder.npy'):
+if os.path.isfile('../Model_Files/keras_LabelEncoder.npy'):
     print('Saved Vectorizer: Vectorizer.pkl')
 else:
     print('NO VECTORIZER SAVED')
