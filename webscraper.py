@@ -14,6 +14,9 @@ import pandas as pd
 import re
 import numpy as np
 import ast
+import os
+
+os.chdir('E:/Google Drive/Documents/BiomechL_webscraper/literature_update')
 
 def simple_get(url):
     """
@@ -175,10 +178,93 @@ for cat in cat_lengths.Catagory.unique():
 
 filtered_data.to_csv('RYANDATA_filt.csv')
 
+#========================= Getting Abstracts ==================================
+from Bio import Entrez
+import numpy as np
+Entrez.api_key = "f3e4ca963cb5371b03e53e49ca9b836f2c08"
+
+def search(query):
+    Entrez.email = 'your.email@example.com'
+    handle = Entrez.esearch(db='pubmed', 
+                            sort='most recent', 
+                            retmax='5000',
+                            retmode='xml', 
+                            reldate = 7, #only within n days from now
+                            term=query)
+    results = Entrez.read(handle)
+    return results
+
+def fetch_details(id_list):
+    ids = ','.join(id_list)
+    Entrez.email = 'your.email@example.com'
+    handle = Entrez.efetch(db='pubmed',
+                           retmode='xml',
+                           id=ids)
+    results = Entrez.read(handle)
+    return results
+
+def search2(query):
+    Entrez.email = 'your.email@example.com'
+    handle = Entrez.esearch(db='pubmed', 
+                            sort='most recent', 
+                            retmax='5000',
+                            retmode='xml', 
+                            term=query)
+    results = Entrez.read(handle)
+    return results
+
+import time
+abstracts = []
+
+def get_abstract(title):
+    paper = search2(title)
+    paper = fetch_details(paper['IdList'])
+    return paper['PubmedArticle'][0]['MedlineCitation']['Article']['Abstract']['AbstractText']
+
+from nltk.corpus import stopwords
+
+def clean_str(abs_string,stop):
+    translator = str.maketrans(string.punctuation, ' '*len(string.punctuation)) #map punctuation to space
+    abs_string = abs_string.translate(translator)
+    abs_string = abs_string.split()
+    abs_string = [word for word in abs_string if word not in stop]
+    abs_string = ' '.join(abs_string)
+    return abs_string
+    
+# Make the Stop Words
+import string
+stop = list(stopwords.words('english'))
+stop_c = [string.capwords(word) for word in stop]
+for word in stop_c:
+    stop.append(word)
+new_stop = ['StringElement','NlmCategory','Label','attributes','INTRODUCTION','METHODS','BACKGROUND','RESULTS','CONCLUSIONS']
+for item in new_stop:
+    stop.append(item)
+
+# Pull Abstracts
+abstracts = []
+toc = time.perf_counter()
+tic = time.perf_counter()
+for i, title in enumerate(titles[0:10]):
+#    if i % 100 == 0:
+    print('Analyzing Title: '+ str(i))
+    if toc - tic < .1:
+        time.sleep(.1 - (toc-tic))
+    tic = time.perf_counter()
+    try:
+        abstracts.append(clean_str(str(get_abstract(title)),stop))
+    except:
+        abstracts.append([])
+    toc = time.perf_counter()
 
 
-
-
+test = get_abstract(titles[84])
+test = str(test)
+translator = str.maketrans(string.punctuation, ' '*len(string.punctuation)) #map punctuation to space
+test = test.translate(translator)
+test = test.split()
+test = [word for word in test if word not in stop]
+test = ' '.join(test)
 
 
 
