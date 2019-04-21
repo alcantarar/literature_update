@@ -12,7 +12,7 @@ Needs to load the model: model.json
 #========================= Load the Model =====================================
 from keras.models import model_from_json
 # load json and create model
-json_file = open('model.json', 'r')
+json_file = open('model_4_21.json', 'r')
 loaded_model_json = json_file.read()
 json_file.close()
 model = model_from_json(loaded_model_json)
@@ -25,11 +25,13 @@ print("Loaded model from disk")
 import pickle
 import numpy as np
 import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+#from sklearn.preprocessing import LabelEncoder
 
 vect = pickle.load(open('Vectorizer.pkl','rb'))
-le = LabelEncoder()
-le.classes_   = np.load('LabelEncoder.npy')
+#le = LabelEncoder()
+#le.classes_   = np.load('LabelEncoder.npy')
+with open('unique_topics.txt', "rb") as fp:   # Unpickling
+    unique_topic = pickle.load(fp)
 print('Loaded Vectorizer')
 
 text = ['neuromechanical effort, + = proxies estimation computational',
@@ -39,4 +41,5 @@ text = [text.lower() for text in text]
 test = pd.DataFrame(data = {'title': text})
 test = vect.transform(test['title'])
 prediction_val = model.predict(test)
-topics2 = [le.inverse_transform([np.argmax(top_val)])[0] for top_val in model.predict(test)]
+
+topics2 = [unique_topic[np.argmax(top_val)] for top_val in prediction_val]

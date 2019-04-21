@@ -12,6 +12,7 @@ The topics from the csv need to be converted into a sparse matrix with number
 Once fit it saves the model:      model.json
     Also saves the label encoder: LabelEncoder.npy
     and the vectorizer:           Vectorizer.pkl
+    and the unique topics:        unique_topics.txt
     
 To test the model run keras_eval.py
     The testing data needs to be input as a list of strings, which is converted
@@ -39,7 +40,6 @@ topic['topic'].unique()
 # X is size Number of Articles by Number of Words in bag
 # Y is size Number of Articles by Number of Unique Topics
 from sklearn.preprocessing import LabelEncoder
-from sklearn.preprocessing import OneHotEncoder
 from sklearn.externals import joblib
 
 feat = ['topic']
@@ -68,26 +68,29 @@ data['everything'].apply(change)
 from sklearn.model_selection import train_test_split
 from sklearn.feature_extraction.text import CountVectorizer
 
-#from sklearn.feature_extraction.text import TfidfVectorizer
-#vectorizer = TfidfVectorizer(min_df=1, max_features=70000, strip_accents='unicode',lowercase =True,
-#                            analyzer='word', token_pattern=r'\w+', use_idf=True, 
-#                            smooth_idf=True, sublinear_tf=True, stop_words = 'english')
-#vectors = vectorizer.fit_transform(data['everything'])
-#vectors.shape
-
 vect = CountVectorizer()
 vect.fit(data['everything'])
 joblib.dump(vect,'Vectorizer.pkl')
 print('Saved Vectorizer: Vectorizer.pkl')
-
 vectors = vect.transform(data['everything'])
 
-encoder = OneHotEncoder(sparse = True)
-topic = encoder.fit_transform(topic)
+vect2 = CountVectorizer()
+vect2.fit(topic)
+
+topic_sparse = np.zeros(shape = [len(topic),len(topic.topic.unique())])
+topic_unique = list(topic.topic.unique())
+topic_unique_indx = []
+for i, item in enumerate(topic.topic):
+    topic_sparse[i,topic_unique.index(item)] = 1
+from scipy import sparse
+topic2 = sparse.csr_matrix(topic_sparse)
+# Save the unique topics
+with open('unique_topics.txt','wb') as fp:
+    pickle.dump(topic_unique, fp)
 
 X_train, X_test, y_train, y_test = train_test_split(vectors,
-                                                    topic,#topic['topic'],
-                                                    test_size=0.1,
+                                                    topic2,#topic['topic'],
+                                                    test_size=0.2,
                                                     random_state = 0)
 
 input_dim = X_train.shape[1]  # Number of features
@@ -96,18 +99,18 @@ num_words = X_train.shape[1]
 #========================= Fit the Neural net =================================
 # Have 3 layers, first layer with 500 units, next two with 100 each.
 # Output layer needs to have the same number of units as Num Topics
+
 from keras.models import Sequential
 from keras import layers
 from keras.layers import LSTM, Dense, Dropout, Masking, Embedding
+from keras import regularizers
 
 model = Sequential()
-model.add(layers.Dense(500, input_dim=input_dim, activation='relu'))
-model.add(Dropout(0.5))
 model.add(layers.Dense(100, input_dim=input_dim, activation='relu'))
 model.add(Dropout(0.5))
-model.add(layers.Dense(100, input_dim=input_dim, activation='relu'))
+model.add(layers.Dense(50, input_dim=input_dim, activation='relu'))
 model.add(Dropout(0.5))
-model.add(layers.Dense(27, activation='sigmoid'))
+model.add(layers.Dense(26, activation='sigmoid'))
 
 model.compile(loss='binary_crossentropy', 
     optimizer='adam', 
@@ -118,7 +121,7 @@ history = model.fit(X_train, y_train,
                     epochs=500,
                     verbose=2,
                     validation_data=(X_test, y_test),
-                    batch_size=3000)
+                    batch_size=500)
 
 loss, accuracy = model.evaluate(X_train, y_train, verbose=False)
 print("Training Accuracy: {:.4f}".format(accuracy))
@@ -136,53 +139,64 @@ plt.legend(['Train', 'Test'], loc='upper left')
 plt.show()
 
 #========================= Save the Model =====================================
-#from keras.models import model_from_json
-#model_json = model.to_json()
-#with open("model.json", "w") as json_file:
-#    json_file.write(model_json)
-## serialize weights to HDF5
-#model.save_weights("model.h5")
-#print("Saved model to disk: model.h5")
-#import os
-#if os.path.isfile('LabelEncoder.npy'):
-#    print('Saved Label Encoder: LabelEncoder.npy')
-#else:
-#    print('NO LABEL ENCODER SAVED')
-#    
-#if os.path.isfile('LabelEncoder.npy'):
-#    print('Saved Vectorizer: Vectorizer.pkl')
-#else:
-#    print('NO VECTORIZER SAVED')
-
-from sklearn.metrics import confusion_matrix
+from keras.models import model_from_json
 import pickle
-import numpy as np
-import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+model_json = model.to_json()
+with open("model_4_21.json", "w") as json_file:
+    json_file.write(model_json)
+# serialize weights to HDF5
+model.save_weights("model.h5")
+print("Saved model to disk: model.h5")
+    
+import os
+if os.path.isfile('LabelEncoder.npy'):
+    print('Saved Label Encoder: LabelEncoder.npy')
+else:
+    print('NO LABEL ENCODER SAVED')
+    
+if os.path.isfile('LabelEncoder.npy'):
+    print('Saved Vectorizer: Vectorizer.pkl')
+else:
+    print('NO VECTORIZER SAVED')
 
-vect = pickle.load(open('Vectorizer.pkl','rb'))
-le = LabelEncoder()
-le.classes_   = np.load('LabelEncoder.npy')
-print('Loaded Vectorizer')
+##========================= Load the Model =====================================
+#from keras.models import model_from_json
+## load json and create model
+#json_file = open('model.json', 'r')
+#loaded_model_json = json_file.read()
+#json_file.close()
+#model = model_from_json(loaded_model_json)
+## load weights into new model
+#model.load_weights("model.h5")
+#model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+#print("Loaded model from disk")
+#
+#import pickle
+#import numpy as np
+#import pandas as pd
+#from sklearn.preprocessing import LabelEncoder
+#
+#vect = pickle.load(open('Vectorizer.pkl','rb'))
+#le = LabelEncoder()
+#le.classes_   = np.load('LabelEncoder.npy')
+#print('Loaded Vectorizer')
+#
+#text = ['neuromechanical effort, + = proxies estimation computational',
+#        'testing this other thing']
+#
+#text = [text.lower() for text in text]
+#test = pd.DataFrame(data = {'title': text})
+#test = vect.transform(test['title'])
+#prediction_val = model.predict(test)
 
-text = ['neuromechanical effort, + = proxies estimation computational',
-        'testing this other thing']
-
-text = [text.lower() for text in text]
-test = pd.DataFrame(data = {'title': text})
-test = vect.transform(test['title'])
-prediction_val = model.predict(test)
-topics2 = [le.inverse_transform([np.argmax(top_val)])[0] for top_val in model.predict(X_test)]
-y_test_array = [le.inverse_transform([np.argmax(top_val)])[0] for top_val in y_test]
-
+#========================= Plot Confusion Matrix ==============================
 import seaborn as sns
 import matplotlib.pyplot as plt
-data['topic_id'] = data['topic'].factorize()[0]
-topic_id_df = data[['topic',
-                  'topic_id']].drop_duplicates().sort_values('topic_id')
-topic_to_id = dict(topic_id_df.values)
-id_to_topic = dict(topic_id_df[['topic_id','topic']].values)
-data.sample(5)
+from sklearn.metrics import confusion_matrix
+
+model_pred = model.predict(X_test)
+topics2 = [topic_unique[np.argmax(top_val)] for top_val in model_pred]
+y_test_array = [topic_unique[np.argmax(top_val)] for top_val in y_test]
 
 conf_mat = confusion_matrix(y_test_array, topics2)
 conf_mat_rowsum = [sum(row) for row in conf_mat]
@@ -192,7 +206,7 @@ conf_mat_perc = np.stack(conf_mat_perc)
 fig, ax = plt.subplots(figsize=(10,10))
 sns.set(font_scale=1.2) #font size multiplier
 sns.heatmap(conf_mat_perc, annot=True, fmt='.3f', cmap = 'magma', annot_kws={"size": 8},
-            xticklabels=topic_id_df.topic.values, yticklabels=topic_id_df.topic.values)
+            xticklabels=topic_unique, yticklabels=topic_unique)
 
 plt.ylabel('Actual',fontsize = 20)
 plt.xlabel('Predicted',fontsize = 20)
@@ -201,11 +215,32 @@ plt.xticks(size = 7, rotation=30,ha='right')
 plt.title('Percent Predicted Correct', fontsize = 26)
 plt.yticks( rotation='horizontal')
 fig.tight_layout(pad = 2)
-
 plt.savefig('biomchL_predict_plot.png')
 
-    
+bad_topic = []
+for i, row in enumerate(y_test):
+    model_pred = model.predict(X_test[i,:])
+    topic_act = topic_unique[np.argmax(y_test[i,:])]
+    topic_pred = topic_unique[np.argmax(model_pred)]
+    if not topic_act == topic_pred:
+        model_pred[0][np.argmax(model_pred)] = 0
+        topic_pred = topic_unique[np.argmax(model_pred)]
+        if not topic_act == topic_pred:
+            bad_topic.append([topic_act,topic_pred])
+            break
+  
+#========================= Testing if vecotrizing worked ======================  
+unique_indx = [np.where(topic == item) for item in topic.topic.unique()]
 
+topic_unique = []
+topic_unique_indx = []
+for i, item in enumerate(topic.topic):
+    if item not in topic_unique:
+        topic_unique.append(item)
+        topic_unique_indx.append(i)
+    
+for i, item in enumerate(topic_unique_indx):
+    print(i,topic2[item,:])
 
 
 
