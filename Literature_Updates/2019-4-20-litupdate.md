@@ -28,8 +28,8 @@ excerpt: <br>
 [SPORT/EXERCISE](#sportexercise)  
 [TENDON/LIGAMENT](#tendonligament)  
 [TISSUE/BIOMATERIAL](#tissuebiomaterial)  
-[TRAUMA/IMPACTTESTING](#traumaimpacttesting)  
-[UNIQUETOPIC](#uniquetopic)  
+[TRAUMA/IMPACT](#traumaimpact)  
+[UNIQUE TOPIC](#uniquetopic)  
 [VETERINARY/AGRICULTURAL](#veterinaryagricultural)  
 [VISUAL/VESTIBULAR/EYE](#visualvestibulareye)  
 
@@ -750,28 +750,16 @@ Mori da Cunha MGMC, Hympanova L, Rynkevic R, Mes T, Bosman AW, Deprest J,
 *Materials (Basel, Switzerland)*.  
 
 ----
-# TRAUMA/IMPACTTESTING
+# TRAUMA/IMPACT
 ----
 
 [Back to top](#table-of-contents)
 
-* [An assessment of the utility and functionality of wearable head impact sensors in Australian Football.](https://www.ncbi.nlm.nih.gov/pubmed/31000457)
-McIntosh AS, Willmott C, Patton DA, Mitra B, Brennan JH, Dimech-Betancourt B, Howard TS, Rosenfeld JV,
-*Journal of science and medicine in sport*.  
-
-* [Studies on long term behavioural changes in group-housed rat models of brain and spinal cord injury using an automated home cage recording system.](https://www.ncbi.nlm.nih.gov/pubmed/30991030)
-Yip PK, Chapman GE, Sillito RR, Ip THR, Akhigbe G, Becker SC, Price AW, Michael-Titus AT, Armstrong JD, Tremoleda JL,
-*Journal of neuroscience methods*.  
-
 ----
-# UNIQUETOPIC
+# UNIQUE TOPIC
 ----
 
 [Back to top](#table-of-contents)
-
-* [Social-ecological correlates of fundamental movement skills in young children.](https://www.ncbi.nlm.nih.gov/pubmed/30997258)
-Zeng N, Johnson SL, Boles RE, Bellows LL,
-*Journal of sport and health science*.  
 
 ----
 # VETERINARY/AGRICULTURAL
