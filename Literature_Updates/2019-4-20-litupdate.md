@@ -1,6 +1,11 @@
-# Literature Update:  2019-4-20   
-### Created by: [Ryan Alcantara](https://alcantarar.github.io) & [Gary Bruening](https://github.com/GBruening) - University of Colorado Boulder
-#### Table Of Contents: 
+---
+title: Biomechanics Literature Update
+collection: literature
+permalink: /literature/2019-4-20-litupdate
+excerpt: <br>
+---
+### Created by: [Ryan Alcantara](https://twitter.com/Ryan_Alcantara_) & [Gary Bruening](https://twitter.com/garebearbru) - University of Colorado Boulder
+### Table Of Contents: 
 [BONE](#bone)  
 [CARDIOVASCULAR/CARDIOPULMONARY](#cardiovascularcardiopulmonary)  
 [CELLULAR/SUBCELLULAR](#cellularsubcellular)  
@@ -29,7 +34,7 @@
 [VISUAL/VESTIBULAR/EYE](#visualvestibulareye)  
 
 ----
-BONE
+# BONE
 ----
 
 [Back to top](#table-of-contents)
@@ -75,7 +80,7 @@ Feigenson M, Jonason JH, Shen J, Loiselle AE, Awad HA, O'Keefe RJ,
 *Annals of biomedical engineering*.  
 
 ----
-CARDIOVASCULAR/CARDIOPULMONARY
+# CARDIOVASCULAR/CARDIOPULMONARY
 ----
 
 [Back to top](#table-of-contents)
@@ -109,7 +114,7 @@ Kodama Y, Aoki H, Yamagata Y, Tsubota K,
 *Journal of biomechanics*.  
 
 ----
-CELLULAR/SUBCELLULAR
+# CELLULAR/SUBCELLULAR
 ----
 
 [Back to top](#table-of-contents)
@@ -159,7 +164,7 @@ Yi H, Chen Y, Wang JZ, Puri VM, Anderson CT,
 *Journal of experimental botany*.  
 
 ----
-COMPARATIVE
+# COMPARATIVE
 ----
 
 [Back to top](#table-of-contents)
@@ -189,7 +194,7 @@ Schmitt C, McManus M, Kumar N, Awoyemi O, Crago J,
 *Neurotoxicology and teratology*.  
 
 ----
-DENTAL/ORAL/FACIAL
+# DENTAL/ORAL/FACIAL
 ----
 
 [Back to top](#table-of-contents)
@@ -203,7 +208,7 @@ Shu J, Zhang Y, Liu Z,
 *Medical engineering & physics*.  
 
 ----
-EVOLUTION/ANTHROPOLOGY
+# EVOLUTION/ANTHROPOLOGY
 ----
 
 [Back to top](#table-of-contents)
@@ -213,7 +218,7 @@ Lacruz RS, Stringer CB, Kimbel WH, Wood B, Harvati K, O'Higgins P, Bromage TG, A
 *Nature ecology & evolution*.  
 
 ----
-GAIT/LOCOMOTION
+# GAIT/LOCOMOTION
 ----
 
 [Back to top](#table-of-contents)
@@ -275,7 +280,7 @@ Barton SL, Matthis JS, Fajen BR,
 *Experimental brain research*.  
 
 ----
-HAND/FINGER/FOOT/TOE
+# HAND/FINGER/FOOT/TOE
 ----
 
 [Back to top](#table-of-contents)
@@ -289,7 +294,7 @@ Ghanem I, Massaad A, Assi A, Rizkallah M, Bizdikian AJ, El Abiad R, Seringe R, M
 *Journal of children's orthopaedics*.  
 
 ----
-JOINT/CARTILAGE
+# JOINT/CARTILAGE
 ----
 
 [Back to top](#table-of-contents)
@@ -315,7 +320,7 @@ Nebelung S, Post M, Knobe M, Tingart M, Emans P, Thüring J, Kuhl C, Truhn D,
 *Scientific reports*.  
 
 ----
-METHODS
+# METHODS
 ----
 
 [Back to top](#table-of-contents)
@@ -345,7 +350,7 @@ Brønd JC, Aadland E, Andersen LB, Resaland GK, Andersen SA, Arvidsson D,
 *Clinical physiology and functional imaging*.  
 
 ----
-MODELING
+# MODELING
 ----
 
 [Back to top](#table-of-contents)
@@ -367,7 +372,7 @@ Xie P, Peng Y, Wang T, Zhang H,
 *International journal of environmental research and public health*.  
 
 ----
-MUSCLE
+# MUSCLE
 ----
 
 [Back to top](#table-of-contents)
@@ -385,7 +390,7 @@ Edama M, Takabayashi T, Inai T, Kikumoto T, Hirabayashi R, Ito W, Nakamura E, Ik
 *Surgical and radiologic anatomy : SRA*.  
 
 ----
-NEURAL
+# NEURAL
 ----
 
 [Back to top](#table-of-contents)
@@ -467,7 +472,7 @@ Cheng C, Yang K, Wu X, Zhang Y, Shan S, Gitler A, Ghosh A, Qiu Z,
 *Translational neurodegeneration*.  
 
 ----
-ORTHOPAEDICS/SPINE
+# ORTHOPAEDICS/SPINE
 ----
 
 [Back to top](#table-of-contents)
@@ -521,7 +526,7 @@ Ratzlaff TD, Diesbourg TL, McAllister MJ, von Hacht M, Brissette AR, Bona MD,
 *Canadian journal of ophthalmology. Journal canadien d'ophtalmologie*.  
 
 ----
-ORTHOPAEDICS/SURGERY
+# ORTHOPAEDICS/SURGERY
 ----
 
 [Back to top](#table-of-contents)
@@ -567,7 +572,7 @@ Khoo JK, Lee JHT, Lam PH, Wei AQ, Ronquillo J, Murrell GAC,
 *JSES open access*.  
 
 ----
-POSTURE/BALANCE
+# POSTURE/BALANCE
 ----
 
 [Back to top](#table-of-contents)
@@ -577,7 +582,7 @@ Aprigliano F, Martelli D, Kang J, Kuo SH, Kang UJ, Monaco V, Micera S, Agrawal S
 *Journal of neuroengineering and rehabilitation*.  
 
 ----
-PROSTHETICS/ORTHOTICS
+# PROSTHETICS/ORTHOTICS
 ----
 
 [Back to top](#table-of-contents)
@@ -587,7 +592,7 @@ Abouhossein A, Awad MI, Maqbool HF, Crisp C, Stewart TD, Messenger N, Richardson
 *Medical engineering & physics*.  
 
 ----
-REHABILITATION
+# REHABILITATION
 ----
 
 [Back to top](#table-of-contents)
@@ -605,7 +610,7 @@ Vistamehr A, Kautz SA, Bowden MG, Neptune RR,
 *Journal of biomechanics*.  
 
 ----
-ROBOTICS
+# ROBOTICS
 ----
 
 [Back to top](#table-of-contents)
@@ -627,7 +632,7 @@ Vandesompele A, Urbain G, Mahmud H, Wyffels F, Dambre J,
 *Frontiers in neurorobotics*.  
 
 ----
-SPORT/EXERCISE
+# SPORT/EXERCISE
 ----
 
 [Back to top](#table-of-contents)
@@ -681,7 +686,7 @@ Cross MR, Tinwala F, Lenetsky S, Brown SR, Brughelli M, Morin JB, Samozino P,
 *International journal of sports physiology and performance*.  
 
 ----
-TENDON/LIGAMENT
+# TENDON/LIGAMENT
 ----
 
 [Back to top](#table-of-contents)
@@ -703,7 +708,7 @@ Zhang M, Zhen J, Zhang X, Yang Z, Zhang L, Hao D, Ren B,
 *Arthroscopy : the journal of arthroscopic & related surgery : official publication of the Arthroscopy Association of North America and the International Arthroscopy Association*.  
 
 ----
-TISSUE/BIOMATERIAL
+# TISSUE/BIOMATERIAL
 ----
 
 [Back to top](#table-of-contents)
@@ -745,7 +750,7 @@ Mori da Cunha MGMC, Hympanova L, Rynkevic R, Mes T, Bosman AW, Deprest J,
 *Materials (Basel, Switzerland)*.  
 
 ----
-TRAUMA/IMPACTTESTING
+# TRAUMA/IMPACTTESTING
 ----
 
 [Back to top](#table-of-contents)
@@ -759,7 +764,7 @@ Yip PK, Chapman GE, Sillito RR, Ip THR, Akhigbe G, Becker SC, Price AW, Michael-
 *Journal of neuroscience methods*.  
 
 ----
-UNIQUETOPIC
+# UNIQUETOPIC
 ----
 
 [Back to top](#table-of-contents)
@@ -769,7 +774,7 @@ Zeng N, Johnson SL, Boles RE, Bellows LL,
 *Journal of sport and health science*.  
 
 ----
-VETERINARY/AGRICULTURAL
+# VETERINARY/AGRICULTURAL
 ----
 
 [Back to top](#table-of-contents)
@@ -791,7 +796,7 @@ Yazdanparast T, Yazdani K, Humbert P, Khatami A, Nasrollahi SA, Firouzabadi LI, 
 *Indian journal of dermatology*.  
 
 ----
-VISUAL/VESTIBULAR/EYE
+# VISUAL/VESTIBULAR/EYE
 ----
 
 [Back to top](#table-of-contents)
