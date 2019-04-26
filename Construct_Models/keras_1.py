@@ -31,7 +31,7 @@ import string
 #========================= Read in the Data ===================================
 
 data = pd.read_csv('../Data/RYANDATA_filt.csv')
-data.columns = ['num','topic','authors','title','Journals','Years','Vol_Isue','DOI','abstract']
+data.columns = ['num','topic_split','topic','authors','title','Journals','Years','Vol_Isue','DOI','abstract']
 
 papers = pd.DataFrame(data['title'])
 topic = pd.DataFrame(data['topic'])
