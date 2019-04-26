@@ -47,8 +47,8 @@ def is_good_response(resp):
 try:
     data = pd.read_csv('RYANDATA.csv')
     print('Loading Data')   
-    unique_catagories = list(data.Catagory.unique())
-    catagories = list(data.Catagory)
+    unique_categories = list(data.Category.unique())
+    categories = list(data.Category)
     titles = list(data.Titles)
     authors = list(data.Authors)
     journals = list(data.Journals)
@@ -57,8 +57,8 @@ try:
     doi = list(data.DOI)
 except:
     print('No Data Found, Analyzing Everything')    
-    unique_catagories = []
-    catagories = []
+    unique_categories = []
+    categories = []
     titles = []
     authors = []
     links = []
@@ -92,8 +92,8 @@ for page in np.arange(1,22):
         for entry in lit_list:
             if len(entry)>0 and entry[0] is '*':
                 cur_cat = entry[1:entry[1:].find('*')+1].replace(' ','')
-                if not cur_cat in unique_catagories:
-                    unique_catagories.append(cur_cat)
+                if not cur_cat in unique_categories:
+                    unique_categories.append(cur_cat)
             elif len(entry) > 200:
                 
                 if entry[0:10] == 'http://dx.':
@@ -109,7 +109,7 @@ for page in np.arange(1,22):
                 if not titles_temp in titles:
                     authors.append(authors_temp)
                     titles.append(titles_temp)
-                    catagories.append(cur_cat)
+                    categories.append(cur_cat)
                     try:
                         year_nan = entry.find('NaN')
                         if year_nan == -1:
@@ -143,7 +143,7 @@ for page in np.arange(1,22):
             break
                 
 
-data = pd.DataFrame(data = {'Catagory': catagories,
+data = pd.DataFrame(data = {'Category': categories,
                             'Authors': authors,
                             'Titles': titles,
                             'Journals': journals,
@@ -155,16 +155,16 @@ data.to_csv('RYANDATA.csv')
 
 cat = []
 cat_len = []
-for k in np.arange(len(data['Catagory'].unique())):
-    cat.append(data['Catagory'].unique()[k])
-    cat_len.append(len(data[data.Catagory==cat[k]]))
+for k in np.arange(len(data['Category'].unique())):
+    cat.append(data['Category'].unique()[k])
+    cat_len.append(len(data[data.Category==cat[k]]))
 
-cat_lengths = pd.DataFrame(data = {'Catagory': cat,
+cat_lengths = pd.DataFrame(data = {'Category': cat,
                                    'Length': cat_len})
-min_num = len(catagories)*.01
+min_num = len(categories)*.01
 cat_lengths = cat_lengths.query('Length>' + str(min_num))
 
-filtered_data = pd.DataFrame(data =  {'Catagory': [],
+filtered_data = pd.DataFrame(data =  {'Category': [],
                                       'Authors': [],
                                       'Titles': [],
                                       'Journals': [],
@@ -172,9 +172,9 @@ filtered_data = pd.DataFrame(data =  {'Catagory': [],
                                       'Vol_Isue': [],
                                       'DOI': []})
 
-for cat in cat_lengths.Catagory.unique():
+for cat in cat_lengths.Category.unique():
     if not cat == 'UNIQUETOPIC':
-        filtered_data = pd.concat([filtered_data,data[data.Catagory==cat]])
+        filtered_data = pd.concat([filtered_data,data[data.Category==cat]])
 
 filtered_data.to_csv('RYANDATA_filt.csv')
 
