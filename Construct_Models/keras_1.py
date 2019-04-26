@@ -12,7 +12,10 @@ The topics from the csv need to be converted into a sparse matrix with number
 Once fit it saves the model:      model.json
     Also saves the label encoder: LabelEncoder.npy
     and the vectorizer:           Vectorizer.pkl
+<<<<<<< HEAD
     and the unique topics:        unique_topics.txt
+=======
+>>>>>>> master
     
 To test the model run keras_eval.py
     The testing data needs to be input as a list of strings, which is converted
@@ -26,6 +29,7 @@ import numpy as np
 import string
 
 #========================= Read in the Data ===================================
+
 data = pd.read_csv('../Data/RYANDATA_filt.csv')
 data.columns = ['num','topic','authors','title','Journals','Years','Vol_Isue','DOI','abstract']
 
@@ -71,6 +75,7 @@ for x in feat:
     le = LabelEncoder()
     le.fit(list(topic[x].values))
 
+<<<<<<< HEAD
 np.save('../Models/Keras_model/LabelEncoder.npy',le.classes_)
 print('Saved Label Encoder: LabelEncoder.npy')
 
@@ -205,7 +210,7 @@ if os.path.isfile('../Models/Keras_model/LabelEncoder.npy'):
     print('Saved Label Encoder: LabelEncoder.npy')
 else:
     print('NO LABEL ENCODER SAVED')
-    
+
 if os.path.isfile('../Models/Keras_model/unique_topics.txt'):
     print('Saved Unique Topics: unique_topics.txt')
 else:
@@ -311,16 +316,3 @@ plt.savefig('../Plots/biomchL_predict_plot_DNN.png')
 #model.add(layers.GlobalMaxPooling1D())
 #model.add(layers.LSTM(26, input_shape=(X_train.shape[0],X_train.shape[1]),return_sequences=True))
 #model.add(Dropout(0.5))
-
-
-
-
-
-
-
-
-
-
-
-
-
