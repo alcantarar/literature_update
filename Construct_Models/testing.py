@@ -23,8 +23,8 @@ for page in np.arange(1,2):
         for entry in lit_list:
             if len(entry)>0 and entry[0] is '*':
                 cur_cat = entry[1:entry[1:].find('*')+1].replace(' ','')
-                if not cur_cat in unique_catagories:
-                    unique_catagories.append(cur_cat)
+                if not cur_cat in unique_categories:
+                    unique_categories.append(cur_cat)
             elif len(entry) > 200:
                 
                 if entry[0:10] == 'http://dx.':
