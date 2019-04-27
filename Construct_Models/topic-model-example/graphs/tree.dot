@@ -1,0 +1,127 @@
+strict digraph {
+	node [shape=point];
+	n1_0 -> n2_0 [penwidth=0.40];
+	n0_4 -> n1_0 [penwidth=1.35];
+	n0_5 -> n1_0 [penwidth=0.45];
+	n0_8 -> n1_0 [penwidth=0.45];
+	n0_11 -> n1_0 [penwidth=0.71];
+	n0_17 -> n1_0 [penwidth=0.23];
+	n0_19 -> n1_0 [penwidth=0.21];
+	n0_20 -> n1_0 [penwidth=0.28];
+	n0_21 -> n1_0 [penwidth=0.48];
+	n0_22 -> n1_0 [penwidth=0.31];
+	n0_23 -> n1_0 [penwidth=0.16];
+	n1_1 -> n2_0 [penwidth=3.26];
+	n0_1 -> n1_1 [penwidth=1.69];
+	n0_3 -> n1_1 [penwidth=0.37];
+	n0_9 -> n1_1 [penwidth=0.25];
+	n0_14 -> n1_1 [penwidth=0.21];
+	n0_25 -> n1_1 [penwidth=0.64];
+	n1_2 -> n2_0 [penwidth=0.24];
+	n0_2 -> n1_2 [penwidth=1.30];
+	n0_10 -> n1_2 [penwidth=0.05];
+	n0_13 -> n1_2 [penwidth=0.97];
+	n0_18 -> n1_8 [penwidth=1.97];
+	n1_3 -> n2_0 [penwidth=0.12];
+	n0_0 -> n1_3 [penwidth=0.64];
+	n0_16 -> n1_3 [penwidth=0.27];
+	n1_4 -> n2_0 [penwidth=0.04];
+	n0_6 -> n1_4 [penwidth=0.18];
+	n0_7 -> n1_4 [penwidth=0.04];
+	n0_15 -> n1_4 [penwidth=0.17];
+	n0_26 -> n1_4 [penwidth=0.25];
+	n1_5 -> n2_0 [penwidth=0.11];
+	n0_12 -> n1_5 [penwidth=0.13];
+	n0_24 -> n1_5 [penwidth=0.37];
+	n1_8 -> n2_0 [penwidth=0.33];
+	n1_0 [shape=circle,margin="0,0",style=filled,fillcolor=black,fontcolor=white,height=0.60,label="0"]
+	n0_4 [label="4:gait walking lower limb
+running kinematics",shape=none,fontcolor="black"]
+	n0_5 [label="5:implant implants dental
+stress stress
+distribution defect",shape=none,fontcolor="black"]
+	n0_8 [label="8:bone cortical bone
+marrow femoral bone
+marrow cortical",shape=none,fontcolor="black"]
+	n0_11 [label="11:training risk jump
+physical female landing",shape=none,fontcolor="black"]
+	n0_17 [label="17:head players time
+stroke motor real",shape=none,fontcolor="black"]
+	n0_19 [label="19:resonance computed
+image magnetic resonance
+tomography imaging",shape=none,fontcolor="black"]
+	n0_20 [label="20:mechanical properties
+human mechanical
+properties properties
+human meniscus",shape=none,fontcolor="black"]
+	n0_21 [label="21:model tissue
+computational collagen
+rabbit soft",shape=none,fontcolor="black"]
+	n0_22 [label="22:muscle body muscle
+activity activation range
+muscle activation",shape=none,fontcolor="black"]
+	n0_23 [label="23:disc intervertebral
+intervertebral disc valve
+heart degeneration",shape=none,fontcolor="black"]
+	n1_1 [shape=circle,margin="0,0",style=filled,fillcolor=black,fontcolor=white,height=0.25,label="1"]
+	n0_1 [label="1:fixation fractures
+screw plate pedicle
+locking",shape=none,fontcolor="black"]
+	n0_3 [label="3:finite element finite
+element element analysis
+finite element analysis
+lumbar",shape=none,fontcolor="black"]
+	n0_9 [label="9:evolution morphology
+implications feeding
+primates forelimb",shape=none,fontcolor="black"]
+	n0_14 [label="14:robot control robotic
+design robots powered",shape=none,fontcolor="black"]
+	n0_25 [label="25:comparison tears
+lateral technique cement
+radial",shape=none,fontcolor="black"]
+	n1_2 [shape=circle,margin="0,0",style=filled,fillcolor=black,fontcolor=white,height=0.08,label="2"]
+	n0_2 [label="2:cord spinal cord spinal
+cord injury spinal cord
+injury injury",shape=none,fontcolor="black"]
+	n0_10 [label="10:healing randomized
+trial randomized
+controlled controlled
+controlled trial",shape=none,fontcolor="black"]
+	n0_13 [label="13:cell stimulation stem
+cell optical coherence
+coherence bone loss",shape=none,fontcolor="black"]
+	n0_18 [label="18:rats treadmill induced
+exercise mice neurons",shape=none,fontcolor="black"]
+	n1_3 [shape=circle,margin="0,0",style=filled,fillcolor=black,fontcolor=white,height=0.02,label="3"]
+	n0_0 [label="0:ligament cruciate
+cruciate ligament
+anterior cruciate
+anterior cruciate
+ligament anterior",shape=none,fontcolor="black"]
+	n0_16 [label="16:corneal measurement
+inertial sensor based
+intraocular",shape=none,fontcolor="black"]
+	n1_4 [shape=circle,margin="0,0",style=filled,fillcolor=black,fontcolor=white,height=0.01,label="4"]
+	n0_6 [label="6:rotator cuff rotator
+cuff parkinson parkinson
+disease reaction",shape=none,fontcolor="black"]
+	n0_7 [label="7:specific aortic
+abdominal patient
+specific patient wall",shape=none,fontcolor="black"]
+	n0_15 [label="15:osteoarthritis term
+pain knee osteoarthritis
+achilles long term",shape=none,fontcolor="black"]
+	n0_26 [label="26:different healthy
+visual work postural
+associated",shape=none,fontcolor="black"]
+	n1_5 [shape=circle,margin="0,0",style=filled,fillcolor=black,fontcolor=white,height=0.00,label="5"]
+	n0_12 [label="12:review systematic
+systematic review
+shoulder meta meta
+analysis",shape=none,fontcolor="black"]
+	n0_24 [label="24:clinical flexion
+contact outcomes year
+patellar",shape=none,fontcolor="black"]
+	n1_8 [shape=circle,margin="0,0",style=filled,fillcolor=black,fontcolor=white,height=-0.00,label="8"]
+	n2_0 [shape=point,height=0.20]
+}
