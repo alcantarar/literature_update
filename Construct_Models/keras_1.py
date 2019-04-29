@@ -31,7 +31,50 @@ import string
 #========================= Read in the Data ===================================
 
 data = pd.read_csv('../Data/RYANDATA_filt.csv')
-data.columns = ['num','topic_split','topic','authors','title','Journals','Years','Vol_Isue','DOI','abstract']
+data = pd.read_csv('../Data/RYANDATA.csv')
+print('Loading Data')   
+unique_topics = list(data.Topics.unique())
+topics = list(data.Topics)
+titles = list(data.Titles)
+authors = list(data.Authors)
+journals = list(data.Journals)
+years = list(data.Journals)
+vol_isus = list(data.Vol_Isue)
+dois = list(data.DOI)
+abstracts = list(data.Abstract)
+    
+top = []
+top_len = []
+for k in np.arange(len(data['Topics'].unique())):
+    top.append(data['Topics'].unique()[k])
+    top_len.append(len(data[data['Topics']==top[k]]))
+
+top_lengths = pd.DataFrame(data = {'Topics': top,
+                                   'Length': top_len})
+min_num = len(topics)
+min_num = 1000
+top_lengths = top_lengths.query('Length>' + str(min_num))
+
+filtered_data = pd.DataFrame(data =  {'Topics_split': [],
+                                      'Topics': [],
+                                      'Authors': [],
+                                      'Titles': [],
+                                      'Journals': [],
+                                      'Years': [],
+                                      'Vol_Isue': [],
+                                      'DOI': [],
+                                      'Abstract': []})
+
+for top in top_lengths.Topics.unique():
+    if not top == 'UNIQUETOPIC':
+        filtered_data = filtered_data.append(data[data['Topics']==top],sort=True)
+
+filtered_data.fillna('')
+data = filtered_data[['Topics_split','Topics','Authors','Titles','Journals','Years','Vol_Isue','DOI','Abstract']]
+
+#data['abstracts']= ['']*len(data['Authors'])
+#data.columns = ['num','topic_split','topic','authors','title','Journals','Years','Vol_Isue','DOI','abstract']
+data.columns = ['topic_split','topic','authors','title','Journals','Years','Vol_Isue','DOI','abstract']
 
 papers = pd.DataFrame(data['title'])
 topic = pd.DataFrame(data['topic'])
@@ -42,7 +85,6 @@ topic['topic'].unique()
 
 # Make String Cleaner
 def clean_str(abs_string,stop):
-#    print(abs_string)
     translator = str.maketrans(string.punctuation, ' '*len(string.punctuation)) #map punctuation to space
     abs_string = abs_string.translate(translator)
     abs_string = abs_string.split()
@@ -75,7 +117,6 @@ for x in feat:
     le = LabelEncoder()
     le.fit(list(topic[x].values))
 
-<<<<<<< HEAD
 np.save('../Models/Keras_model/LabelEncoder.npy',le.classes_)
 print('Saved Label Encoder: LabelEncoder.npy')
 
@@ -139,71 +180,87 @@ with open('../Models/Keras_model/unique_topics.txt','wb') as fp:
 
 X_train, X_test, y_train, y_test = train_test_split(vectors,
                                                     topic2,#topic['topic'],
-                                                    test_size=0.2,
+                                                    test_size=0.05,
                                                     random_state = 0)
 
+print('X_Train shape: ' + str(X_train.shape))
 input_dim = X_train.shape[1]  # Number of features
 num_words = X_train.shape[1]
 vocab_size = X_train.shape[1]
 embedding_dim = 100
 
-##========================= Fit the Neural net =================================
-## Have 3 layers, first layer with 500 units, next two with 100 each.
-## Output layer needs to have the same number of units as Num Topics
+#========================= Fit the Neural net =================================
+# Have 3 layers, first layer with 500 units, next two with 100 each.
+# Output layer needs to have the same number of units as Num Topics
+
+from keras.models import Sequential
+from keras import layers
+from keras.layers import LSTM, Dense, Dropout, Masking, Embedding
+from keras import regularizers
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import GridSearchCV
+
+def create_model():
+    first_layer = 1000
+    activation = 'relu'
+    dropout_rate = 0.3
+    
+    model = Sequential()
+    model.add(layers.Dense(first_layer, input_dim=input_dim, activation=activation))
+    model.add(Dropout(dropout_rate))
+    model.add(layers.Dense(y_test.shape[1], activation='sigmoid'))
+    
+    model.compile(loss='binary_crossentropy', 
+                  optimizer='adam', 
+                  metrics=['accuracy'])
+    return model
+
+#param_grid = dict(batch_size = [50,100,250,500,1000])
 #
-#from keras.models import Sequential
-#from keras import layers
-#from keras.layers import LSTM, Dense, Dropout, Masking, Embedding
-#from keras import regularizers
-#
-#model = Sequential()
-#model.add(layers.Dense(3000, input_dim=input_dim, activation='relu'))
-#model.add(Dropout(0.5))
-#model.add(layers.Dense(500, input_dim=input_dim, activation='relu'))
-#model.add(Dropout(0.5))
-#model.add(layers.Dense(y_test.shape[1], activation='sigmoid'))
-#
-#model.compile(loss='binary_crossentropy', 
-#    optimizer='adam', 
-#    metrics=['accuracy'])
+#model = KerasClassifier(build_fn = create_model)
+#grid = GridSearchCV(estimator=model, param_grid=param_grid, n_jobs=-1)
+#grid_result = grid.fit(X_train, Y)
+
 #model.summary()
-#
-## Set callback functions to early stop training and save the best model so far
-#from keras.callbacks import EarlyStopping, ModelCheckpoint
-#callbacks = [EarlyStopping(monitor='val_loss', patience=2),
-#             ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='val_loss', save_best_only=True)]
-#
-#history = model.fit(X_train, y_train,
-#                    epochs=50,
-#                    callbacks = callbacks,
-#                    verbose=2,
-#                    validation_data=(X_test, y_test),
-#                    batch_size=500)
-#
-##loss, accuracy = model.evaluate(X_train, y_train, verbose=False)
-##print("Training Accuracy: {:.4f}".format(accuracy))
-##loss, accuracy = model.evaluate(X_test, y_test, verbose=False)
-##print("Testing Accuracy:  {:.4f}".format(accuracy))
-#
-#import matplotlib.pyplot as plt
-## Plot training & validation accuracy values
-##plt.plot(history.history['acc'])
-##plt.plot(history.history['val_acc'])
-##plt.title('Model accuracy')
-##plt.ylabel('Accuracy')
-##plt.xlabel('Epoch')
-##plt.legend(['Train', 'Test'], loc='upper left')
-##plt.show()
+
+# Set callback functions to early stop training and save the best model so far
+from keras.callbacks import EarlyStopping, ModelCheckpoint
+callbacks = [EarlyStopping(monitor='val_loss', patience=2),
+             ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='val_loss', save_best_only=True)]
+
+model = create_model()
+model.summary()
+history = model.fit(X_train, y_train,
+                    epochs=50,
+                    callbacks = callbacks,
+                    verbose=2,
+                    validation_data=(X_test, y_test),
+                    batch_size=500)
+
+#loss, accuracy = model.evaluate(X_train, y_train, verbose=False)
+#print("Training Accuracy: {:.4f}".format(accuracy))
+#loss, accuracy = model.evaluate(X_test, y_test, verbose=False)
+#print("Testing Accuracy:  {:.4f}".format(accuracy))
+
+import matplotlib.pyplot as plt
+# Plot training & validation accuracy values
+#plt.plot(history.history['acc'])
+#plt.plot(history.history['val_acc'])
+#plt.title('Model accuracy')
+#plt.ylabel('Accuracy')
+#plt.xlabel('Epoch')
+#plt.legend(['Train', 'Test'], loc='upper left')
+#plt.show()
 
 #========================= Save the Model =====================================
-#from keras.models import model_from_json
-#import pickle
-#model_json = model.to_json()
-#with open("../Models/Keras_model/model_4_24.json", "w") as json_file:
-#    json_file.write(model_json)
-## serialize weights to HDF5
-#model.save_weights("../Models/Keras_model/model_4_24.h5")
-#print("Saved model to disk: model.json")
+from keras.models import model_from_json
+import pickle
+model_json = model.to_json()
+with open("../Models/Keras_model/model_4_24.json", "w") as json_file:
+    json_file.write(model_json)
+# serialize weights to HDF5
+model.save_weights("../Models/Keras_model/model_4_24.h5")
+print("Saved model to disk: model.json")
     
 import os
 if os.path.isfile('../Models/Keras_model/LabelEncoder.npy'):

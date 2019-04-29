@@ -46,12 +46,24 @@ def string_parse1(entry, topic):
     if entry[0:10] == 'http://dx.':
         entry = entry[entry.find(' ')+1:]
         
+    if entry[0:3] == '01. ':
+        entry = entry[4:]
+        
     author = entry[0:entry.find('.')].split(';')                
     authors_temp = [author[1:] if author[0]== ' ' else author for author in author]
     
     entry   = entry[entry.find('.')+2:]
     titles_temp = (entry[0:entry.find('.')])
-    entry   = entry[entry.find('.')+2:]
+    if len(titles_temp)<5:
+        entry   = entry[entry.find('.')+2:]
+        if entry[0:109] == 'elegans locomotion: finding balance in imbalance. Biochemical And Biophysical Roles Of Cell Surface Molecules':
+            titles_temp = entry[0:109]
+            entry = entry[109:]
+        else:
+            titles_temp = (entry[0:entry.find('.')])
+            entry = entry[entry.find('.')+2:]
+    else:
+        entry = entry[entry.find('.')+2:]
     
 #    if not titles_temp in titles:
     author = authors_temp
@@ -82,6 +94,22 @@ def string_parse1(entry, topic):
     return topic, author, title, journal, year, vol_isu, doi
 
 def string_parse2(entry, topic):
+    if 'Carey, J, Craig, M, Kerstein, RB, Radke, J,' in entry:
+        author = 'Carey, J, Craig, M, Kerstein, RB, Radke, J,'.split(',')
+        title = 'Determining a relationship between applied occlusal load and articulating paper mark area'
+        journal = 'The Open Dentistry Journal'
+        year = '2007'
+        vol_isu = '1;1-7'
+        doi = ''
+        return topic, author, title, journal, year, vol_isu, doi
+    if 'Coulon M, Baudoin C, Depaulis-Carre M, Heyman Y, Renard JP, Richard C' in entry:
+        author = 'Coulon M, Baudoin C, Depaulis-Carre M, Heyman Y, Renard JP, Richard C'.split(',')
+        title = 'Dairy cattle exploratory and social behaviors: Is there an effect of cloning?'
+        journal = 'Theriogenology'
+        year = '2007'
+        vol_isu = '68(8):1097-103'
+        doi = ''
+        return topic, author, title, journal, year, vol_isu, doi
     if entry[0:10] == 'http://dx.':
         entry = entry[entry.find(' ')+1:]
         
@@ -89,7 +117,7 @@ def string_parse2(entry, topic):
 #    print(author)            
     authors_temp = [author[1:] if author[0]== ' ' else author for author in author]
     
-    entry   = entry[entry.find('.')+2:]
+    entry   = entry[entry.find('.')+1:]
     titles_temp = (entry[0:entry.find('.')])
     entry   = entry[entry.find('.')+2:]
     
@@ -156,11 +184,11 @@ def search2(query):
 def get_abstract(title, doi):
     paper = search2(title)
     if paper['IdList'] == []:
-        print('- No Title Match.')# Searching by DOI')
+#        print('- No Title Match.')# Searching by DOI')
         time.sleep(.1)
         paper = search2(doi.replace('http://dx.doi.org/',''))
         if paper['IdList'] == []:
-            print('DOI Search Failed')
+#            print('DOI Search Failed')
             return ''
     paper = fetch_details(paper['IdList'])
     title_len = len(title.split())
@@ -171,7 +199,7 @@ def get_abstract(title, doi):
 #        print('Intersect Found')
         return paper['PubmedArticle'][0]['MedlineCitation']['Article']['Abstract']['AbstractText']
     else:
-        print('No intersect, returning \'\'')
+#        print('No intersect, returning \'\'')
         return ''
 
 

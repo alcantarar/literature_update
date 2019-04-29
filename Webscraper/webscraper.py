@@ -21,29 +21,29 @@ from webscraper_functions import string_parse1, string_parse2, clean_str
 #os.chdir('E:/Google Drive/Documents/BiomechL_webscraper/literature_update
 
 #try:
-#    data = pd.read_csv('../Data/RYANDATA_test.csv')
-#    print('Loading Data')   
-#    unique_topics = list(data.Topics.unique())
-#    topics = list(data.Topics)
-#    titles = list(data.Titles)
-#    authors = list(data.Authors)
-#    journals = list(data.Journals)
-#    years = list(data.Journals)
-#    vol_isus = list(data.Vol_Isue)
-#    dois = list(data.DOI)
-#    abstracts = list(data.Abstract)
+data = pd.read_csv('../Data/RYANDATA.csv')
+print('Loading Data')   
+unique_topics = list(data.Topics.unique())
+topics = list(data.Topics)
+titles = list(data.Titles)
+authors = list(data.Authors)
+journals = list(data.Journals)
+years = list(data.Journals)
+vol_isus = list(data.Vol_Isue)
+dois = list(data.DOI)
+abstracts = list(data.Abstract)
 #except:
-print('No Data Found, Analyzing Everything')    
-unique_topics = []
-topics = []
-titles = []
-authors = []
-links = []
-journals = []
-years = []
-vol_isus = []
-dois = []
-
+#    print('No Data Found, Analyzing Everything')    
+#    unique_topics = []
+#    topics = []
+#    titles = []
+#    authors = []
+#    links = []
+#    journals = []
+#    years = []
+#    vol_isus = []
+#    dois = []
+breakhere
 first_annoying = '12-30-2010'
 first_missing_asterisks = '06-16-2010'
 first_annoying_time = time.mktime(datetime.datetime.strptime(first_annoying, '%m-%d-%Y').timetuple())
@@ -95,9 +95,12 @@ for page in np.arange(1,32):
         for item in lit_update.select('span'):
             if 'class=\"date\"' in str(item):
                 indx = str(item).find('class=\"date\"')
-                post_date = str(item)[indx+13:indx+23]
+                if str(item)[indx+13:indx+18]=='Today' or str(item)[indx+13:indx+22]=='Yesterday':
+                    post_time = time.time()
+                else:
+                    post_date = str(item)[indx+13:indx+23]
+                    post_time = time.mktime(datetime.datetime.strptime(post_date, '%m-%d-%Y').timetuple())
                 break
-        post_time = time.mktime(datetime.datetime.strptime(post_date, '%m-%d-%Y').timetuple())
         lit_str = lit_update.select('blockquote')[0].text
         
         lit_list = lit_str.split('\n')
@@ -113,6 +116,8 @@ for page in np.arange(1,32):
 #                        unique_topics.append(set(x for l in cur_topic.split('/') for x in l))
                 elif len(entry) > 200:                
                     topic_temp, author_temp, title_temp, journal_temp, year_temp, vol_isu_temp, doi_temp = string_parse1(entry,cur_topic)
+                    if len(title_temp)<5:
+                        breakhere
                     topics.append(topic_temp.split('/'))
                     authors.append(author_temp)
                     titles.append(title_temp)
@@ -120,11 +125,16 @@ for page in np.arange(1,32):
                     years.append(year_temp)
                     vol_isus.append(vol_isu_temp)
                     dois.append(doi_temp)
+                    try:
+                        abstracts.append(clean_str(str(get_abstract(title_temp,doi_temp)),stop))#
+                    except:
+                        abstracts.append('')
         elif post_time > jinger_post_time:
             cur_topic == []
             entry_temp = ''
             n_combines = 0
             found_first_topics = 0
+            entry2 = []
             for k, entry in enumerate(lit_list):
                 found_topics = 0
                 if len(entry.translate(translator).replace(' ',''))>2:
@@ -141,11 +151,12 @@ for page in np.arange(1,32):
                 
 #                print(len(entry),found_first_topics,found_topics)
                 if len(entry)>20 and found_first_topics and not found_topics:
-                    entry_temp = entry_temp + str(entry)
+                    entry_temp = entry_temp + str(entry) + ' '
                     row_after_topic = 0
                     n_combines += 1
                 elif entry == '' and n_combines >=2 and not found_topics:
                     topic_temp, author_temp, title_temp, journal_temp, year_temp, vol_isu_temp, doi_temp = string_parse2(entry_temp,cur_topic)
+                    entry2.append(entry_temp)
                     topics.append(topic_temp)
                     authors.append(author_temp)
                     titles.append(title_temp)
@@ -153,6 +164,10 @@ for page in np.arange(1,32):
                     years.append(year_temp)
                     vol_isus.append(vol_isu_temp)
                     dois.append(doi_temp)
+                    try:
+                        abstracts.append(clean_str(str(get_abstract(title_temp,doi_temp)),stop))#
+                    except:
+                        abstracts.append('')
                     entry_temp = ''
                     n_combines = 0
                 
@@ -186,19 +201,19 @@ for page in np.arange(1,32):
 #    toc = time.perf_counter()
     
 #========================= Put it together ====================================
-combined_topics = ['/'.join(item) for item in topics]
-data = pd.DataFrame(data = {'Topics_split': topics,
-                            'Topics': combined_topics,
+topics_split = topics
+topics = ['/'.join(item) for item in topics]
+data = pd.DataFrame(data = {'Topics_split': topics_split,
+                            'Topics': topics,
                             'Authors': authors,
                             'Titles': titles,
                             'Journals': journals,
                             'Years': years,
                             'Vol_Isue': vol_isus,
-                            'DOI':dois})
-#    ,
-#                            'Abstract': abstracts})
+                            'DOI':dois,
+                            'Abstract': abstracts})
 
-data.to_csv('../Data/RYANDATA_test.csv')
+data.to_csv('../Data/RYANDATA.csv')
 
 top = []
 top_len = []
@@ -219,13 +234,13 @@ filtered_data = pd.DataFrame(data =  {'Topics_split': [],
                                       'Journals': [],
                                       'Years': [],
                                       'Vol_Isue': [],
-                                      'DOI': []})#,
-#                                      'Abstract': []})
+                                      'DOI': [],
+                                      'Abstract': []})
 
 for top in top_lengths.Topics.unique():
     if not top == 'UNIQUETOPIC':
         filtered_data = filtered_data.append(data[data['Topics']==top],sort=True)
-
+filtered_data = filtered_data[['Topics_split','Topics','Authors','Titles','Journals','Years','Vol_Isue','DOI','Abstract']]
 filtered_data.to_csv('../Data/RYANDATA_filt.csv')
 
 filtered_data_even = filtered_data.groupby('Topics').apply(lambda s: s.sample(500))
