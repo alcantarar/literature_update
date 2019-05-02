@@ -152,32 +152,32 @@ import pickle
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.utils.validation import check_is_fitted
 
-try:
-    vectorizer = vectorizer
-    if check_is_fitted(vectorizer, '_tfidf'):
-        vectorizer = TfidfVectorizer(min_df=20, #min occurances needed
-                                     max_df=0.75, #max occuraces allowed (%)
-                                     ngram_range=(1,2), #size range of grams (1-3 words)
-                                     strip_accents='unicode',
-                                     lowercase =True,
-                                     analyzer='word', 
-                                     token_pattern=r'\w+', 
-                                     use_idf=True, 
-                                     smooth_idf=True, 
-                                     sublinear_tf=True, 
-                                     stop_words = 'english')
-except:
-    vectorizer = TfidfVectorizer(min_df=20, #min occurances needed
-                                 max_df=0.75, #max occuraces allowed (%)
-                                 ngram_range=(1,2), #size range of grams (1-3 words)
-                                 strip_accents='unicode',
-                                 lowercase =True,
-                                 analyzer='word', 
-                                 token_pattern=r'\w+', 
-                                 use_idf=True, 
-                                 smooth_idf=True, 
-                                 sublinear_tf=True, 
-                                 stop_words = 'english')
+#try:
+#    vectorizer = vectorizer
+#    if check_is_fitted(vectorizer, '_tfidf'):
+#        vectorizer = TfidfVectorizer(min_df=20, #min occurances needed
+#                                     max_df=0.75, #max occuraces allowed (%)
+#                                     ngram_range=(1,2), #size range of grams (1-3 words)
+#                                     strip_accents='unicode',
+#                                     lowercase =True,
+#                                     analyzer='word', 
+#                                     token_pattern=r'\w+', 
+#                                     use_idf=True, 
+#                                     smooth_idf=True, 
+#                                     sublinear_tf=True, 
+#                                     stop_words = 'english')
+#except:
+vectorizer = TfidfVectorizer(min_df=5, #min occurances needed
+                             max_df=0.75, #max occuraces allowed (%)
+                             ngram_range=(1,2), #size range of grams (1-3 words)
+                             strip_accents='unicode',
+                             lowercase =True,
+                             analyzer='word', 
+                             token_pattern=r'\w+', 
+                             use_idf=True, 
+                             smooth_idf=True, 
+                             sublinear_tf=True, 
+                             stop_words = 'english')
     
 vectors = vectorizer.fit_transform(data['everything'])
 with open('../Models/Keras_model/Vectorizer_tdif.pkl', 'wb') as f:
@@ -235,16 +235,14 @@ from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import GridSearchCV
 
 def create_model(first_layer, dropout_rate, n_2nd_layers):
-#    first_layer = 1000
     activation = 'relu'
-#    dropout_rate = 0.5
     
     model = Sequential()
 #    model.add(layers.Conv1D(128, 5, activation='relu'))
 #    model.add(Dropout(.2)),
     model.add(layers.Dense(first_layer, input_dim=input_dim, activation=activation))
     model.add(Dropout(dropout_rate))
-    model.add(layers.Dense(200,activation = 'relu'))
+#    model.add(layers.Dense(200,activation = 'relu'))
 #    for k in np.arange(n_2nd_layers):
 #        model.add(layers.Dense(100,activation = 'relu'))
     model.add(layers.Dense(y_test.shape[1], activation='softmax'))
@@ -277,10 +275,10 @@ def create_model(first_layer, dropout_rate, n_2nd_layers):
 #========================= Fit the Neural net =================================
 # Set callback functions to early stop training and save the best model so far
 from keras.callbacks import EarlyStopping, ModelCheckpoint
-callbacks = [EarlyStopping(monitor='val_loss', patience=3),
+callbacks = [EarlyStopping(monitor='val_loss', patience=2),
              ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
 
-model = create_model(1000, .7, 0)
+model = create_model(1000, .9, 0)
 model.summary()
 history = model.fit(X_train, y_train,
                     epochs=10,
@@ -329,7 +327,7 @@ else:
 #========================= Load the Model =====================================
 from keras.models import model_from_json
 from keras.models import load_model
-model = load_model('../Models/Keras_model/best_model.h5')
+model = load_model('../Models/Keras_model/model_DNN.h5')
 model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 print("Loaded model from disk")
 
