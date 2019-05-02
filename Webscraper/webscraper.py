@@ -43,7 +43,7 @@ abstracts = list(data.Abstract)
 #    years = []
 #    vol_isus = []
 #    dois = []
-breakhere
+
 first_annoying = '12-30-2010'
 first_missing_asterisks = '06-16-2010'
 first_annoying_time = time.mktime(datetime.datetime.strptime(first_annoying, '%m-%d-%Y').timetuple())
@@ -118,17 +118,18 @@ for page in np.arange(1,32):
                     topic_temp, author_temp, title_temp, journal_temp, year_temp, vol_isu_temp, doi_temp = string_parse1(entry,cur_topic)
                     if len(title_temp)<5:
                         breakhere
-                    topics.append(topic_temp.split('/'))
-                    authors.append(author_temp)
-                    titles.append(title_temp)
-                    journals.append(journal_temp)
-                    years.append(year_temp)
-                    vol_isus.append(vol_isu_temp)
-                    dois.append(doi_temp)
-                    try:
-                        abstracts.append(clean_str(str(get_abstract(title_temp,doi_temp)),stop))#
-                    except:
-                        abstracts.append('')
+                    if title_temp not in titles:
+                        topics.append(topic_temp.split('/'))
+                        authors.append(author_temp)
+                        titles.append(title_temp)
+                        journals.append(journal_temp)
+                        years.append(year_temp)
+                        vol_isus.append(vol_isu_temp)
+                        dois.append(doi_temp)
+                        try:
+                            abstracts.append(clean_str(str(get_abstract(title_temp,doi_temp)),stop))#
+                        except:
+                            abstracts.append('')
         elif post_time > jinger_post_time:
             cur_topic == []
             entry_temp = ''
@@ -156,18 +157,20 @@ for page in np.arange(1,32):
                     n_combines += 1
                 elif entry == '' and n_combines >=2 and not found_topics:
                     topic_temp, author_temp, title_temp, journal_temp, year_temp, vol_isu_temp, doi_temp = string_parse2(entry_temp,cur_topic)
-                    entry2.append(entry_temp)
-                    topics.append(topic_temp)
-                    authors.append(author_temp)
-                    titles.append(title_temp)
-                    journals.append(journal_temp)
-                    years.append(year_temp)
-                    vol_isus.append(vol_isu_temp)
-                    dois.append(doi_temp)
-                    try:
-                        abstracts.append(clean_str(str(get_abstract(title_temp,doi_temp)),stop))#
-                    except:
-                        abstracts.append('')
+#                    breakhere
+                    if title_temp not in titles:
+                        entry2.append(entry_temp)
+                        topics.append(topic_temp)
+                        authors.append(author_temp)
+                        titles.append(title_temp)
+                        journals.append(journal_temp)
+                        years.append(year_temp)
+                        vol_isus.append(vol_isu_temp)
+                        dois.append(doi_temp)
+                        try:
+                            abstracts.append(clean_str(str(get_abstract(title_temp,doi_temp)),stop))#
+                        except:
+                            abstracts.append('')
                     entry_temp = ''
                     n_combines = 0
                 
