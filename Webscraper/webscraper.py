@@ -5,223 +5,187 @@ Created on Mon Apr 15 16:06:04 2019
 """
 
 # https://realpython.com/python-web-scraping-practical-introduction/
-from requests import get
-from requests.exceptions import RequestException
-from contextlib import closing
 from bs4 import BeautifulSoup
 import pandas as pd
-import re
 import numpy as np
-import ast
-import os
+import string
+import time
+import datetime
+abstracts = []
 
+from nltk.corpus import stopwords
+
+from webscraper_functions import simple_get, is_good_response
+from webscraper_functions import search, fetch_details, search2, get_abstract
+from webscraper_functions import string_parse1, string_parse2, clean_str
 #os.chdir('E:/Google Drive/Documents/BiomechL_webscraper/literature_update
 
-def simple_get(url):
-    """
-    Attempts to get the content at `url` by making an HTTP GET request.
-    If the content-type of response is some kind of HTML/XML, return the
-    text content, otherwise return None.
-    """
-    try:
-        with closing(get(url, stream=True)) as resp:
-            if is_good_response(resp):
-                return resp.content
-            else:
-                return None
-
-    except RequestException as e:
-        print('Error during requests to {0} : {1}'.format(url, str(e)))
-        return None
-
-def is_good_response(resp):
-    """
-    Returns True if the response seems to be HTML, False otherwise.
-    """
-    content_type = resp.headers['Content-Type'].lower()
-    return (resp.status_code == 200 
-            and content_type is not None 
-            and content_type.find('html') > -1)
-    
 #try:
 data = pd.read_csv('../Data/RYANDATA.csv')
 print('Loading Data')   
-unique_categories = list(data.Category.unique())
-categories = list(data.Category)
+unique_topics = list(data.Topics.unique())
+topics = list(data.Topics)
 titles = list(data.Titles)
 authors = list(data.Authors)
 journals = list(data.Journals)
 years = list(data.Journals)
-vol_isu = list(data.Vol_Isue)
-doi = list(data.DOI)
+vol_isus = list(data.Vol_Isue)
+dois = list(data.DOI)
 abstracts = list(data.Abstract)
 #except:
 #    print('No Data Found, Analyzing Everything')    
-#    unique_categories = []
-#    categories = []
+#    unique_topics = []
+#    topics = []
 #    titles = []
 #    authors = []
 #    links = []
 #    journals = []
 #    years = []
-#    vol_isu = []
-#    doi = []
+#    vol_isus = []
+#    dois = []
 
-#for page in np.arange(1,22):
-#    already_analyzed_thread = 0
-#    
-#    raw_html = simple_get('https://biomch-l.isbweb.org/forums/7-Literature-Update/page'+str(page))
-#    html = BeautifulSoup(raw_html, 'html.parser')
-#            
-#    main_url = 'https://biomch-l.isbweb.org/'
-#    thread = []
-#    for a in  html.find_all('a', href=True, id=True):
-#        if a['href'].find('LITERATURE-UPDATE')>0:
-#            thread.append(main_url + a['href'][0:a['href'].find('?s')] + '.html')
-#    
-#    for url in thread:
-#        already_analyzed_inthread = 0
-#        parse_date =  url[url.find('UPDATE')+7:len(url)-5]
-#        print('Parsing Page: ' + str(page) + ', Thread: ' + parse_date)
-#        lit_update = simple_get(url)
-#        lit_update = BeautifulSoup(lit_update,'html.parser')
-#        
-#        lit_str = lit_update.select('blockquote')[0].text
-#        
-#        lit_list = lit_str.split('\n')
-#        for entry in lit_list:
-#            if len(entry)>0 and entry[0] is '*':
-#                cur_cat = entry[1:entry[1:].find('*')+1].replace(' ','')
-#                if not cur_cat in unique_categories:
-#                    unique_categories.append(cur_cat)
-#            elif len(entry) > 200:
-#                
-#                if entry[0:10] == 'http://dx.':
-#                    entry = entry[entry.find(' ')+1:]
-#                    
-#                author = entry[0:entry.find('.')].split(';')                
-#                authors_temp = [author[1:] if author[0]== ' ' else author for author in author]
-#                
-#                entry   = entry[entry.find('.')+2:]
-#                titles_temp = (entry[0:entry.find('.')])
-#                entry   = entry[entry.find('.')+2:]
-#                
-#                if not titles_temp in titles:
-#                    authors.append(authors_temp)
-#                    titles.append(titles_temp)
-#                    categories.append(cur_cat)
-#                    try:
-#                        year_nan = entry.find('NaN')
-#                        if year_nan == -1:
-#                            year_nan = 1000000
-#                        year_start = min(entry.find('20'),year_nan)
-#                        journals.append(entry[0:year_start-1])
-#                        entry   = entry[year_start:]
-#                        if entry[0:3] == 'NaN':
-#                            years.append('NaN')
-#                        else:
-#                            years.append(entry[0:entry.find(';')])
-#                        entry   = entry[entry.find(';')+1:]
-#                        if entry[0:3] == 'NaN':
-#                            vol_isu.append('NaN')
-#                        else:
-#                            vol_isu.append(entry[0:entry.find('.')])
-#                        doi.append(entry[entry.find('.')+2:])
-#                    except:
-#                        journals.append(entry)
-#                        years.append('NaN')
-#                        vol_isu.append('NaN')
-#                        doi.append('NaN')
+first_annoying = '12-30-2010'
+first_missing_asterisks = '06-16-2010'
+first_annoying_time = time.mktime(datetime.datetime.strptime(first_annoying, '%m-%d-%Y').timetuple())
+first_missing_asterisks_time = time.mktime(datetime.datetime.strptime(first_missing_asterisks, '%m-%d-%Y').timetuple())
+#07-27-2007
+jinger_broke_it = '07-19-2007'
+jinger_post_time = time.mktime(datetime.datetime.strptime(jinger_broke_it, '%m-%d-%Y').timetuple())
+
+
+str_punc = ''.join(list(string.punctuation)[0:14]) + ''.join(list(string.punctuation)[15:])
+translator = str.maketrans(str_punc, ' '*len(str_punc))
+
+# Make the Stop Words for string cleaning
+import string
+stop = list(stopwords.words('english'))
+stop_c = [string.capwords(word) for word in stop]
+for word in stop_c:
+    stop.append(word)
+new_stop = ['StringElement','NlmCategory','Label','attributes','INTRODUCTION','METHODS','BACKGROUND','RESULTS','CONCLUSIONS']
+for item in new_stop:
+    stop.append(item)
+
+for page in np.arange(1,32):
+    already_analyzed_thread = 0
+    
+    raw_html = simple_get('https://biomch-l.isbweb.org/forums/7-Literature-Update/page'+str(page))
+    html = BeautifulSoup(raw_html, 'html.parser')
+            
+    main_url = 'https://biomch-l.isbweb.org/'
+    thread = []
+    for a in  html.find_all('a', href=True, id=True):
+        if a['href'].find('LITERATURE-UPDATE')>0:
+            thread.append(main_url + a['href'][0:a['href'].find('?s')] + '.html')
+        if a['href'].find('Literature-Update-(')>0:
+            thread.append(main_url + a['href'][0:a['href'].find('?s')] + '.html')
+        if a['href'].find('Literature-Update?s')>0:
+            thread.append(main_url + a['href'][0:a['href'].find('?s')] + '.html')
+        if a['href'].find('literature-update')>0:
+            thread.append(main_url + a['href'][0:a['href'].find('?s')] + '.html')
+    
+    for url in thread:
+        time.sleep(.1)
+        already_analyzed_inthread = 0
+        parse_date =  url[url.find('UPDATE')+7:len(url)-5]
+        print('Parsing Page: ' + str(page) + ', Thread: ' + parse_date)
+        lit_update = simple_get(url)
+        lit_update = BeautifulSoup(lit_update,'html.parser')
+        
+        for item in lit_update.select('span'):
+            if 'class=\"date\"' in str(item):
+                indx = str(item).find('class=\"date\"')
+                if str(item)[indx+13:indx+18]=='Today' or str(item)[indx+13:indx+22]=='Yesterday':
+                    post_time = time.time()
+                else:
+                    post_date = str(item)[indx+13:indx+23]
+                    post_time = time.mktime(datetime.datetime.strptime(post_date, '%m-%d-%Y').timetuple())
+                break
+        lit_str = lit_update.select('blockquote')[0].text
+        
+        lit_list = lit_str.split('\n')
+        if post_time > first_missing_asterisks_time:
+            for entry in lit_list:
+                if len(entry)>0 and entry[0] == '*' and not entry[0:3] == '***':
+                    cur_topic = entry[1:entry[1:].find('*')+1].replace(' ','')
+                    cur_topics = cur_topic.split('/')
+                    for item in cur_topics:
+                        if item not in unique_topics:
+                            unique_topics.append(item)                            
+#                    if not cur_topic in unique_topics:
+#                        unique_topics.append(set(x for l in cur_topic.split('/') for x in l))
+                elif len(entry) > 200:                
+                    topic_temp, author_temp, title_temp, journal_temp, year_temp, vol_isu_temp, doi_temp = string_parse1(entry,cur_topic)
+                    if len(title_temp)<5:
+                        breakhere
+                    if title_temp not in titles:
+                        topics.append(topic_temp.split('/'))
+                        authors.append(author_temp)
+                        titles.append(title_temp)
+                        journals.append(journal_temp)
+                        years.append(year_temp)
+                        vol_isus.append(vol_isu_temp)
+                        dois.append(doi_temp)
+                        try:
+                            abstracts.append(clean_str(str(get_abstract(title_temp,doi_temp)),stop))#
+                        except:
+                            abstracts.append('')
+        elif post_time > jinger_post_time:
+            cur_topic == []
+            entry_temp = ''
+            n_combines = 0
+            found_first_topics = 0
+            entry2 = []
+            for k, entry in enumerate(lit_list):
+                found_topics = 0
+                if len(entry.translate(translator).replace(' ',''))>2:
+                    for item in entry.translate(translator).replace(' ','').split('/'):
+                        if item in unique_topics:
+                            found_topics += 1
+                        else:
+                            break
+                    if len(entry.translate(translator).replace(' ','').split('/')) == found_topics:
+                        found_topics = 1
+                        found_first_topics = 1
+                        cur_topic = entry.translate(translator).replace(' ','').split('/')
+#                        print('found topics')
+                
+#                print(len(entry),found_first_topics,found_topics)
+                if len(entry)>20 and found_first_topics and not found_topics:
+                    entry_temp = entry_temp + str(entry) + ' '
+                    row_after_topic = 0
+                    n_combines += 1
+                elif entry == '' and n_combines >=2 and not found_topics:
+                    topic_temp, author_temp, title_temp, journal_temp, year_temp, vol_isu_temp, doi_temp = string_parse2(entry_temp,cur_topic)
+#                    breakhere
+                    if title_temp not in titles:
+                        entry2.append(entry_temp)
+                        topics.append(topic_temp)
+                        authors.append(author_temp)
+                        titles.append(title_temp)
+                        journals.append(journal_temp)
+                        years.append(year_temp)
+                        vol_isus.append(vol_isu_temp)
+                        dois.append(doi_temp)
+                        try:
+                            abstracts.append(clean_str(str(get_abstract(title_temp,doi_temp)),stop))#
+                        except:
+                            abstracts.append('')
+                    entry_temp = ''
+                    n_combines = 0
+                
+                
 #                else:
 #                    already_analyzed_inthread += 1
 #                    if already_analyzed_inthread > 5:
-##                        print('Already Analyzed Thread, going to next')
+#                        print('Already Analyzed Thread, going to next')
 #                        already_analyzed_thread += 1
 #                        break
 #        if already_analyzed_thread > 3:
-##            print('Already Analyzed Page, going to next')
+#            print('Already Analyzed Page, going to next')
 #            break
                 
 
-##========================= Getting Abstracts ==================================
-#from Bio import Entrez
-#import numpy as np
-#Entrez.api_key = "f3e4ca963cb5371b03e53e49ca9b836f2c08"
-#
-#def search(query):
-#    Entrez.email = 'your.email@example.com'
-#    handle = Entrez.esearch(db='pubmed', 
-#                            sort='most recent', 
-#                            retmax='5000',
-#                            retmode='xml', 
-#                            reldate = 7, #only within n days from now
-#                            term=query)
-#    results = Entrez.read(handle)
-#    return results
-#
-#def fetch_details(id_list):
-#    ids = ','.join(id_list)
-#    Entrez.email = 'your.email@example.com'
-#    handle = Entrez.efetch(db='pubmed',
-#                           retmode='xml',
-#                           id=ids)
-#    results = Entrez.read(handle)
-#    return results
-#
-#def search2(query):
-#    Entrez.email = 'your.email@example.com'
-#    handle = Entrez.esearch(db='pubmed', 
-##                            sort='most recent', 
-##                            retmax='5000',
-##                            retmode='xml', 
-#                            term=query)
-#    results = Entrez.read(handle)
-#    return results
-#
-#import time
-#abstracts = []
-#
-#def get_abstract(title, doi):
-#    paper = search2(title)
-#    if paper['IdList'] == []:
-#        print('- No Title Match.')# Searching by DOI')
-#        time.sleep(.1)
-#        paper = search2(doi.replace('http://dx.doi.org/',''))
-#        if paper['IdList'] == []:
-#            print('DOI Search Failed')
-#            return ''
-#    paper = fetch_details(paper['IdList'])
-#    title_len = len(title.split())
-##    pulled_title_len = len(paper['PubmedArticle'][0]['MedlineCitation']['Article']['ArticleTitle'].lower())
-#    pulled_title = paper['PubmedArticle'][0]['MedlineCitation']['Article']['ArticleTitle'].lower()
-#    intersect_len = len(list(set(title.split()).intersection(pulled_title.split())))
-#    if intersect_len >= .5*title_len:
-##        print('Intersect Found')
-#        return paper['PubmedArticle'][0]['MedlineCitation']['Article']['Abstract']['AbstractText']
-#    else:
-#        print('No intersect, returning \'\'')
-#        return ''
-#
-#from nltk.corpus import stopwords
-#
-#def clean_str(abs_string,stop):
-#    translator = str.maketrans(string.punctuation, ' '*len(string.punctuation)) #map punctuation to space
-#    abs_string = abs_string.translate(translator)
-#    abs_string = abs_string.split()
-#    abs_string = [word for word in abs_string if word not in stop]
-#    abs_string = ' '.join(abs_string)
-#    return abs_string
-#    
-## Make the Stop Words
-#import string
-#stop = list(stopwords.words('english'))
-#stop_c = [string.capwords(word) for word in stop]
-#for word in stop_c:
-#    stop.append(word)
-#new_stop = ['StringElement','NlmCategory','Label','attributes','INTRODUCTION','METHODS','BACKGROUND','RESULTS','CONCLUSIONS']
-#for item in new_stop:
-#    stop.append(item)
-#
 ## Pull Abstracts
 #abstracts = []
 #toc = time.perf_counter()
@@ -234,36 +198,40 @@ abstracts = list(data.Abstract)
 #        print('Sleeping a sec')
 #    tic = time.perf_counter()
 #    try:
-#        abstracts.append(clean_str(str(get_abstract(title,doi[i])),stop))#
+#        abstracts.append(clean_str(str(get_abstract(title,dois[i])),stop))#
 #    except:
 #        abstracts.append('')
 #    toc = time.perf_counter()
     
 #========================= Put it together ====================================
-data = pd.DataFrame(data = {'Category': categories,
+topics_split = topics
+topics = ['/'.join(item) for item in topics]
+data = pd.DataFrame(data = {'Topics_split': topics_split,
+                            'Topics': topics,
                             'Authors': authors,
                             'Titles': titles,
                             'Journals': journals,
                             'Years': years,
-                            'Vol_Isue': vol_isu,
-                            'DOI':doi,
+                            'Vol_Isue': vol_isus,
+                            'DOI':dois,
                             'Abstract': abstracts})
 
 data.to_csv('../Data/RYANDATA.csv')
 
-cat = []
-cat_len = []
-for k in np.arange(len(data['Category'].unique())):
-    cat.append(data['Category'].unique()[k])
-    cat_len.append(len(data[data.Category==cat[k]]))
+top = []
+top_len = []
+for k in np.arange(len(data['Topics'].unique())):
+    top.append(data['Topics'].unique()[k])
+    top_len.append(len(data[data['Topics']==top[k]]))
 
-cat_lengths = pd.DataFrame(data = {'Category': cat,
-                                   'Length': cat_len})
-min_num = len(categories)*.05
+top_lengths = pd.DataFrame(data = {'Topics': top,
+                                   'Length': top_len})
+min_num = len(topics)*.05
 min_num = 500
-cat_lengths = cat_lengths.query('Length>' + str(min_num))
+top_lengths = top_lengths.query('Length>' + str(min_num))
 
-filtered_data = pd.DataFrame(data =  {'Category': [],
+filtered_data = pd.DataFrame(data =  {'Topics_split': [],
+                                      'Topics': [],
                                       'Authors': [],
                                       'Titles': [],
                                       'Journals': [],
@@ -272,14 +240,14 @@ filtered_data = pd.DataFrame(data =  {'Category': [],
                                       'DOI': [],
                                       'Abstract': []})
 
-for cat in cat_lengths.Category.unique():
-    if not cat == 'UNIQUETOPIC':
-        filtered_data = pd.concat([filtered_data,data[data.Category==cat]])
-
+for top in top_lengths.Topics.unique():
+    if not top == 'UNIQUETOPIC':
+        filtered_data = filtered_data.append(data[data['Topics']==top],sort=True)
+filtered_data = filtered_data[['Topics_split','Topics','Authors','Titles','Journals','Years','Vol_Isue','DOI','Abstract']]
 filtered_data.to_csv('../Data/RYANDATA_filt.csv')
 
-filtered_data = filtered_data.groupby('Category').apply(lambda s: s.sample(500))
-filtered_data.to_csv('../Data/RYANDATA_filt_even.csv')
+filtered_data_even = filtered_data.groupby('Topics').apply(lambda s: s.sample(500))
+filtered_data_even.to_csv('../Data/RYANDATA_filt_even.csv')
 
 # %% Test
     
@@ -299,7 +267,44 @@ filtered_data.to_csv('../Data/RYANDATA_filt_even.csv')
 #    if item == '[]':
 #        num_blank += 1
 
+# Saving STuff for later?
 
+#if entry[0:10] == 'http://dx.':
+#    entry = entry[entry.find(' ')+1:]
+#    
+#author = entry[0:entry.find('.')].split(';')                
+#authors_temp = [author[1:] if author[0]== ' ' else author for author in author]
+#
+#entry   = entry[entry.find('.')+2:]
+#titles_temp = (entry[0:entry.find('.')])
+#entry   = entry[entry.find('.')+2:]
+#
+#if not titles_temp in titles:
+#    authors.append(authors_temp)
+#    titles.append(titles_temp)
+#    categories.append(cur_cat)
+#    try:
+#        year_nan = entry.find('NaN')
+#        if year_nan == -1:
+#            year_nan = 1000000
+#        year_start = min(entry.find('20'),year_nan)
+#        journals.append(entry[0:year_start-1])
+#        entry   = entry[year_start:]
+#        if entry[0:3] == 'NaN':
+#            years.append('NaN')
+#        else:
+#            years.append(entry[0:entry.find(';')])
+#        entry   = entry[entry.find(';')+1:]
+#        if entry[0:3] == 'NaN':
+#            vol_isu.append('NaN')
+#        else:
+#            vol_isu.append(entry[0:entry.find('.')])
+#        doi.append(entry[entry.find('.')+2:])
+#    except:
+#        journals.append(entry)
+#        years.append('NaN')
+#        vol_isu.append('NaN')
+#        doi.append('NaN')
 
 
 
