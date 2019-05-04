@@ -26,8 +26,8 @@ Where the webscraped data is stored.
 Where weekly updates can be stored in markdown format for publishing.  
 #### Models  
 Where all the model files are saved after being created.  
-1. Keras_model - Location of all the Keras Neural Net files. Some neural net files are to large to upload to Git on their own so are split. Using [7-zip](https://www.howtogeek.com/howto/36947/how-to-upload-really-large-files-to-skydrive-dropbox-or-email/) you can recombine these files to create the model file and weights file.
-2. Many_ML_models - Location of all the many ML testing files are saved. The mpl file will need to be recombined using 7-zip similar to the Keras Neural Net files.
+1. Keras_model - Location of all the Keras Neural Net files. Some neural net files are to large to upload to Git on their own so are split. Using [7-zip](https://www.howtogeek.com/howto/36947/how-to-upload-really-large-files-to-skydrive-dropbox-or-email/)(Windows) or [Keka](https://github.com/aonez/Keka) (MacOS) you can recombine these files to create the model file and weights file.
+2. Many_ML_models - Location of all the many ML testing files are saved. The mpl file will need to be recombined using 7-zip/Keka similar to the Keras Neural Net files.
 #### Plots  
 Model validation plots are saved here. Usually a confusion matrix.  
 #### Webscraper  
