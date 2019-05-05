@@ -1,12 +1,15 @@
 # Biomechanics Literature Update
-#### Ryan Alcantara & Gary Bruening
+#### [Ryan Alcantara](https://twitter.com/Ryan_Alcantara_) & [Gary Bruening](https://twitter.com/garebearbru)
+
+![Model_Accuracy](https://github.com/alcantarar/literature_update/blob/master/Plots/biomchL_predict_plot_DNN.png)
+
 We use [Machine Learning](Assets/ML.gif) to predict the general topic of a biomechanics-related paper given its title. To accomplish this, we:
 
 1. Developed an HTML [web scraper](Webscraper) to extract the paper information and assigned paper topic from every [Biomch-L](https://biomch-l.isbweb.org/forums/7-Literature-Update) Literature Update since 2010. (`webscraper.py`)
 2. Trained and compared multiple classification Machine Learning algorithms ([`keras_1.py`](Construct_Models) & [`test_many_ML_algorithms_nn.ipynb`](Construct_Models))
 3. Created a python script (`literature_search.ipynb`) that: 
     1. Searches [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/) for Biomechanics-related papers published in the past week,
-    2. Uses the top-performing Machine Learning model (`keras-1`, a Deep Neural Network) to predict the paper topic for the week’s papers,
+    2. Uses the top-performing Machine Learning model (`keras-1`, a Deep Neural Network with 73.5% accuracy) to predict the paper topic for the week’s papers,
     3. Compiles papers, formats their citation, and organizes them by topic, saving to .md file here: [Literature Updates](/Literature_Updates).
 
 ## Files
@@ -23,7 +26,7 @@ Where the webscraped data is stored.
 2. [RYANDATA_filt.csv](RYANDATA_filt.csv) - Has all the same headers as RYANDATA.csv, but filters out topics that represent less than 5% of the total papers.
 3. [RYANDATA_filt_even.csv](RYANDATA_filt_even.csv) - An evenly downsampled (by topic) csv of RYANDATA_filt.csv. Each topic has the same number of representations in this csv.
 #### Literature_Updates  
-Where weekly updates can be stored in markdown format for publishing.  
+Where weekly updates can be stored in markdown & csv format for publishing.  
 #### Models  
 Where all the model files are saved after being created.  
 1. Keras_model - Location of all the Keras Neural Net files. Some neural net files are to large to upload to Git on their own so are split. Using [7-zip](https://www.howtogeek.com/howto/36947/how-to-upload-really-large-files-to-skydrive-dropbox-or-email/)(Windows) or [Keka](https://github.com/aonez/Keka) (MacOS) you can recombine these files to create the model file and weights file.
