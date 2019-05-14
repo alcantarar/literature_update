@@ -11,7 +11,7 @@ def search(query):
                             retmax='5000',
                             retmode='xml', 
                             datetype = 'pdat',
-                            reldate = 7, #only within n days from now
+                            reldate = 3, #only within n days from now
 #                             mindate = '2019/03/25',
 #                             maxdate = '2019/03/27', #for searching date range
                             term=query)
@@ -24,26 +24,48 @@ search_results = search('(Biomech*[Title/Abstract] OR locomot*[Title/Abstract])'
 #==============================================================================
 #========================= Perform Search and Save Paper Titles ===============
 def fetch_details(id_list):
-    ids = ','.join(id_list)
     Entrez.email = 'your.email@example.com'
     handle = Entrez.efetch(db='pubmed',
                            retmode='xml',
-                           id=ids)
+                           id=id_list)
     results = Entrez.read(handle)
     return results
 
 id_list = search_results['IdList']
 papers = fetch_details(id_list)
 print("")
+
+# Definitely could change these loops for speed.
 titles = [0 for i in enumerate(papers['PubmedArticle'])]
 keywords = ['' for i in enumerate(papers['PubmedArticle'])]
 authors = ['' for i in enumerate(papers['PubmedArticle'])]
 links = ['' for i in enumerate(papers['PubmedArticle'])]
 journals = ['' for i in enumerate(papers['PubmedArticle'])]
+abstracts = ['' for i in enumerate(papers['PubmedArticle'])]
 
+def clean_str(abs_string,stop):
+    translator = str.maketrans(string.punctuation, ' '*len(string.punctuation)) #map punctuation to space
+    abs_string = abs_string.translate(translator)
+    abs_string = abs_string.split()
+    abs_string = [word for word in abs_string if word not in stop]
+    abs_string = ' '.join(abs_string)
+    return abs_string
+
+# Make the Stop Words for string cleaning
+from nltk.corpus import stopwords
+import string
+stop = list(stopwords.words('english'))
+stop_c = [string.capwords(word) for word in stop]
+for word in stop_c:
+    stop.append(word)
+new_stop = ['StringElement','NlmCategory','Label','attributes','INTRODUCTION','METHODS','BACKGROUND','RESULTS','CONCLUSIONS']
+for item in new_stop:
+    stop.append(item)
+from nltk.corpus import stopwords
 
 for i, paper in enumerate(papers['PubmedArticle']):
-    titles[i] = papers['PubmedArticle'][i]['MedlineCitation']['Article']['ArticleTitle']
+    titles[i] = clean_str(papers['PubmedArticle'][i]['MedlineCitation']['Article']['ArticleTitle'],stop)
+    abstracts[i] = clean_str(papers['PubmedArticle'][i]['MedlineCitation']['Article']['Abstract']['AbstractText'][0],stop)  
 print(np.size(titles),'Papers found')
 
 #==============================================================================
@@ -81,7 +103,7 @@ for i, paper in enumerate(papers['PubmedArticle']):
         for kw in paper['MedlineCitation']['KeywordList'][0]:
             kwds.append(kw[:])         
         keywords[i] = ' '.join(kwds)
-
+        
 #==============================================================================
 #========================= Clean up title and word strings ====================
 import re
@@ -91,7 +113,6 @@ titles = [t.replace('<i>',' ').replace('</i>','') for t in titles] #italics
 titles = [t.replace('[','').replace(']','') for t in titles] #remove brackets from html parser
 #clean up keywords
 keywords = [k.lower() for k in keywords] #same case
-
 #==============================================================================
 #========================= Loading the things =================================
 
@@ -112,16 +133,19 @@ print('\nLoaded Vectorizer')
 
 #==============================================================================
 #========================= Vectorize Strings ==================================
-breakhere
 #get titles for this week's literature update
 import pandas as pd
-papers_df = pd.DataFrame({'title': titles, 'keywords': keywords})
-#join keywords with titles
-papers_df['everything'] = papers_df['title']
+papers_df = pd.DataFrame({'title': titles,
+                          'keywords': keywords,
+                          'abstract': abstracts})
+#join titles, keywords, and abstract
+papers_df['everything'] = pd.DataFrame(papers_df['title'].astype(str)*4+\
+                                       papers_df['abstract'].astype(str)+\
+                                       papers_df['keywords'].astype(str))
+
 titles_vec = vect.transform(papers_df['everything'])
 #OR if you don't want to use just the title:
 # titles_vec = vect.transform(papers_df['title'])
-
 
 #==============================================================================
 #========================= Predict topics =====================================
@@ -148,7 +172,6 @@ papers_df = pd.DataFrame(data = {'title': title_temp,
 pd.set_option('display.max_colwidth', -1) #don't cut cell short in dataframe
 papers_df[['title','topic']].sample(5)
 pd.reset_option('display.max_colwidth')
-
 
 #==============================================================================
 #========================= Save Titles and Topics =============================
