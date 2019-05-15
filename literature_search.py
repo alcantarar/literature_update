@@ -11,7 +11,7 @@ def search(query):
                             retmax='5000',
                             retmode='xml', 
                             datetype = 'pdat',
-                            reldate = 3, #only within n days from now
+                            reldate = 7, #only within n days from now
 #                             mindate = '2019/03/25',
 #                             maxdate = '2019/03/27', #for searching date range
                             term=query)
@@ -58,14 +58,20 @@ stop = list(stopwords.words('english'))
 stop_c = [string.capwords(word) for word in stop]
 for word in stop_c:
     stop.append(word)
-new_stop = ['StringElement','NlmCategory','Label','attributes','INTRODUCTION','METHODS','BACKGROUND','RESULTS','CONCLUSIONS']
+new_stop = ['StringElement','NlmCategory','Label','attributes',
+            'INTRODUCTION','METHODS','BACKGROUND','RESULTS',
+            'CONCLUSIONS','study','results',
+            'significant','purpose', 'significantly','increased',
+            'showed','conclusion']
 for item in new_stop:
     stop.append(item)
-from nltk.corpus import stopwords
 
 for i, paper in enumerate(papers['PubmedArticle']):
     titles[i] = clean_str(papers['PubmedArticle'][i]['MedlineCitation']['Article']['ArticleTitle'],stop)
-    abstracts[i] = clean_str(papers['PubmedArticle'][i]['MedlineCitation']['Article']['Abstract']['AbstractText'][0],stop)  
+    try:
+        abstracts[i] = clean_str(papers['PubmedArticle'][i]['MedlineCitation']['Article']['Abstract']['AbstractText'][0],stop)  
+    except:
+        abstracts[i] = ''
 print(np.size(titles),'Papers found')
 
 #==============================================================================
@@ -73,6 +79,8 @@ print(np.size(titles),'Papers found')
 #### Format title, journal, authors in markdown friendly manner
 
 for i, paper in enumerate(papers['PubmedArticle']):
+    if paper['MedlineCitation']['Article']['ArticleTitle'] == '':
+        continue
     if paper['MedlineCitation']['Article']['ArticleTitle'][0] is '[':
         links[i] = "* [%s](https://www.ncbi.nlm.nih.gov/pubmed/%s)" % \
             (paper['MedlineCitation']['Article']['ArticleTitle'][1:-1],
@@ -90,6 +98,7 @@ for i, paper in enumerate(papers['PubmedArticle']):
                 auth_name = ' '.join(auth_name)
                 auths.append(auth_name)
             except:
+                auths.append('')
                 print(paper['MedlineCitation']['Article']['ArticleTitle'],
                       'has an issue with an author name')
     except:
@@ -113,6 +122,7 @@ titles = [t.replace('<i>',' ').replace('</i>','') for t in titles] #italics
 titles = [t.replace('[','').replace(']','') for t in titles] #remove brackets from html parser
 #clean up keywords
 keywords = [k.lower() for k in keywords] #same case
+
 #==============================================================================
 #========================= Loading the things =================================
 
@@ -126,7 +136,6 @@ from sklearn.externals import joblib #pickle.load throws warning.
 from sklearn.preprocessing import LabelEncoder
 #load vectorizer and label encoder
 vect = joblib.load(open('Models/Keras_model/Vectorizer_tdif.pkl','rb'))
-# vect = joblib.load(open('Models/Keras_model/Vectorizer_count.pkl','rb'))
 le = LabelEncoder()
 le.classes_   = np.load('Models/Keras_model/LabelEncoder.npy')
 print('\nLoaded Vectorizer')
@@ -137,14 +146,21 @@ print('\nLoaded Vectorizer')
 import pandas as pd
 papers_df = pd.DataFrame({'title': titles,
                           'keywords': keywords,
-                          'abstract': abstracts})
+                          'abstract': abstracts,
+                          'author': authors,
+                          'journal': journals})
+
+for index, row in papers_df.iterrows():
+    if row['abstract'] == '' or row['author'] == 'AUTHOR NAMES ERROR' or row['title'] == '':
+        papers_df.drop(index,inplace=True)
+
 #join titles, keywords, and abstract
 papers_df['everything'] = pd.DataFrame(papers_df['title'].astype(str)*4+\
                                        papers_df['abstract'].astype(str)+\
                                        papers_df['keywords'].astype(str))
 
 titles_vec = vect.transform(papers_df['everything'])
-#OR if you don't want to use just the title:
+# OR if you don't want to use just the title:
 # titles_vec = vect.transform(papers_df['title'])
 
 #==============================================================================
@@ -158,26 +174,33 @@ title_temp = []
 indx = []
 
 for k, top_val in enumerate(prediction_vec):
-    pred_val = np.max(top_val)
-    if pred_val > 0*np.sort(top_val)[-2]:
-        indx.append(k)
-        topics.append(le.inverse_transform([np.argmax(top_val)])[0])
-        title_temp.append(papers_df['title'][k])
-    else:
-        indx.append(k)
-        topics.append('unknown')
-        title_temp.append(papers_df['title'][k])
+    try:
+        papers_df.loc[k,:]
+        pred_val = np.max(top_val)
+        if pred_val > 0*np.sort(top_val)[-2]:
+            indx.append(k)
+            topics.append(le.inverse_transform([np.argmax(top_val)])[0])
+            title_temp.append(papers_df['title'][k])
+        else:
+            indx.append(k)
+            topics.append('unknown')
+            title_temp.append(papers_df['title'][k])
+    except:
+        print('Skipping prediction of paper #: ' + str(k))
 papers_df = pd.DataFrame(data = {'title': title_temp,
                                   'topic': topics})
-pd.set_option('display.max_colwidth', -1) #don't cut cell short in dataframe
-papers_df[['title','topic']].sample(5)
-pd.reset_option('display.max_colwidth')
 
 #==============================================================================
 #========================= Save Titles and Topics =============================
 
 #add info for github markdown format
 papers_df['title']   = [title if title[1] is not '[' else title[1:-1] for title in papers_df['title']]
+title_tmp = []
+for k, title in enumerate(papers_df['title']):
+    if title[1] is not '[':
+        title_tmp.append(title)
+    else:
+        title_tmp.append(title[1:-1])
 papers_df['authors'] = [authors[k] if authors[k][1] is not '[' else authors[1:-1] for k in indx]
 papers_df['journal'] = [journals[k] for k in indx]
 papers_df['links']   = [links[k]    for k in indx]
@@ -215,14 +238,15 @@ ss = [s for s in topic_list if 'UNIQUE' in s]
 for i,t in enumerate(topic_list):
     if 'UNIQUE' in t:  
         topic_list[i] = 'UNIQUE TOPIC'
+        print('Assinged unique topic: ' + str(i))
     if 'IMPACT' in t:
         topic_list[i] = 'TRAUMA/IMPACT'
 
 #==============================================================================
 #========================= Make Markdown File =================================
 st = '### Created by: [Ryan Alcantara](https://twitter.com/Ryan_Alcantara_)'
-st = st + '& [Gary Bruening](https://twitter.com/garebearbru) -'
-st = st + 'University of Colorado Boulder\n\n'
+st = st + ' & [Gary Bruening](https://twitter.com/garebearbru) -'
+st = st + ' University of Colorado Boulder\n\n'
 md_file.write(st)
 for topic in topic_list:
     md_file.write('----\n')
