@@ -10,9 +10,7 @@ from requests import get
 from requests.exceptions import RequestException
 
 from Bio import Entrez
-Entrez.api_key = "f3e4ca963cb5371b03e53e49ca9b836f2c08"
-
-import time
+Entrez.api_key = "YOUR API KEY"
 
 import string
 
@@ -185,7 +183,7 @@ def get_abstract(title, doi):
     paper = search2(title)
     if paper['IdList'] == []:
 #        print('- No Title Match.')# Searching by DOI')
-        time.sleep(.1)
+#        time.sleep(.1)
         paper = search2(doi.replace('http://dx.doi.org/',''))
         if paper['IdList'] == []:
 #            print('DOI Search Failed')

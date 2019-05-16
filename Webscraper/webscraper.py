@@ -10,6 +10,7 @@ import pandas as pd
 import numpy as np
 import string
 import time
+import math
 import datetime
 abstracts = []
 
@@ -20,30 +21,52 @@ from webscraper_functions import search, fetch_details, search2, get_abstract
 from webscraper_functions import string_parse1, string_parse2, clean_str
 #os.chdir('E:/Google Drive/Documents/BiomechL_webscraper/literature_update
 
-#try:
-data = pd.read_csv('../Data/RYANDATA.csv')
-print('Loading Data')   
-unique_topics = list(data.Topics.unique())
-topics = list(data.Topics)
-titles = list(data.Titles)
-authors = list(data.Authors)
-journals = list(data.Journals)
-years = list(data.Journals)
-vol_isus = list(data.Vol_Isue)
-dois = list(data.DOI)
-abstracts = list(data.Abstract)
-#except:
-#    print('No Data Found, Analyzing Everything')    
-#    unique_topics = []
-#    topics = []
-#    titles = []
-#    authors = []
-#    links = []
-#    journals = []
-#    years = []
-#    vol_isus = []
-#    dois = []
-
+try:
+    data = pd.read_csv('../Data/RYANDATA.csv')
+    print('Loading Data')   
+    unique_topics = list(data.Topics.unique())
+    
+    topics = []
+    for item in list(data.Topics_split):
+        if isinstance(item, str):
+            topics_temp = []
+            for item2 in item.split('\''):
+                if not item2[0] in ['[',',',']']:
+                    topics_temp.append(item2)
+            topics.append(topics_temp)
+        else:
+            topics.append('')
+    topics_split = topics
+    
+    titles = list(data.Titles)
+    authors = []
+    for item in list(data.Authors):
+        if isinstance(item, str):
+            authors_temp = []
+            for item2 in item.split('\''):
+                if not item2[0] in ['[',',',']']:
+                    authors_temp.append(item2)
+            authors.append(authors_temp)
+        else:
+            authors.append('')
+    journals = list(data.Journals)
+    years = list(data.Journals)
+    vol_isus = list(data.Vol_Isue)
+    dois = list(data.DOI)
+    abstracts = list(data.Abstract)
+    loaded_data = 1
+except:
+    print('No Data Found, Analyzing Everything')    
+    unique_topics = []
+    topics = []
+    titles = []
+    authors = []
+    links = []
+    journals = []
+    years = []
+    vol_isus = []
+    dois = []
+    
 first_annoying = '12-30-2010'
 first_missing_asterisks = '06-16-2010'
 first_annoying_time = time.mktime(datetime.datetime.strptime(first_annoying, '%m-%d-%Y').timetuple())
@@ -66,7 +89,7 @@ new_stop = ['StringElement','NlmCategory','Label','attributes','INTRODUCTION','M
 for item in new_stop:
     stop.append(item)
 
-for page in np.arange(1,32):
+for page in np.arange(30,32):
     already_analyzed_thread = 0
     
     raw_html = simple_get('https://biomch-l.isbweb.org/forums/7-Literature-Update/page'+str(page))
@@ -114,11 +137,14 @@ for page in np.arange(1,32):
                             unique_topics.append(item)                            
 #                    if not cur_topic in unique_topics:
 #                        unique_topics.append(set(x for l in cur_topic.split('/') for x in l))
-                elif len(entry) > 200:                
+                elif len(entry) > 200:
                     topic_temp, author_temp, title_temp, journal_temp, year_temp, vol_isu_temp, doi_temp = string_parse1(entry,cur_topic)
+                    if not isinstance(title_temp,str):
+                        breakehrere
                     if len(title_temp)<5:
                         breakhere
                     if title_temp not in titles:
+#                        print('Title not in titles')
                         topics.append(topic_temp.split('/'))
                         authors.append(author_temp)
                         titles.append(title_temp)
@@ -130,6 +156,8 @@ for page in np.arange(1,32):
                             abstracts.append(clean_str(str(get_abstract(title_temp,doi_temp)),stop))#
                         except:
                             abstracts.append('')
+#                    else:
+#                        print('Title In CSV already')
         elif post_time > jinger_post_time:
             cur_topic == []
             entry_temp = ''
@@ -148,16 +176,14 @@ for page in np.arange(1,32):
                         found_topics = 1
                         found_first_topics = 1
                         cur_topic = entry.translate(translator).replace(' ','').split('/')
-#                        print('found topics')
-                
-#                print(len(entry),found_first_topics,found_topics)
                 if len(entry)>20 and found_first_topics and not found_topics:
                     entry_temp = entry_temp + str(entry) + ' '
                     row_after_topic = 0
                     n_combines += 1
                 elif entry == '' and n_combines >=2 and not found_topics:
                     topic_temp, author_temp, title_temp, journal_temp, year_temp, vol_isu_temp, doi_temp = string_parse2(entry_temp,cur_topic)
-#                    breakhere
+                    if not isinstance(title_temp,str):
+                        breakehrere
                     if title_temp not in titles:
                         entry2.append(entry_temp)
                         topics.append(topic_temp)
@@ -173,8 +199,8 @@ for page in np.arange(1,32):
                             abstracts.append('')
                     entry_temp = ''
                     n_combines = 0
-                
-                
+        else:
+            print('Post after Jinger, skpping')
 #                else:
 #                    already_analyzed_inthread += 1
 #                    if already_analyzed_inthread > 5:
@@ -184,7 +210,6 @@ for page in np.arange(1,32):
 #        if already_analyzed_thread > 3:
 #            print('Already Analyzed Page, going to next')
 #            break
-                
 
 ## Pull Abstracts
 #abstracts = []
@@ -202,10 +227,11 @@ for page in np.arange(1,32):
 #    except:
 #        abstracts.append('')
 #    toc = time.perf_counter()
-    
+
 #========================= Put it together ====================================
+#if not loaded_data:
 topics_split = topics
-topics = ['/'.join(item) for item in topics]
+topics = ['/'.join(item) for item in topics_split]
 data = pd.DataFrame(data = {'Topics_split': topics_split,
                             'Topics': topics,
                             'Authors': authors,
@@ -218,36 +244,37 @@ data = pd.DataFrame(data = {'Topics_split': topics_split,
 
 data.to_csv('../Data/RYANDATA.csv')
 
-top = []
-top_len = []
-for k in np.arange(len(data['Topics'].unique())):
-    top.append(data['Topics'].unique()[k])
-    top_len.append(len(data[data['Topics']==top[k]]))
-
-top_lengths = pd.DataFrame(data = {'Topics': top,
-                                   'Length': top_len})
-min_num = len(topics)*.05
-min_num = 500
-top_lengths = top_lengths.query('Length>' + str(min_num))
-
-filtered_data = pd.DataFrame(data =  {'Topics_split': [],
-                                      'Topics': [],
-                                      'Authors': [],
-                                      'Titles': [],
-                                      'Journals': [],
-                                      'Years': [],
-                                      'Vol_Isue': [],
-                                      'DOI': [],
-                                      'Abstract': []})
-
-for top in top_lengths.Topics.unique():
-    if not top == 'UNIQUETOPIC':
-        filtered_data = filtered_data.append(data[data['Topics']==top],sort=True)
-filtered_data = filtered_data[['Topics_split','Topics','Authors','Titles','Journals','Years','Vol_Isue','DOI','Abstract']]
-filtered_data.to_csv('../Data/RYANDATA_filt.csv')
-
-filtered_data_even = filtered_data.groupby('Topics').apply(lambda s: s.sample(500))
-filtered_data_even.to_csv('../Data/RYANDATA_filt_even.csv')
+#========================= This is now done in keras1.py ======================
+#top = []
+#top_len = []
+#for k in np.arange(len(data['Topics'].unique())):
+#    top.append(data['Topics'].unique()[k])
+#    top_len.append(len(data[data['Topics']==top[k]]))
+#
+#top_lengths = pd.DataFrame(data = {'Topics': top,
+#                                   'Length': top_len})
+#min_num = len(topics)*.05
+#min_num = 500
+#top_lengths = top_lengths.query('Length>' + str(min_num))
+#
+#filtered_data = pd.DataFrame(data =  {'Topics_split': [],
+#                                      'Topics': [],
+#                                      'Authors': [],
+#                                      'Titles': [],
+#                                      'Journals': [],
+#                                      'Years': [],
+#                                      'Vol_Isue': [],
+#                                      'DOI': [],
+#                                      'Abstract': []})
+#
+#for top in top_lengths.Topics.unique():
+#    if not top == 'UNIQUETOPIC':
+#        filtered_data = filtered_data.append(data[data['Topics']==top],sort=True)
+#filtered_data = filtered_data[['Topics_split','Topics','Authors','Titles','Journals','Years','Vol_Isue','DOI','Abstract']]
+#filtered_data.to_csv('../Data/RYANDATA_filt.csv')
+#
+#filtered_data_even = filtered_data.groupby('Topics').apply(lambda s: s.sample(500))
+#filtered_data_even.to_csv('../Data/RYANDATA_filt_even.csv')
 
 # %% Test
     

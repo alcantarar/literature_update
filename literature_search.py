@@ -37,6 +37,7 @@ print("")
 
 # Definitely could change these loops for speed.
 titles = [0 for i in enumerate(papers['PubmedArticle'])]
+full_titles = [0 for i in enumerate(papers['PubmedArticle'])]
 keywords = ['' for i in enumerate(papers['PubmedArticle'])]
 authors = ['' for i in enumerate(papers['PubmedArticle'])]
 links = ['' for i in enumerate(papers['PubmedArticle'])]
@@ -68,6 +69,7 @@ for item in new_stop:
 
 for i, paper in enumerate(papers['PubmedArticle']):
     titles[i] = clean_str(papers['PubmedArticle'][i]['MedlineCitation']['Article']['ArticleTitle'],stop)
+    full_titles[i] = papers['PubmedArticle'][i]['MedlineCitation']['Article']['ArticleTitle']
     try:
         abstracts[i] = clean_str(papers['PubmedArticle'][i]['MedlineCitation']['Article']['Abstract']['AbstractText'][0],stop)  
     except:
@@ -115,7 +117,7 @@ for i, paper in enumerate(papers['PubmedArticle']):
         
 #==============================================================================
 #========================= Clean up title and word strings ====================
-import re
+
 titles = [t.lower() for t in titles] #same case
 titles = [t.replace('<sub>',' ').replace('</sub>','') for t in titles] #subscript
 titles = [t.replace('<i>',' ').replace('</i>','') for t in titles] #italics
@@ -194,16 +196,11 @@ papers_df = pd.DataFrame(data = {'title': title_temp,
 #========================= Save Titles and Topics =============================
 
 #add info for github markdown format
-papers_df['title']   = [title if title[1] is not '[' else title[1:-1] for title in papers_df['title']]
-title_tmp = []
-for k, title in enumerate(papers_df['title']):
-    if title[1] is not '[':
-        title_tmp.append(title)
-    else:
-        title_tmp.append(title[1:-1])
-papers_df['authors'] = [authors[k] if authors[k][1] is not '[' else authors[1:-1] for k in indx]
-papers_df['journal'] = [journals[k] for k in indx]
-papers_df['links']   = [links[k]    for k in indx]
+papers_df['title']      = [title if title[1] is not '[' else title[1:-1] for title in papers_df['title']]
+papers_df['authors']    = [authors[k] if authors[k][1] is not '[' else authors[1:-1] for k in indx]
+papers_df['journal']    = [journals[k] for k in indx]
+papers_df['links']      = [links[k] for k in indx]
+papers_df['full_title'] = [full_titles[k] for k in indx]
 #generate filename
 import datetime
 now = datetime.datetime.now()
@@ -216,13 +213,47 @@ urlname = '-'.join(strings)
 
 print('Filename: ',fname)
 
-papers_df.head()
+# Compare to previously searched papers
+#old_papers = pd.concat([pd.read_csv('Literature_Updates/2019-5-7-litupdate.csv'),
+#                        pd.read_csv('Literature_Updates/2019-4-30-litupdate.csv')])
+compare_papers = pd.read_csv('Literature_Updates/compare_papers.csv')
+
+# Probably Don't need to compare against training data, could remove for speed?
+trained_papers = pd.read_csv('Data/RYANDATA.csv')
+trained_papers.columns = ['number',
+                          'topics_split',
+                          'topic',
+                          'authors',
+                          'title',
+                          'Journals',
+                          'Years',
+                          'Vol_Isue',
+                          'DOI',
+                          'abstract']
+trained_papers.drop(['topics_split','number'],axis=1)
+
+full_title = []
+for item in compare_papers.links:
+    full_title.append(item.replace('[',';').replace(']',';').split(';')[1])
+compare_papers['full_title'] = full_title
+
+for index, row in papers_df.iterrows():
+    if row['full_title'] in list(compare_papers['full_title'])\
+    or row['full_title'] in list(trained_papers['title']):
+        papers_df.drop(index,inplace=True)
+    else:
+        compare_papers.append(row)
+
+with open('Literature_Updates/compare_papers.csv', 'w', encoding = 'utf-8', newline = '') as f:
+    compare_papers.to_csv(f, header=True, index = False)  
+
 papers_df.sort_values('topic').to_csv(fname, index = False)
 print('\nLiterature Update Exported as .csv')
 
 # Compile papers grouped by topic
 md_file = open(mdname, 'w', encoding = 'utf-8')
 md_file.write('---\n')
+md_file.write('layout: single\n')
 md_file.write('title: Biomechanics Literature Update\n')
 md_file.write('collection: literature\n')
 md_file.write('permalink: /literature/%s\n' % urlname)
@@ -238,7 +269,7 @@ ss = [s for s in topic_list if 'UNIQUE' in s]
 for i,t in enumerate(topic_list):
     if 'UNIQUE' in t:  
         topic_list[i] = 'UNIQUE TOPIC'
-        print('Assinged unique topic: ' + str(i))
+        print('Assigned unique topic: ' + str(i))
     if 'IMPACT' in t:
         topic_list[i] = 'TRAUMA/IMPACT'
 
