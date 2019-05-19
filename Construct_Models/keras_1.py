@@ -28,7 +28,6 @@ import string
 
 #========================= Read in the Data ===================================
 
-data = pd.read_csv('../Data/RYANDATA_filt.csv')
 data = pd.read_csv('../Data/RYANDATA.csv')
 print('Loading Data')   
 unique_topics = list(data.Topics.unique())
@@ -67,14 +66,26 @@ for top in top_lengths.Topics.unique():
     if not top == 'UNIQUETOPIC':
         filtered_data = filtered_data.append(data[data['Topics']==top],sort=True)
 
-#breakhere
 filtered_data_even = filtered_data.groupby('Topics').apply(lambda s: s.sample(1000))
 filtered_data_even.fillna('')
-data = filtered_data_even[['Topics_split','Topics','Authors','Titles','Journals','Years','Vol_Isue','DOI','Abstract']]
-
-#data['abstracts']= ['']*len(data['Authors'])
-#data.columns = ['num','topic_split','topic','authors','title','Journals','Years','Vol_Isue','DOI','abstract']
-data.columns = ['topic_split','topic','authors','title','Journals','Years','Vol_Isue','DOI','abstract']
+data = filtered_data_even[['Topics_split',
+                           'Topics',
+                           'Authors',
+                           'Titles',
+                           'Journals',
+                           'Years',
+                           'Vol_Isue',
+                           'DOI',
+                           'Abstract']]
+data.columns = ['topic_split',
+                'topic',
+                'authors',
+                'title',
+                'Journals',
+                'Years',
+                'Vol_Isue',
+                'DOI',
+                'abstract']
 
 papers = pd.DataFrame(data['title'])
 topic = pd.DataFrame(data['topic'])
@@ -99,7 +110,8 @@ stop = list(stopwords.words('english'))
 stop_c = [string.capwords(word) for word in stop]
 for word in stop_c:
     stop.append(word)
-new_stop = ['StringElement','NlmCategory','Label','attributes','INTRODUCTION','METHODS','BACKGROUND','RESULTS','CONCLUSIONS']
+new_stop = ['StringElement','NlmCategory','Label','attributes','INTRODUCTION',
+            'METHODS','BACKGROUND','RESULTS','CONCLUSIONS']
 for item in new_stop:
     stop.append(item)
     
