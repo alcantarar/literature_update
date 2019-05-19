@@ -36,13 +36,14 @@ papers = fetch_details(id_list)
 print("")
 
 # Definitely could change these loops for speed.
-titles = [0 for i in enumerate(papers['PubmedArticle'])]
-full_titles = [0 for i in enumerate(papers['PubmedArticle'])]
-keywords = ['' for i in enumerate(papers['PubmedArticle'])]
-authors = ['' for i in enumerate(papers['PubmedArticle'])]
-links = ['' for i in enumerate(papers['PubmedArticle'])]
-journals = ['' for i in enumerate(papers['PubmedArticle'])]
-abstracts = ['' for i in enumerate(papers['PubmedArticle'])]
+papers_length = len(papers['PubmedArticle'])
+titles = [None]*papers_length
+full_titles = [None]*papers_length
+keywords = [None]*papers_length
+authors = [None]*papers_length
+links = [None]*papers_length
+journals = [None]*papers_length
+abstracts = [None]*papers_length
 
 def clean_str(abs_string,stop):
     translator = str.maketrans(string.punctuation, ' '*len(string.punctuation)) #map punctuation to space
@@ -83,7 +84,7 @@ print(np.size(titles),'Papers found')
 for i, paper in enumerate(papers['PubmedArticle']):
     if paper['MedlineCitation']['Article']['ArticleTitle'] == '':
         continue
-    if paper['MedlineCitation']['Article']['ArticleTitle'][0] is '[':
+    if paper['MedlineCitation']['Article']['ArticleTitle'][0] == '[':
         links[i] = "* [%s](https://www.ncbi.nlm.nih.gov/pubmed/%s)" % \
             (paper['MedlineCitation']['Article']['ArticleTitle'][1:-1],
              paper['MedlineCitation']['PMID'])

@@ -19,7 +19,6 @@ from nltk.corpus import stopwords
 from webscraper_functions import simple_get, is_good_response
 from webscraper_functions import search, fetch_details, search2, get_abstract
 from webscraper_functions import string_parse1, string_parse2, clean_str
-#os.chdir('E:/Google Drive/Documents/BiomechL_webscraper/literature_update
 
 try:
     data = pd.read_csv('../Data/RYANDATA.csv')
@@ -72,8 +71,8 @@ first_missing_asterisks = '06-16-2010'
 first_annoying_time = time.mktime(datetime.datetime.strptime(first_annoying, '%m-%d-%Y').timetuple())
 first_missing_asterisks_time = time.mktime(datetime.datetime.strptime(first_missing_asterisks, '%m-%d-%Y').timetuple())
 #07-27-2007
-jinger_broke_it = '07-19-2007'
-jinger_post_time = time.mktime(datetime.datetime.strptime(jinger_broke_it, '%m-%d-%Y').timetuple())
+jinger_date = '07-19-2007'
+jinger_post_time = time.mktime(datetime.datetime.strptime(jinger_date, '%m-%d-%Y').timetuple())
 
 
 str_punc = ''.join(list(string.punctuation)[0:14]) + ''.join(list(string.punctuation)[15:])
@@ -89,7 +88,7 @@ new_stop = ['StringElement','NlmCategory','Label','attributes','INTRODUCTION','M
 for item in new_stop:
     stop.append(item)
 
-for page in np.arange(30,32):
+for page in np.arange(0,1):
     already_analyzed_thread = 0
     
     raw_html = simple_get('https://biomch-l.isbweb.org/forums/7-Literature-Update/page'+str(page))
@@ -140,9 +139,9 @@ for page in np.arange(30,32):
                 elif len(entry) > 200:
                     topic_temp, author_temp, title_temp, journal_temp, year_temp, vol_isu_temp, doi_temp = string_parse1(entry,cur_topic)
                     if not isinstance(title_temp,str):
-                        breakehrere
+                        raise Exception('The parsed title is not a string. Url: '+url+'. Entry: '+entry)
                     if len(title_temp)<5:
-                        breakhere
+                        raise Exception('The parsed title length is less than 5. Url: '+url+'. Entry: '+entry)
                     if title_temp not in titles:
 #                        print('Title not in titles')
                         topics.append(topic_temp.split('/'))
