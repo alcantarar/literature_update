@@ -124,7 +124,14 @@ titles = [t.replace('<sub>',' ').replace('</sub>','') for t in titles] #subscrip
 titles = [t.replace('<i>',' ').replace('</i>','') for t in titles] #italics
 titles = [t.replace('[','').replace(']','') for t in titles] #remove brackets from html parser
 #clean up keywords
-keywords = [k.lower() for k in keywords] #same case
+keywords2 = []
+for k in keywords:
+    if k is None:
+        keywords2.append('')
+    else:
+        keywords2.append(k.lower())
+keywords = keywords2
+#keywords = [k.lower() for k in keywords] #same case
 
 #==============================================================================
 #========================= Loading the things =================================
@@ -171,27 +178,30 @@ titles_vec = vect.transform(papers_df['everything'])
 # Predict Topics For Each Paper
 prediction_vec = model.predict(titles_vec)
 
-topics = []
-pred_val = []
-title_temp = []
-indx = []
+topics       = []
+pred_val     = []
+pred_val_vec = []
+title_temp   = []
+indx         = []
 
 for k, top_val in enumerate(prediction_vec):
-    try:
+    if k in papers_df.index:
         papers_df.loc[k,:]
         pred_val = np.max(top_val)
-        if pred_val > 0*np.sort(top_val)[-2]:
-            indx.append(k)
-            topics.append(le.inverse_transform([np.argmax(top_val)])[0])
-            title_temp.append(papers_df['title'][k])
-        else:
-            indx.append(k)
-            topics.append('unknown')
-            title_temp.append(papers_df['title'][k])
-    except:
+#        if pred_val > 0*np.sort(top_val)[-2]:
+        indx.append(k)
+        topics.append(le.inverse_transform([np.argmax(top_val)])[0])
+        title_temp.append(papers_df['title'][k])
+        pred_val_vec.append(pred_val*100)
+#        else:
+#            indx.append(k)
+#            topics.append('unknown')
+#            title_temp.append(papers_df['title'][k])
+    else:
         print('Skipping prediction of paper #: ' + str(k))
 papers_df = pd.DataFrame(data = {'title': title_temp,
-                                  'topic': topics})
+                                  'topic': topics,
+                                  'pred_val': pred_val_vec})
 
 #==============================================================================
 #========================= Save Titles and Topics =============================
@@ -292,6 +302,7 @@ for topic in topic_list:
         md_file.write('%s\n' % paper)
         md_file.write('%s\n' % papers_subset['authors'][i])
         md_file.write('%s.  \n' % papers_subset['journal'][i])
+        md_file.write('(%.1f%%) \n' % papers_subset['pred_val'][i])
         md_file.write('\n')
 
 md_file.close()
