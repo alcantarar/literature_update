@@ -188,15 +188,18 @@ for k, top_val in enumerate(prediction_vec):
     if k in papers_df.index:
         papers_df.loc[k,:]
         pred_val = np.max(top_val)
-#        if pred_val > 0*np.sort(top_val)[-2]:
-        indx.append(k)
-        topics.append(le.inverse_transform([np.argmax(top_val)])[0])
-        title_temp.append(papers_df['title'][k])
-        pred_val_vec.append(pred_val*100)
-#        else:
-#            indx.append(k)
-#            topics.append('unknown')
-#            title_temp.append(papers_df['title'][k])
+        if pred_val > 1.5*np.sort(top_val)[-2]:
+            indx.append(k)
+            topics.append(le.inverse_transform([np.argmax(top_val)])[0])
+            title_temp.append(papers_df['title'][k])
+            pred_val_vec.append(pred_val*100)
+        else:
+            indx.append(k)
+            topics.append('unknown')
+            title_temp.append(papers_df['title'][k])
+            top1 = le.inverse_transform([np.argmax(top_val)])[0]
+            top2 = le.inverse_transform([list(top_val).index([np.sort(top_val)[-2]])])[0]
+            pred_val_vec.append(str(np.round(pred_val*100,1))+'% '+str(top1)+'; '+str(np.round(np.sort(top_val)[-2]*100,1))+'% '+str(top2))
     else:
         print('Skipping prediction of paper #: ' + str(k))
 papers_df = pd.DataFrame(data = {'title': title_temp,
@@ -291,18 +294,24 @@ st = st + ' & [Gary Bruening](https://twitter.com/garebearbru) -'
 st = st + ' University of Colorado Boulder\n\n'
 md_file.write(st)
 for topic in topic_list:
+    papers_subset = pd.DataFrame(papers_df[papers_df.topic == topic].reset_index(drop = True))
     md_file.write('----\n')
-    md_file.write('# %s\n' % topic)
+    if topic == 'unknown':
+        md_file.write('# %s: Num=%i\n' % (topic,len(papers_subset)))  
+    else:
+        md_file.write('# %s\n' % topic)        
     md_file.write('----\n')
     md_file.write('\n')
     md_file.write('[Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)')
     md_file.write('\n')
-    papers_subset = pd.DataFrame(papers_df[papers_df.topic == topic].reset_index(drop = True))
     for i,paper in enumerate(papers_subset['links']):
         md_file.write('%s\n' % paper)
         md_file.write('%s\n' % papers_subset['authors'][i])
         md_file.write('%s.  \n' % papers_subset['journal'][i])
-        md_file.write('(%.1f%%) \n' % papers_subset['pred_val'][i])
+        try:
+            md_file.write('(%.1f%%) \n' % papers_subset['pred_val'][i])
+        except:
+            md_file.write('%s\n' % papers_subset['pred_val'][i])
         md_file.write('\n')
 
 md_file.close()
