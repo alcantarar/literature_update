@@ -81,4 +81,7 @@ Rplots.pdf
 ### Jupyter files
 .ipynb*
 
+### Pycharm IDE files
+.idea
+
 # End of https://www.gitignore.io/api/r,matlab
