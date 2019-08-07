@@ -4,14 +4,6 @@ HEIGHT = 850
 WIDTH = 1200
 paper_title = 'Regular changes in foot strike pattern during prolonged downhill running do not influence neuromuscular, energetics, or biomechanical parameters.'
 
-
-def sel(var):
-    try:
-        print(str(var['text'].split()[0])) #in case any percentages make it through
-    except:
-        print(str(var)) #from dropdown
-
-
 def list_paper(loc, row_num, title, top_topics, all_topics):
     label = tk.Label(loc, font=('Century Gothic', 10), text=title, wraplength=500)
     label.grid(column=0, row=row_num, pady=5, padx=5, columnspan=3)
@@ -32,7 +24,7 @@ def list_paper(loc, row_num, title, top_topics, all_topics):
 
     def change_dropdown(*args):
         text = tkvar.get()
-        sel(text)
+        print(text)
         print(title)
 
     # define dropdown options
