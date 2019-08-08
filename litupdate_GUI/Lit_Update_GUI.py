@@ -18,11 +18,10 @@ def cat_buttons(frm, index, paper_list):
         b_dict_new[k] = 0
     b_dict = b_dict_new
 
-    def print_var(*args): #
-        print(var.get())
-
+    def get_var(*args): # <- idk why this works.
+        return var.get()
     var = StringVar()
-    var.trace('w', print_var)
+    var.trace('w', get_var)
 
     def updateselect(index):
         if index < len(papers_df)-1:  # make sure we don't go past end of paper list
@@ -44,14 +43,14 @@ def cat_buttons(frm, index, paper_list):
         # print(var.get())
         # print(index)
         new_papers_df['new_topic'].iloc[index] = str(var.get()).split()[1]
-        print(new_papers_df.head(10))
+        print(new_papers_df.head(10)) # for debugging
         updateselect(index)
 
     def change_dropdown(*args):
         # text = tkvar.get()
         # print(text)
         new_papers_df['new_topic'].iloc[index] = str(tkvar.get())
-        print(new_papers_df.head(5))
+        print(new_papers_df.head(10)) # for debugging
         updateselect(index)
 
     c = 0
