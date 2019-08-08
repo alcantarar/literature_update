@@ -20,7 +20,7 @@ def cat_buttons(frm, index, paper_list):
         print(var.get())
         print(index)
         new_papers_df['new_topic'].iloc[index] = str(var.get())
-        print(new_papers_df.head(5))
+        print(new_papers_df.head(10))
 
 
     c = 2
