@@ -33,8 +33,8 @@ def cat_buttons(frm, index, paper_list):
         cat_buttons(button_frame, index, papers_df)
 
     def select_topic():
-        print(var.get())
-        print(index)
+        # print(var.get())
+        # print(index)
         new_papers_df['new_topic'].iloc[index] = str(var.get()).split()[1]
         print(new_papers_df.head(10))
         updateselect(index)
@@ -43,24 +43,23 @@ def cat_buttons(frm, index, paper_list):
         # text = tkvar.get()
         # print(text)
         new_papers_df['new_topic'].iloc[index] = str(tkvar.get())
-        print(new_papers_df.head(10))
+        print(new_papers_df.head(5))
         updateselect(index)
 
     c = 0
     for key in b_dict:
-        # print(key)
         b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 35, font = ('Helvetica',10),command = select_topic)
         b_dict[key].config(indicatoron=0, variable = var, value = key)
         b_dict[key].grid(row = c, column = 0, sticky = W, pady = 5, padx = 5)
         c = c+1
 
     top_topics = [key.split(' ')[1] for key in b_dict.keys()]
-    # print(top_topics)
     choices = []
     tkvar = StringVar(frm)
     for k in all_topics:
         if k not in top_topics:
             choices.append(k)
+    choices.sort()
     for ch in choices:
         ch = 0
     other_topics = OptionMenu(frm, tkvar, *choices)
@@ -68,9 +67,6 @@ def cat_buttons(frm, index, paper_list):
     other_topics.grid(row = 0, column = 1, pady = 5, padx = 5)
     tkvar.trace('w', change_dropdown)
 
-
-    # print(choices)
-    # print(all_topics)
 
 def onselect(event):
     w = event.widget
