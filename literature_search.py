@@ -184,24 +184,21 @@ pred_val_vec = []
 title_temp   = []
 indx         = []
 
-for k, top_val in enumerate(prediction_vec):
-    if k in papers_df.index:
-        papers_df.loc[k,:]
+for q, top_val in enumerate(prediction_vec):
+    if q in papers_df.index:
+        papers_df.loc[q,:]
         pred_val = np.max(top_val)
-        if pred_val > 1.5*np.sort(top_val)[-2]:
-            indx.append(k)
-            topics.append(le.inverse_transform([np.argmax(top_val)])[0])
-            title_temp.append(papers_df['title'][k])
-            pred_val_vec.append(pred_val*100)
-        else:
-            indx.append(k)
-            topics.append('unknown')
-            title_temp.append(papers_df['title'][k])
-            top1 = le.inverse_transform([np.argmax(top_val)])[0]
-            top2 = le.inverse_transform([list(top_val).index([np.sort(top_val)[-2]])])[0]
-            pred_val_vec.append(str(np.round(pred_val*100,1))+'% '+str(top1)+'; '+str(np.round(np.sort(top_val)[-2]*100,1))+'% '+str(top2))
+        indx.append(q)
+        topics.append(le.inverse_transform([np.argmax(top_val)])[0])
+        title_temp.append(papers_df['title'][q])
+        top = []
+        top_string = []
+        for k in range(0,3):
+            top.append(le.inverse_transform([list(top_val).index([np.sort(top_val)[-k-1]])])[0])
+            top_string.append(str(np.round(np.sort(top_val)[-k-1]*100,1))+'% '+str(top[k]))
+        pred_val_vec.append('; '.join(top_string))
     else:
-        print('Skipping prediction of paper #: ' + str(k))
+        print('Skipping prediction of paper #: ' + str(q))
 papers_df = pd.DataFrame(data = {'title': title_temp,
                                   'topic': topics,
                                   'pred_val': pred_val_vec})
