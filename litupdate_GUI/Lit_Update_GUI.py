@@ -93,7 +93,7 @@ paper_details.place(relx = 0.7, rely = 0.05, relwidth = 0.55, relheight = 0.5, a
 paper_info = Label(paper_details, text = 'select a paper', font = ('Helvetica', 12,'bold'), bg = 'white', wraplength = 700, justify = 'left')
 paper_info.pack()
 
-abstract_info = Label(paper_details, text = '', font = ('Helvetica', 12), bg = 'white', wraplength = 700, justify = 'left')
+abstract_info = Label(paper_details, text = '', font = ('Helvetica', 12), bg = 'white', wraplength = 700, justify = 'left', anchor = 'nw')
 abstract_info.pack()
 
 #button panel
