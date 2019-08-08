@@ -38,7 +38,10 @@ def cat_buttons(frm, index, paper_list):
         cat_buttons(button_frame, index, papers_df)
 
     def select_topic():
+        # print(var.get())
+        # print(index)
         new_papers_df['new_topic'].iloc[index] = str(var.get()).split()[1]
+        # print(new_papers_df.head(10))
         updateselect(index)
 
     def change_dropdown(*args):
@@ -80,19 +83,7 @@ def onselect(event):
     # print(papers_df['full_title'][index])
     cat_buttons(button_frame, index, papers_df)
 
-<<<<<<< HEAD
-
-# def save_csv():
-#     now = datetime.datetime.now()
-#     strings = [str(now.year), str(now.month), str(now.day), 'litupdate.csv']
-#     fname = 'Literature_Updates/' + '-'.join(strings)
-#     papers_df.sort_values('topic').to_csv(fname, index=False)
-
-
 HEIGHT = 900
-=======
-HEIGHT = 850
->>>>>>> f00d64ce4c50b1019b4c0f9ef14e10ca085faedb
 WIDTH = 1300
 
 window = Tk()
@@ -104,6 +95,9 @@ canvas.pack()
 paper_list = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Titles', font = ('Helvetica', 20,'bold'), relief = 'flat')
 paper_list.place(relx = 0.21, rely = .05, relwidth = 0.4, relheight = 0.91, anchor = 'n')
 
+# window.rowconfigure(1, weight=1)
+# window.columnconfigure(1, weight=1)
+#
 scrollbar = Scrollbar(paper_list, orient="vertical")
 scrollbar.pack(side=RIGHT, fill=Y)
 #
@@ -114,7 +108,7 @@ listPapers.pack(expand=True, fill=Y)
 scrollbar.config(command=listPapers.yview)
 
 for x, title in enumerate(papers_df.full_title):
-    listPapers.insert(END, str(x+1) + '. ' + str(title))
+    listPapers.insert(END, str(x) + '. ' + str(title))
 
 # paper and abstract details
 paper_details = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Details', font = ('Helvetica', 20,'bold'), relief = 'flat')
@@ -132,10 +126,10 @@ button_frame.grid_rowconfigure(3, weight =1)
 #paper categories
 cat_buttons
 # export csv
-save_csv = Button(button_frame, text = 'SAVE CSV & Markdown',bd = 4, width = 25, bg = 'green', fg = 'white', font = ('Helvetica',10, 'bold'), action = save_csv)
-save_csv.grid(row = 4, column = 0, pady = 5, sticky = 'nw')
-
-close_bttn = Button(button_frame, text = 'CLOSE',bd = 4, width = 25, font = ('Helvetica',10,'bold'))
-close_bttn.grid(row = 5, column = 0, pady = 5, sticky = 'nw')
+# save_csv = Button(button_frame, text = 'SAVE CSV & Markdown',bd = 4, width = 25, bg = 'green', fg = 'white', font = ('Helvetica',10, 'bold'))
+# close_bttn = Button(button_frame, text = 'CLOSE',bd = 4, width = 25, font = ('Helvetica',10,'bold'))
+#
+# save_csv.grid(row = 4, column = 0, pady = 5, sticky = 'nw')
+# close_bttn.grid(row = 5, column = 0, pady = 5, sticky = 'nw')
 
 mainloop()
