@@ -44,6 +44,7 @@ authors = [None]*papers_length
 links = [None]*papers_length
 journals = [None]*papers_length
 abstracts = [None]*papers_length
+abstracts_full = [None]*papers_length
 
 def clean_str(abs_string,stop):
     translator = str.maketrans(string.punctuation, ' '*len(string.punctuation)) #map punctuation to space
@@ -72,6 +73,7 @@ for i, paper in enumerate(papers['PubmedArticle']):
     titles[i] = clean_str(papers['PubmedArticle'][i]['MedlineCitation']['Article']['ArticleTitle'],stop)
     full_titles[i] = papers['PubmedArticle'][i]['MedlineCitation']['Article']['ArticleTitle']
     try:
+        abstracts_full[i] = papers['PubmedArticle'][i]['MedlineCitation']['Article']['Abstract']['AbstractText'][0]
         abstracts[i] = clean_str(papers['PubmedArticle'][i]['MedlineCitation']['Article']['Abstract']['AbstractText'][0],stop)  
     except:
         abstracts[i] = ''
@@ -212,6 +214,7 @@ papers_df['authors']    = [authors[k] if authors[k][1] is not '[' else authors[1
 papers_df['journal']    = [journals[k] for k in indx]
 papers_df['links']      = [links[k] for k in indx]
 papers_df['full_title'] = [full_titles[k] for k in indx]
+papers_df['abstract']   = [abstracts_full[k] for k in indx]
 #generate filename
 import datetime
 now = datetime.datetime.now()

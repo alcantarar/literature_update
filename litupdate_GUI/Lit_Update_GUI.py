@@ -1,7 +1,7 @@
 from tkinter import *
 import pandas as pd
 
-papers_df = pd.read_csv('../Literature_Updates/2019-5-29-litupdate_TEST.csv')
+papers_df = pd.read_csv('../Literature_Updates/2019-8-8-litupdate.csv')
 new_papers_df = papers_df
 new_papers_df['new_topic'] = ''
 
@@ -50,7 +50,7 @@ def cat_buttons(frm, index, paper_list):
 
     c = 0
     for key in b_dict:
-        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 35, font = ('Helvetica',10),command = select_topic)
+        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 35, font = ('Helvetica',8),command = select_topic)
         b_dict[key].config(indicatoron=0, variable = var, value = key)
         b_dict[key].grid(row = c, column = 0, sticky = W, pady = 5, padx = 5)
         c = c+1
