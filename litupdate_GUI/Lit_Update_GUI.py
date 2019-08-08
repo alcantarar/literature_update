@@ -1,7 +1,7 @@
 from tkinter import *
 import pandas as pd
 
-papers_df = pd.read_csv('../Literature_Updates/2019-8-8-litupdate.csv')
+papers_df = pd.read_csv('../Literature_Updates/2019-5-29-litupdate_TEST.csv')
 new_papers_df = papers_df
 new_papers_df['new_topic'] = ''
 
@@ -53,7 +53,7 @@ def cat_buttons(frm, index, paper_list):
 
     c = 0
     for key in b_dict:
-        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 35, font = ('Helvetica',8),command = select_topic)
+        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 35, font = ('Helvetica',10),command = select_topic)
         b_dict[key].config(indicatoron=0, variable = var, value = key)
         b_dict[key].grid(row = c, column = 0, sticky = W, pady = 5, padx = 5)
         c = c+1
@@ -79,9 +79,9 @@ def onselect(event):
     value = w.get(index)
     paper_info.config(text = papers_df['full_title'][index])
     abstract_info.config(text = papers_df['abstract'][index])
-
     # print(papers_df['full_title'][index])
     cat_buttons(button_frame, index, papers_df)
+
 
 HEIGHT = 900
 WIDTH = 1300
@@ -127,9 +127,9 @@ button_frame.grid_rowconfigure(3, weight =1)
 cat_buttons
 # export csv
 # save_csv = Button(button_frame, text = 'SAVE CSV & Markdown',bd = 4, width = 25, bg = 'green', fg = 'white', font = ('Helvetica',10, 'bold'))
-# close_bttn = Button(button_frame, text = 'CLOSE',bd = 4, width = 25, font = ('Helvetica',10,'bold'))
+close_bttn = Button(button_frame, text = 'CLOSE',bd = 4, width = 25, font = ('Helvetica',10,'bold'))
 #
 # save_csv.grid(row = 4, column = 0, pady = 5, sticky = 'nw')
-# close_bttn.grid(row = 5, column = 0, pady = 5, sticky = 'nw')
+close_bttn.grid(row = 5, column = 0, pady = 5, sticky = 'nw')
 
 mainloop()
