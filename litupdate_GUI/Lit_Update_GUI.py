@@ -16,11 +16,28 @@ def cat_buttons(frm, index, paper_list):
     var = StringVar()
     var.trace('u', print(var.get()))
 
+    def updateselect(index):
+        if index < len(papers_df)-1:  # make sure we don't go past end of paper list
+            listPapers.selection_clear(index)
+            listPapers.activate(index + 1)
+            listPapers.selection_set(index + 1)
+            index = index + 1
+        else:
+            index = index
+
+        value = listPapers.get(index)
+        paper_info.config(text=papers_df['full_title'][index])
+        abstract_info.config(text=papers_df['abstract'][index])
+
+        # print(papers_df['full_title'][index])
+        cat_buttons(button_frame, index, papers_df)
+
     def select_topic():
         print(var.get())
         print(index)
         new_papers_df['new_topic'].iloc[index] = str(var.get())
-        print(new_papers_df.head(10))
+        # print(new_papers_df.head(10))
+        updateselect(index)
 
 
     c = 2
@@ -30,9 +47,6 @@ def cat_buttons(frm, index, paper_list):
         b_dict[key].config(indicatoron=0, variable = var, value = key)
         b_dict[key].grid(row = c-2, column = 0, sticky = W)
         c = c+1
-
-
-
 
 def onselect(event):
     w = event.widget
