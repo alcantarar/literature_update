@@ -39,14 +39,38 @@ def cat_buttons(frm, index, paper_list):
         print(new_papers_df.head(10))
         updateselect(index)
 
+    def change_dropdown(*args):
+        # text = tkvar.get()
+        # print(text)
+        new_papers_df['new_topic'].iloc[index] = str(tkvar.get())
+        print(new_papers_df.head(10))
+        updateselect(index)
 
     c = 0
     for key in b_dict:
         # print(key)
         b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 35, font = ('Helvetica',10),command = select_topic)
         b_dict[key].config(indicatoron=0, variable = var, value = key)
-        b_dict[key].grid(row = c, column = 0, sticky = W)
+        b_dict[key].grid(row = c, column = 0, sticky = W, pady = 5, padx = 5)
         c = c+1
+
+    top_topics = [key.split(' ')[1] for key in b_dict.keys()]
+    # print(top_topics)
+    choices = []
+    tkvar = StringVar(frm)
+    for k in all_topics:
+        if k not in top_topics:
+            choices.append(k)
+    for ch in choices:
+        ch = 0
+    other_topics = OptionMenu(frm, tkvar, *choices)
+    other_topics.config(font =('Helvetica', 10), width = 35)
+    other_topics.grid(row = 0, column = 1, pady = 5, padx = 5)
+    tkvar.trace('w', change_dropdown)
+
+
+    # print(choices)
+    # print(all_topics)
 
 def onselect(event):
     w = event.widget
@@ -58,7 +82,6 @@ def onselect(event):
     # print(papers_df['full_title'][index])
     cat_buttons(button_frame, index, papers_df)
 
-current_id = 0
 
 HEIGHT = 800
 WIDTH = 1300
@@ -100,7 +123,10 @@ abstract_info.pack()
 button_frame = Frame(window, bg = 'white', bd = 5, relief = 'flat')
 button_frame.place(relx = 0.7, rely = 0.58, relwidth = 0.55, relheight = 0.38, anchor = 'n')
 #buttons
-topics = {'BONE':0, 'CARDIO':0, 'MODELING':0, 'SPORT/EXERC':0, 'METHODS':0, 'GAIT':0, 'NEURAL':0, 'SPINE':0, 'COMPARATIVE':0, 'EVOLUTION':0}
+all_topics = {'BONE', 'CELLULAR/SUBCELLULAR', 'MODELING', 'SPORT/EXERCISE', 'METHODS',
+              'GAIT/LOCOMOTION', 'NEURAL', 'COMPARATIVE', 'EVOLUTION/ANTHROPOLOGY',
+              'TISSUE/BIOMATERIAL', 'ORTHOPAEDICS/SPINE', 'REHABILITATION', 'NEURAL',
+              'VETERINARY/AGRICULTURAL', 'TENDON/LIGAMENT', 'JOINT/CARTILAGE'}
 
 cat_buttons
 
