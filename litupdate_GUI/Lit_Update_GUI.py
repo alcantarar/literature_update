@@ -2,8 +2,8 @@ from tkinter import *
 import pandas as pd
 
 papers_df = pd.read_csv('../Literature_Updates/2019-5-29-litupdate_TEST.csv')
-
-
+new_papers_df = papers_df
+new_papers_df['new_topic'] = ''
 
 def cat_buttons(frm, index, paper_list):
 
@@ -18,6 +18,9 @@ def cat_buttons(frm, index, paper_list):
 
     def select_topic():
         print(var.get())
+        print(index)
+        new_papers_df['new_topic'].iloc[index] = str(var.get())
+        print(new_papers_df.head(5))
 
 
     c = 2
@@ -29,7 +32,8 @@ def cat_buttons(frm, index, paper_list):
         c = c+1
 
 
-    # print(b_dict)
+
+
 def onselect(event):
     w = event.widget
     index = int(w.curselection()[0])
