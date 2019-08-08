@@ -38,10 +38,7 @@ def cat_buttons(frm, index, paper_list):
         cat_buttons(button_frame, index, papers_df)
 
     def select_topic():
-        # print(var.get())
-        # print(index)
         new_papers_df['new_topic'].iloc[index] = str(var.get()).split()[1]
-        # print(new_papers_df.head(10))
         updateselect(index)
 
     def change_dropdown(*args):
@@ -83,7 +80,6 @@ def onselect(event):
     # print(papers_df['full_title'][index])
     cat_buttons(button_frame, index, papers_df)
 
-
 HEIGHT = 850
 WIDTH = 1300
 
@@ -96,9 +92,6 @@ canvas.pack()
 paper_list = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Titles', font = ('Helvetica', 20,'bold'), relief = 'flat')
 paper_list.place(relx = 0.21, rely = .05, relwidth = 0.4, relheight = 0.91, anchor = 'n')
 
-# window.rowconfigure(1, weight=1)
-# window.columnconfigure(1, weight=1)
-#
 scrollbar = Scrollbar(paper_list, orient="vertical")
 scrollbar.pack(side=RIGHT, fill=Y)
 #
@@ -109,7 +102,7 @@ listPapers.pack(expand=True, fill=Y)
 scrollbar.config(command=listPapers.yview)
 
 for x, title in enumerate(papers_df.full_title):
-    listPapers.insert(END, str(x) + '. ' + str(title))
+    listPapers.insert(END, str(x+1) + '. ' + str(title))
 
 # paper and abstract details
 paper_details = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Details', font = ('Helvetica', 20,'bold'), relief = 'flat')
