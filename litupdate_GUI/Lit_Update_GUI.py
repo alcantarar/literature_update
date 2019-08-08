@@ -45,7 +45,7 @@ def cat_buttons(frm, index, paper_list):
         # text = tkvar.get()
         # print(text)
         new_papers_df['new_topic'].iloc[index] = str(tkvar.get())
-        print(new_papers_df.head(5))
+        # print(new_papers_df.head(5))
         updateselect(index)
 
     c = 0
@@ -80,7 +80,19 @@ def onselect(event):
     # print(papers_df['full_title'][index])
     cat_buttons(button_frame, index, papers_df)
 
+<<<<<<< HEAD
+
+# def save_csv():
+#     now = datetime.datetime.now()
+#     strings = [str(now.year), str(now.month), str(now.day), 'litupdate.csv']
+#     fname = 'Literature_Updates/' + '-'.join(strings)
+#     papers_df.sort_values('topic').to_csv(fname, index=False)
+
+
+HEIGHT = 900
+=======
 HEIGHT = 850
+>>>>>>> f00d64ce4c50b1019b4c0f9ef14e10ca085faedb
 WIDTH = 1300
 
 window = Tk()
@@ -116,7 +128,14 @@ abstract_info.pack()
 #button panel
 button_frame = Frame(window, bg = 'white', bd = 5, relief = 'flat')
 button_frame.place(relx = 0.7, rely = 0.58, relwidth = 0.55, relheight = 0.38, anchor = 'n')
-
+button_frame.grid_rowconfigure(3, weight =1)
+#paper categories
 cat_buttons
+# export csv
+save_csv = Button(button_frame, text = 'SAVE CSV & Markdown',bd = 4, width = 25, bg = 'green', fg = 'white', font = ('Helvetica',10, 'bold'), action = save_csv)
+save_csv.grid(row = 4, column = 0, pady = 5, sticky = 'nw')
+
+close_bttn = Button(button_frame, text = 'CLOSE',bd = 4, width = 25, font = ('Helvetica',10,'bold'))
+close_bttn.grid(row = 5, column = 0, pady = 5, sticky = 'nw')
 
 mainloop()
