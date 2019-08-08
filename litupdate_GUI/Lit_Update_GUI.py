@@ -35,17 +35,17 @@ def cat_buttons(frm, index, paper_list):
     def select_topic():
         print(var.get())
         print(index)
-        new_papers_df['new_topic'].iloc[index] = str(var.get())
-        # print(new_papers_df.head(10))
+        new_papers_df['new_topic'].iloc[index] = str(var.get()).split()[1]
+        print(new_papers_df.head(10))
         updateselect(index)
 
 
-    c = 2
+    c = 0
     for key in b_dict:
         # print(key)
-        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 30, font = ('Helvetica',10),command = select_topic)
+        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 35, font = ('Helvetica',10),command = select_topic)
         b_dict[key].config(indicatoron=0, variable = var, value = key)
-        b_dict[key].grid(row = c-2, column = 0, sticky = W)
+        b_dict[key].grid(row = c, column = 0, sticky = W)
         c = c+1
 
 def onselect(event):
