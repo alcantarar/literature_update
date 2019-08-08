@@ -5,6 +5,11 @@ papers_df = pd.read_csv('../Literature_Updates/2019-5-29-litupdate_TEST.csv')
 new_papers_df = papers_df
 new_papers_df['new_topic'] = ''
 
+all_topics = {'BONE', 'CARDIOVASCULAR/CARDOPULMONARY', 'CELLULAR/SUBCELLULAR', 'COMPARATIVE', 'DENTAL/ORAL/FACIAL',
+              'EVOLUTION/ANTHROPOLOGY', 'GAIT/LOCOMOTION', 'JOINT/CARTILAGE', 'METHODS', 'MODELING', 'NEURAL',
+              'ORTHOPAEDICS/SPINE', 'ORTHOPAEDICS/SURGERY', 'REHABILITATION', 'SPORT/EXERCISE', 'TENDON/LIGAMENT',
+              'TISSUE/BIOMATERIAL', 'VETERINARY/AGRICULTURAL'}
+
 def cat_buttons(frm, index, paper_list):
 
     b_dict = paper_list['pred_val'][index].split('; ')
@@ -36,7 +41,7 @@ def cat_buttons(frm, index, paper_list):
         # print(var.get())
         # print(index)
         new_papers_df['new_topic'].iloc[index] = str(var.get()).split()[1]
-        print(new_papers_df.head(10))
+        # print(new_papers_df.head(10))
         updateselect(index)
 
     def change_dropdown(*args):
@@ -79,7 +84,7 @@ def onselect(event):
     cat_buttons(button_frame, index, papers_df)
 
 
-HEIGHT = 800
+HEIGHT = 850
 WIDTH = 1300
 
 window = Tk()
@@ -118,11 +123,6 @@ abstract_info.pack()
 #button panel
 button_frame = Frame(window, bg = 'white', bd = 5, relief = 'flat')
 button_frame.place(relx = 0.7, rely = 0.58, relwidth = 0.55, relheight = 0.38, anchor = 'n')
-#buttons
-all_topics = {'BONE', 'CELLULAR/SUBCELLULAR', 'MODELING', 'SPORT/EXERCISE', 'METHODS',
-              'GAIT/LOCOMOTION', 'NEURAL', 'COMPARATIVE', 'EVOLUTION/ANTHROPOLOGY',
-              'TISSUE/BIOMATERIAL', 'ORTHOPAEDICS/SPINE', 'REHABILITATION', 'NEURAL',
-              'VETERINARY/AGRICULTURAL', 'TENDON/LIGAMENT', 'JOINT/CARTILAGE'}
 
 cat_buttons
 
