@@ -11,14 +11,13 @@ all_topics = {'BONE', 'CARDIOVASCULAR/CARDOPULMONARY', 'CELLULAR/SUBCELLULAR', '
               'TISSUE/BIOMATERIAL', 'VETERINARY/AGRICULTURAL'}
 
 def cat_buttons(frm, index, paper_list):
-
     b_dict = paper_list['pred_val'][index].split('; ')
     b_dict_new = {}
     for k in b_dict:
         b_dict_new[k] = 0
     b_dict = b_dict_new
 
-    def get_var(*args): # <- idk why this works.
+    def get_var(*args):
         return var.get()
     var = StringVar()
     var.trace('w', get_var)
@@ -94,23 +93,29 @@ window.config()
 canvas = Canvas(window, height = HEIGHT, width = WIDTH)
 canvas.pack()
 
-paper_list = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Titles', font = ('Helvetica', 20,'bold'), relief = 'flat')
-paper_list.place(relx = 0.21, rely = .05, relwidth = 0.4, relheight = 0.91, anchor = 'n')
+# Create Dropdown for filtering Papers
+pfilter_frm = LabelFrame(window, bg = 'white', bd = 1, text = 'Filter by Percent', font = ('Helvetica', 20,'bold'), relief = 'flat')
+pfilter_frm.place(relx = 0.2, rely = 0.01, relwidth = 0.2, relheight = 0.2, anchor = 'ne')
+# top_topics = [key.split(' ')[1] for key in b_dict.keys()]
+filters = ['0-20%','20-40%','40-60%','60-80%','80-100%']
+tkvar = StringVar(pfilter_frm)
+pfilter = OptionMenu(pfilter_frm, tkvar, *filters)
+pfilter.config(font=('Helvetica', 10), width=20)
+pfilter.grid(row=1, column=1, pady=0, padx=0)
 
-# window.rowconfigure(1, weight=1)
-# window.columnconfigure(1, weight=1)
-#
+# Create List of all  and window for it
+paper_list = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Titles', font = ('Helvetica', 20,'bold'), relief = 'flat')
+paper_list.place(relx = 0.21, rely = .15, relwidth = 0.4, relheight = 0.85, anchor = 'n')
 scrollbar = Scrollbar(paper_list, orient="vertical")
 scrollbar.pack(side=RIGHT, fill=Y)
-#
 listPapers = Listbox(paper_list, width=90, yscrollcommand=scrollbar.set, font=("Helvetica", 12))
 listPapers.bind('<<ListboxSelect>>',onselect)
 listPapers.pack(expand=True, fill=Y)
-#
-scrollbar.config(command=listPapers.yview)
-
 for x, title in enumerate(papers_df.full_title):
     listPapers.insert(END, str(x) + '. ' + str(title))
+# Add Scroll Bar to paper title lists
+scrollbar.config(command=listPapers.yview)
+
 
 # paper and abstract details
 paper_details = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Details', font = ('Helvetica', 20,'bold'), relief = 'flat')
