@@ -103,6 +103,15 @@ pfilter = OptionMenu(pfilter_frm, tkvar, *filters)
 pfilter.config(font=('Helvetica', 10), width=20)
 pfilter.grid(row=1, column=1, pady=0, padx=0)
 
+# Create Catagory Dropdown for filtering Papers
+catfilter_frm = LabelFrame(window, bg = 'white', bd = 1, text = 'Filter by Percent', font = ('Helvetica', 20,'bold'), relief = 'flat')
+catfilter_frm.place(relx = 0.4, rely = 0.01, relwidth = 0.2, relheight = 0.2, anchor = 'ne')
+# top_topics = [key.split(' ')[1] for key in b_dict.keys()]
+tkvar = StringVar(catfilter_frm)
+catfilter = OptionMenu(catfilter_frm, tkvar, *all_topics)
+catfilter.config(font=('Helvetica', 10), width=20)
+catfilter.grid(row=1, column=1, pady=0, padx=0)
+
 # Create List of all  and window for it
 paper_list = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Titles', font = ('Helvetica', 20,'bold'), relief = 'flat')
 paper_list.place(relx = 0.21, rely = .15, relwidth = 0.4, relheight = 0.85, anchor = 'n')
