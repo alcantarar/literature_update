@@ -14,11 +14,6 @@ all_topics = {'BONE', 'CARDIOVASCULAR/CARDOPULMONARY', 'CELLULAR/SUBCELLULAR', '
               'ORTHOPAEDICS/SPINE', 'ORTHOPAEDICS/SURGERY', 'REHABILITATION', 'SPORT/EXERCISE', 'TENDON/LIGAMENT',
               'TISSUE/BIOMATERIAL', 'VETERINARY/AGRICULTURAL'}
 
-# filename for exported csv
-now = datetime.datetime.now()
-strings = [str(now.year), str(now.month), str(now.day), 'litupdate_ADJUSTED.csv']
-fname = '../Literature_Updates/'+'-'.join(strings)
-
 def cat_buttons(frm, index, paper_list):
 
     b_dict = paper_list['pred_val'][index].split('; ')
