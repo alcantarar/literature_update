@@ -61,7 +61,7 @@ def cat_buttons(frm, index, paper_list):
 
     c = 0
     for key in b_dict:
-        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 35, font = ('Helvetica',10),command = select_topic)
+        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 40, font = ('Helvetica',10),command = select_topic)
         b_dict[key].config(indicatoron=0, variable = var, value = key)
         b_dict[key].grid(row = c, column = 0, sticky = W, pady = 5, padx = 5)
         c = c+1
@@ -76,7 +76,7 @@ def cat_buttons(frm, index, paper_list):
     for ch in choices:
         ch = 0
     other_topics = OptionMenu(frm, tkvar, *choices)
-    other_topics.config(font =('Helvetica', 10), width = 35)
+    other_topics.config(font =('Helvetica', 10), width = 40)
     other_topics.grid(row = 0, column = 1, pady = 5, padx = 5)
     tkvar.trace('w', change_dropdown)
 
