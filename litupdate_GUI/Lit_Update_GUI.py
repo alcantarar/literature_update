@@ -1,6 +1,5 @@
 from tkinter import *
 import pandas as pd
-import datetime
 
 litupdate_fname = '../Literature_Updates/2019-8-8-litupdate.csv'
 new_litupdate_fname = litupdate_fname[0:-4] + '-ADJUSTED.csv'
@@ -90,8 +89,6 @@ def onselect(event):
     # print(papers_df['full_title'][index])
     cat_buttons(button_frame, index, papers_df)
 
-def close_window():
-    window.destroy()
 
 HEIGHT = 900
 WIDTH = 1300
@@ -137,7 +134,7 @@ button_frame.grid_rowconfigure(3, weight =1)
 cat_buttons
 
 
-close_bttn = Button(button_frame, text = 'CLOSE',bd = 4, width = 25, font = ('Helvetica',10,'bold'), command = close_window)
+close_bttn = Button(button_frame, text = 'CLOSE',bd = 4, width = 25, font = ('Helvetica',10,'bold'), command = window.destroy)
 close_bttn.grid(row = 5, column = 0, pady = 5, sticky = 'nw')
 
 mainloop()
