@@ -1,7 +1,10 @@
 from tkinter import *
 import pandas as pd
 
-papers_df = pd.read_csv('../Literature_Updates/2019-5-29-litupdate_TEST.csv')
+litupdate_fname = '../Literature_Updates/2019-8-8-litupdate.csv'
+new_litupdate_fname = litupdate_fname[0:-4] + '-ADJUSTED.csv'
+
+papers_df = pd.read_csv(litupdate_fname)
 new_papers_df = papers_df
 new_papers_df['new_topic'] = ''
 
@@ -45,6 +48,7 @@ def cat_buttons(frm, index, paper_list):
         new_papers_df['new_topic'].iloc[index] = str(var.get()).split()[1]
         print(new_papers_df.head(10)) # for debugging
         updateselect(index)
+        new_papers_df.to_csv(new_litupdate_fname)
 
     def change_dropdown(*args):
         # text = tkvar.get()
@@ -53,9 +57,10 @@ def cat_buttons(frm, index, paper_list):
         print(new_papers_df.head(10)) # for debugging
         updateselect(index)
 
+
     c = 0
     for key in b_dict:
-        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 35, font = ('Helvetica',10),command = select_topic)
+        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 40, font = ('Helvetica',10),command = select_topic)
         b_dict[key].config(indicatoron=0, variable = var, value = key)
         b_dict[key].grid(row = c, column = 0, sticky = W, pady = 5, padx = 5)
         c = c+1
@@ -70,7 +75,7 @@ def cat_buttons(frm, index, paper_list):
     for ch in choices:
         ch = 0
     other_topics = OptionMenu(frm, tkvar, *choices)
-    other_topics.config(font =('Helvetica', 10), width = 35)
+    other_topics.config(font =('Helvetica', 10), width = 40)
     other_topics.grid(row = 0, column = 1, pady = 5, padx = 5)
     tkvar.trace('w', change_dropdown)
 
@@ -127,11 +132,9 @@ button_frame.place(relx = 0.7, rely = 0.58, relwidth = 0.55, relheight = 0.38, a
 button_frame.grid_rowconfigure(3, weight =1)
 #paper categories
 cat_buttons
-# export csv
-# save_csv = Button(button_frame, text = 'SAVE CSV & Markdown',bd = 4, width = 25, bg = 'green', fg = 'white', font = ('Helvetica',10, 'bold'))
-close_bttn = Button(button_frame, text = 'CLOSE',bd = 4, width = 25, font = ('Helvetica',10,'bold'))
-#
-# save_csv.grid(row = 4, column = 0, pady = 5, sticky = 'nw')
+
+
+close_bttn = Button(button_frame, text = 'CLOSE',bd = 4, width = 25, font = ('Helvetica',10,'bold'), command = window.destroy)
 close_bttn.grid(row = 5, column = 0, pady = 5, sticky = 'nw')
 
 mainloop()
