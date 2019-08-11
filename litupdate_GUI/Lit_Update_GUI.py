@@ -60,8 +60,8 @@ def cat_buttons(frm, index, paper_list):
 
     c = 0
     for key in b_dict:
-        b_dict[key] = Radiobutton(frm, text = key, bd = 4, width = 40, font = ('Helvetica',10),command = select_topic)
-        b_dict[key].config(indicatoron=0, variable = var, value = key)
+        b_dict[key] = Radiobutton(frm, text = key,  bd = 4, width = 40, font = ('Helvetica',10),command = select_topic)
+        b_dict[key].config(indicatoron=0, offrelief = FLAT, bg = 'azure3', variable = var, value = key)
         b_dict[key].grid(row = c, column = 0, sticky = W, pady = 5, padx = 5)
         c = c+1
 
@@ -75,7 +75,7 @@ def cat_buttons(frm, index, paper_list):
     for ch in choices:
         ch = 0
     other_topics = OptionMenu(frm, tkvar, *choices)
-    other_topics.config(font =('Helvetica', 10), width = 40)
+    other_topics.config(font =('Helvetica', 10),  bg = 'azure3', width = 40, relief = FLAT)
     other_topics.grid(row = 0, column = 1, pady = 5, padx = 5)
     tkvar.trace('w', change_dropdown)
 
@@ -99,7 +99,7 @@ window.config()
 canvas = Canvas(window, height = HEIGHT, width = WIDTH)
 canvas.pack()
 
-paper_list = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Titles', font = ('Helvetica', 20,'bold'), relief = 'flat')
+paper_list = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Titles', fg = 'red4', font = ('Helvetica', 20,'bold'), relief = 'flat')
 paper_list.place(relx = 0.21, rely = .05, relwidth = 0.4, relheight = 0.91, anchor = 'n')
 
 # window.rowconfigure(1, weight=1)
@@ -118,7 +118,7 @@ for x, title in enumerate(papers_df.full_title):
     listPapers.insert(END, str(x) + '. ' + str(title))
 
 # paper and abstract details
-paper_details = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Details', font = ('Helvetica', 20,'bold'), relief = 'flat')
+paper_details = LabelFrame(window, bg = 'white', bd = 5, text = 'Paper Details', fg = 'red4', font = ('Helvetica', 20,'bold'), relief = 'flat')
 paper_details.place(relx = 0.7, rely = 0.05, relwidth = 0.55, relheight = 0.5, anchor = 'n')
 paper_info = Label(paper_details, text = 'select a paper', font = ('Helvetica', 12,'bold'), bg = 'white', wraplength = 700, justify = 'left')
 paper_info.pack()
@@ -134,7 +134,7 @@ button_frame.grid_rowconfigure(3, weight =1)
 cat_buttons
 
 
-close_bttn = Button(button_frame, text = 'CLOSE',bd = 4, width = 25, font = ('Helvetica',10,'bold'), command = window.destroy)
+close_bttn = Button(button_frame, text = 'CLOSE', relief = FLAT, bg = 'azure4', fg = 'black', bd = 4, width = 25, font = ('Helvetica',10,'bold'), command = window.destroy)
 close_bttn.grid(row = 5, column = 0, pady = 5, sticky = 'nw')
 
 mainloop()
