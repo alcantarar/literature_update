@@ -15,6 +15,10 @@ toc_label: Topics
 ----
 
 [Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)
+* [Biomechanical and tomographic differences in the microarchitecture and strength of trabecular and cortical bone in the early stage of male osteoporosis.](https://www.ncbi.nlm.nih.gov/pubmed/31393911)
+Yeh PS, Lee YW, Chang WH, Wang W, Wang JL, Liu SH, Chen RM,
+*PloS one*.  
+
 * [Osteocalcin affects bone mineral and mechanical properties in female mice.](https://www.ncbi.nlm.nih.gov/pubmed/31401301)
 Berezovska O, Yildirim G, Budell W, Yagerman S, Pidhaynyy B, Bastien C, van der Meulen MCH, Dowd TL,
 *Bone*.  
@@ -45,35 +49,43 @@ Thon MP, Myerscough MR, Gee MW,
 ----
 
 [Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)
-* [An engineered monomer binding-protein for α-synuclein efficiently inhibits the proliferation of amyloid fibrils.](https://www.ncbi.nlm.nih.gov/pubmed/31389332)
-Agerschou ED, Flagmeier P, Saridaki T, Galvagnion C, Komnig D, Heid L, Prasad V, Shaykhalishahi H, Willbold D, Dobson CM, Voigt A, Falkenbürger B, Hoyer W, Buell AK,
-*eLife*.  
-
-* [Biophysical and Biochemical Characteristics as Complementary Indicators of Melanoma Progression.](https://www.ncbi.nlm.nih.gov/pubmed/31310097)
-Bobrowska J, Awsiuk K, Pabijan J, Bobrowski P, Lekki J, Sowa KM, Rysz J, Budkowski A, Lekka M,
-*Analytical chemistry*.  
-
-* [A hierarchical network of hypoxia-inducible factor and SMAD proteins governs procollagen lysyl hydroxylase 2 induction by hypoxia and transforming growth factor β1.](https://www.ncbi.nlm.nih.gov/pubmed/31391253)
-Rosell-García T, Palomo-Álvarez O, Rodríguez-Pascual F,
-*The Journal of biological chemistry*.  
-
-* [Controlling organization and forces in active matter through optically defined boundaries.](https://www.ncbi.nlm.nih.gov/pubmed/31391558)
-Ross TD, Lee HJ, Qu Z, Banks RA, Phillips R, Thomson M,
-*Nature*.  
+* [The ventral epithelium of <i>Trichoplax adhaerens</i> deploys in distinct patterns cells that secrete digestive enzymes, mucus or diverse neuropeptides.](https://www.ncbi.nlm.nih.gov/pubmed/31366453)
+Mayorova TD, Hammar K, Winters CA, Reese TS, Smith CL,
+*Biology open*.  
 
 * [Elastic modulus and migration capability of drug treated leukemia cells K562.](https://www.ncbi.nlm.nih.gov/pubmed/31204049)
 Wang K, Xue Y, Peng Y, Pang X, Zhang Y, Ruiz-Ortega LI, Tian Y, Ngan AHW, Tang B,
 *Biochemical and biophysical research communications*.  
 
-* [The ventral epithelium of <i>Trichoplax adhaerens</i> deploys in distinct patterns cells that secrete digestive enzymes, mucus or diverse neuropeptides.](https://www.ncbi.nlm.nih.gov/pubmed/31366453)
-Mayorova TD, Hammar K, Winters CA, Reese TS, Smith CL,
-*Biology open*.  
+* [Controlling organization and forces in active matter through optically defined boundaries.](https://www.ncbi.nlm.nih.gov/pubmed/31391558)
+Ross TD, Lee HJ, Qu Z, Banks RA, Phillips R, Thomson M,
+*Nature*.  
+
+* [Biophysical and Biochemical Characteristics as Complementary Indicators of Melanoma Progression.](https://www.ncbi.nlm.nih.gov/pubmed/31310097)
+Bobrowska J, Awsiuk K, Pabijan J, Bobrowski P, Lekki J, Sowa KM, Rysz J, Budkowski A, Lekka M,
+*Analytical chemistry*.  
+
+* [An engineered monomer binding-protein for α-synuclein efficiently inhibits the proliferation of amyloid fibrils.](https://www.ncbi.nlm.nih.gov/pubmed/31389332)
+Agerschou ED, Flagmeier P, Saridaki T, Galvagnion C, Komnig D, Heid L, Prasad V, Shaykhalishahi H, Willbold D, Dobson CM, Voigt A, Falkenbürger B, Hoyer W, Buell AK,
+*eLife*.  
+
+* [A hierarchical network of hypoxia-inducible factor and SMAD proteins governs procollagen lysyl hydroxylase 2 induction by hypoxia and transforming growth factor β1.](https://www.ncbi.nlm.nih.gov/pubmed/31391253)
+Rosell-García T, Palomo-Álvarez O, Rodríguez-Pascual F,
+*The Journal of biological chemistry*.  
 
 ----
 # COMPARATIVE
 ----
 
 [Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)
+* [Adhesive latching and legless leaping in small, worm-like insect larvae.](https://www.ncbi.nlm.nih.gov/pubmed/31395610)
+Farley GM, Wise MJ, Harrison JS, Sutton GP, Kuo C, Patek SN,
+*The Journal of experimental biology*.  
+
+* [Beyond power amplification: latch-mediated spring actuation is an emerging framework for the study of diverse elastic systems.](https://www.ncbi.nlm.nih.gov/pubmed/31399509)
+Longo SJ, Cox SM, Azizi E, Ilton M, Olberding JP, St Pierre R, Patek SN,
+*The Journal of experimental biology*.  
+
 * [A seed flying like a bullet: ballistic seed dispersal in Chinese witch-hazel (Hamamelis mollis OLIV., Hamamelidaceae).](https://www.ncbi.nlm.nih.gov/pubmed/31387485)
 Poppinga S, Böse AS, Seidel R, Hesse L, Leupold J, Caliaro S, Speck T,
 *Journal of the Royal Society, Interface*.  
@@ -86,16 +98,8 @@ Sutton GP, Mendoza E, Azizi E, Longo SJ, Olberding JP, Ilton M, Patek SN,
 Loh PY, Yeoh WL, Muraki S,
 *Journal of physiological anthropology*.  
 
-* [Adhesive latching and legless leaping in small, worm-like insect larvae.](https://www.ncbi.nlm.nih.gov/pubmed/31395610)
-Farley GM, Wise MJ, Harrison JS, Sutton GP, Kuo C, Patek SN,
-*The Journal of experimental biology*.  
-
 * [Cockroaches use diverse strategies to self-right on the ground.](https://www.ncbi.nlm.nih.gov/pubmed/31399510)
 Li C, Wöhrl T, Lam HK, Full RJ,
-*The Journal of experimental biology*.  
-
-* [Beyond power amplification: latch-mediated spring actuation is an emerging framework for the study of diverse elastic systems.](https://www.ncbi.nlm.nih.gov/pubmed/31399509)
-Longo SJ, Cox SM, Azizi E, Ilton M, Olberding JP, St Pierre R, Patek SN,
 *The Journal of experimental biology*.  
 
 ----
@@ -150,17 +154,17 @@ Rossignaud R, Oliveira ACP, Lara JPR, Mayor JJV, Rodacki ALF,
 ----
 
 [Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)
-* [A Novel HD-sEMG Preprocessing Method Integrating Muscle Activation Heterogeneity Analysis and Kurtosis-Guided Filtering for High-Accuracy Joint Force Estimation.](https://www.ncbi.nlm.nih.gov/pubmed/31398123)
-Zhang C, Chen X, Cao S, Zhang X, Chen X,
-*IEEE transactions on neural systems and rehabilitation engineering : a publication of the IEEE Engineering in Medicine and Biology Society*.  
+* [Optimal foraging and the information theory of gambling.](https://www.ncbi.nlm.nih.gov/pubmed/31387483)
+Baddeley RJ, Franks NR, Hunt ER,
+*Journal of the Royal Society, Interface*.  
 
 * [An automated computational biomechanics workflow for improving breast cancer diagnosis and treatment.](https://www.ncbi.nlm.nih.gov/pubmed/31263540)
 Babarenda Gamage TP, Malcolm DTK, Maso Talou G, Mîra A, Doyle A, Nielsen PMF, Nash MP,
 *Interface focus*.  
 
-* [Optimal foraging and the information theory of gambling.](https://www.ncbi.nlm.nih.gov/pubmed/31387483)
-Baddeley RJ, Franks NR, Hunt ER,
-*Journal of the Royal Society, Interface*.  
+* [A Novel HD-sEMG Preprocessing Method Integrating Muscle Activation Heterogeneity Analysis and Kurtosis-Guided Filtering for High-Accuracy Joint Force Estimation.](https://www.ncbi.nlm.nih.gov/pubmed/31398123)
+Zhang C, Chen X, Cao S, Zhang X, Chen X,
+*IEEE transactions on neural systems and rehabilitation engineering : a publication of the IEEE Engineering in Medicine and Biology Society*.  
 
 ----
 # MODELING
@@ -192,34 +196,6 @@ Samson JE, Miller LA, Ray D, Holzman R, Shavit U, Khatri S,
 ----
 
 [Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)
-* [NOP receptor antagonists decrease alcohol drinking in the dark in C57BL/6J mice.](https://www.ncbi.nlm.nih.gov/pubmed/31386211)
-Brunori G, Weger M, Schoch J, Targowska-Duda K, Barnes M, Borruto AM, Rorick-Kehn LM, Zaveri NT, Pintar JE, Ciccocioppo R, Toll L, Cippitelli A,
-*Alcoholism, clinical and experimental research*.  
-
-* [IL-6 trans-signaling in the brain influences the behavioral and physio-pathological phenotype of the Tg2576 and 3xTgAD mouse models of Alzheimer's disease.](https://www.ncbi.nlm.nih.gov/pubmed/31401302)
-Escrig A, Canal C, Sanchis P, Fernández-Gayol O, Montilla A, Comes G, Molinero A, Giralt M, Giménez-Llort L, Becker-Pauly C, Rose-John S, Hidalgo J,
-*Brain, behavior, and immunity*.  
-
-* [Neurochemical evidence that cysteamine modulates amphetamine-induced dopaminergic neuronal activity in striatum by decreasing dopamine release: an in vivo microdialysis study in freely moving rats.](https://www.ncbi.nlm.nih.gov/pubmed/31401065)
-Rakovska A, Javitt D, Petkova-Kirova P, Balla A, Ang R, Kalfin R,
-*Brain research bulletin*.  
-
-* [Unravelling intra- and intersegmental neuronal connectivity between central pattern generating networks in a multi-legged locomotor system.](https://www.ncbi.nlm.nih.gov/pubmed/31386699)
-Daun S, Mantziaris C, Tóth T, Büschges A, Rosjat N,
-*PloS one*.  
-
-* [Strain and sex-based glucocentric & behavioral differences between KK/HlJ and C57BL/6J mice.](https://www.ncbi.nlm.nih.gov/pubmed/31400379)
-Inglis A, Shibin S, Ubungen R, Farooq S, Mata P, Thiam J, Al-Mohanna FA, Collison KS,
-*Physiology & behavior*.  
-
-* [Forward Genetic Screen for <i>Caenorhabditis elegans</i> Mutants with a Shortened Locomotor Healthspan.](https://www.ncbi.nlm.nih.gov/pubmed/31213517)
-Kawamura K, Maruyama IN,
-*G3 (Bethesda, Md.)*.  
-
-* [Cognitive and behavioral effects of brief seizures in mice.](https://www.ncbi.nlm.nih.gov/pubmed/31398689)
-Batterman AI, DeChiara J, Islam A, Brenner MB, Fischer BD, Buono RJ, Keck TM, Ferraro TN,
-*Epilepsy & behavior : E&B*.  
-
 * [Developmental milestones and behavior of infant rats: The role of sensory input from whiskers.](https://www.ncbi.nlm.nih.gov/pubmed/31398362)
 Smirnov K, Sitnikova E,
 *Behavioural brain research*.  
@@ -228,13 +204,41 @@ Smirnov K, Sitnikova E,
 Masaki Y, Kashiwagi Y, Watabe H, Abe K,
 *Synapse (New York, N.Y.)*.  
 
-* [GPR88 in D1R-Type and D2R-Type Medium Spiny Neurons Differentially Regulates Affective and Motor Behavior.](https://www.ncbi.nlm.nih.gov/pubmed/31346000)
-Meirsman AC, Ben Hamida S, Clarke E, de Kerchove d'Exaerde A, Darcq E, Kieffer BL,
-*eNeuro*.  
+* [Cognitive and behavioral effects of brief seizures in mice.](https://www.ncbi.nlm.nih.gov/pubmed/31398689)
+Batterman AI, DeChiara J, Islam A, Brenner MB, Fischer BD, Buono RJ, Keck TM, Ferraro TN,
+*Epilepsy & behavior : E&B*.  
 
 * [Increased depression-related behavior during the postpartum period in inbred BALB/c and C57BL/6 strains.](https://www.ncbi.nlm.nih.gov/pubmed/31399102)
 Shoji H, Miyakawa T,
 *Molecular brain*.  
+
+* [GPR88 in D1R-Type and D2R-Type Medium Spiny Neurons Differentially Regulates Affective and Motor Behavior.](https://www.ncbi.nlm.nih.gov/pubmed/31346000)
+Meirsman AC, Ben Hamida S, Clarke E, de Kerchove d'Exaerde A, Darcq E, Kieffer BL,
+*eNeuro*.  
+
+* [Forward Genetic Screen for <i>Caenorhabditis elegans</i> Mutants with a Shortened Locomotor Healthspan.](https://www.ncbi.nlm.nih.gov/pubmed/31213517)
+Kawamura K, Maruyama IN,
+*G3 (Bethesda, Md.)*.  
+
+* [Unravelling intra- and intersegmental neuronal connectivity between central pattern generating networks in a multi-legged locomotor system.](https://www.ncbi.nlm.nih.gov/pubmed/31386699)
+Daun S, Mantziaris C, Tóth T, Büschges A, Rosjat N,
+*PloS one*.  
+
+* [Neurochemical evidence that cysteamine modulates amphetamine-induced dopaminergic neuronal activity in striatum by decreasing dopamine release: an in vivo microdialysis study in freely moving rats.](https://www.ncbi.nlm.nih.gov/pubmed/31401065)
+Rakovska A, Javitt D, Petkova-Kirova P, Balla A, Ang R, Kalfin R,
+*Brain research bulletin*.  
+
+* [IL-6 trans-signaling in the brain influences the behavioral and physio-pathological phenotype of the Tg2576 and 3xTgAD mouse models of Alzheimer's disease.](https://www.ncbi.nlm.nih.gov/pubmed/31401302)
+Escrig A, Canal C, Sanchis P, Fernández-Gayol O, Montilla A, Comes G, Molinero A, Giralt M, Giménez-Llort L, Becker-Pauly C, Rose-John S, Hidalgo J,
+*Brain, behavior, and immunity*.  
+
+* [NOP receptor antagonists decrease alcohol drinking in the dark in C57BL/6J mice.](https://www.ncbi.nlm.nih.gov/pubmed/31386211)
+Brunori G, Weger M, Schoch J, Targowska-Duda K, Barnes M, Borruto AM, Rorick-Kehn LM, Zaveri NT, Pintar JE, Ciccocioppo R, Toll L, Cippitelli A,
+*Alcoholism, clinical and experimental research*.  
+
+* [Strain and sex-based glucocentric & behavioral differences between KK/HlJ and C57BL/6J mice.](https://www.ncbi.nlm.nih.gov/pubmed/31400379)
+Inglis A, Shibin S, Ubungen R, Farooq S, Mata P, Thiam J, Al-Mohanna FA, Collison KS,
+*Physiology & behavior*.  
 
 ----
 # ORTHOPAEDICS/SPINE
@@ -288,22 +292,6 @@ Soulard J, Vuillerme N, Gaudin P, Grange L, Baillet A, Cracowski JL, Juvin R, Va
 ----
 
 [Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)
-* [Repetitive Head Impact Exposure in College Football Following an NCAA Rule Change to Eliminate Two-A-Day Preseason Practices: A Study from the NCAA-DoD CARE Consortium.](https://www.ncbi.nlm.nih.gov/pubmed/31388849)
-Stemper BD, Shah AS, Harezlak J, Rowson S, Duma S, Mihalik JP, Riggen LD, Brooks A, Cameron KL, Giza CC, Houston MN, Jackson J, Posner MA, McGinty G, DiFiori J, Broglio SP, McAllister TW, McCrea M, 
-*Annals of biomedical engineering*.  
-
-* [Changes in Fundamental Motor-Skill Performance Following a Nine-Month Mastery Motivational Climate Intervention.](https://www.ncbi.nlm.nih.gov/pubmed/31393811)
-Johnson JL, Rudisill ME, Hastie P, Wadsworth D, Strunk K, Venezia A, Sassi J, Morris M, Merritt M,
-*Research quarterly for exercise and sport*.  
-
-* [Core-Muscle Training and Neuromuscular Control of Lower Limb and Trunk.](https://www.ncbi.nlm.nih.gov/pubmed/31386583)
-Sasaki S, Tsuda E, Yamamoto Y, Maeda S, Kimura Y, Fujita Y, Ishibashi Y,
-*Journal of athletic training*.  
-
-* [Regular changes in foot strike pattern during prolonged downhill running do not influence neuromuscular, energetics, or biomechanical parameters.](https://www.ncbi.nlm.nih.gov/pubmed/31311427)
-Vernillo G, Aguiar M, Savoldelli A, Martinez A, Giandolini M, Horvais N, Edwards WB, Millet GY,
-*European journal of sport science*.  
-
 * [Effectiveness of Reverse vs. Traditional Linear Training Periodization in Triathlon.](https://www.ncbi.nlm.nih.gov/pubmed/31390818)
 Clemente-Suárez VJ, Ramos-Campo DJ,
 *International journal of environmental research and public health*.  
@@ -311,6 +299,22 @@ Clemente-Suárez VJ, Ramos-Campo DJ,
 * [Pedestrian hit by a car impacted metal pole: reconstructing the head load.](https://www.ncbi.nlm.nih.gov/pubmed/31388796)
 Wagner R, Muggenthaler H, Sauer S, Mall G, Hubig M,
 *International journal of legal medicine*.  
+
+* [Regular changes in foot strike pattern during prolonged downhill running do not influence neuromuscular, energetics, or biomechanical parameters.](https://www.ncbi.nlm.nih.gov/pubmed/31311427)
+Vernillo G, Aguiar M, Savoldelli A, Martinez A, Giandolini M, Horvais N, Edwards WB, Millet GY,
+*European journal of sport science*.  
+
+* [Core-Muscle Training and Neuromuscular Control of Lower Limb and Trunk.](https://www.ncbi.nlm.nih.gov/pubmed/31386583)
+Sasaki S, Tsuda E, Yamamoto Y, Maeda S, Kimura Y, Fujita Y, Ishibashi Y,
+*Journal of athletic training*.  
+
+* [Changes in Fundamental Motor-Skill Performance Following a Nine-Month Mastery Motivational Climate Intervention.](https://www.ncbi.nlm.nih.gov/pubmed/31393811)
+Johnson JL, Rudisill ME, Hastie P, Wadsworth D, Strunk K, Venezia A, Sassi J, Morris M, Merritt M,
+*Research quarterly for exercise and sport*.  
+
+* [Repetitive Head Impact Exposure in College Football Following an NCAA Rule Change to Eliminate Two-A-Day Preseason Practices: A Study from the NCAA-DoD CARE Consortium.](https://www.ncbi.nlm.nih.gov/pubmed/31388849)
+Stemper BD, Shah AS, Harezlak J, Rowson S, Duma S, Mihalik JP, Riggen LD, Brooks A, Cameron KL, Giza CC, Houston MN, Jackson J, Posner MA, McGinty G, DiFiori J, Broglio SP, McAllister TW, McCrea M, 
+*Annals of biomedical engineering*.  
 
 ----
 # TENDON/LIGAMENT
@@ -379,9 +383,13 @@ Zhou K, Yu P, Shi X, Ling T, Zeng W, Chen A, Yang W, Zhou Z,
 ----
 
 [Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)
-* [Biomechanical and tomographic differences in the microarchitecture and strength of trabecular and cortical bone in the early stage of male osteoporosis.](https://www.ncbi.nlm.nih.gov/pubmed/31393911)
-Yeh PS, Lee YW, Chang WH, Wang W, Wang JL, Liu SH, Chen RM,
-*PloS one*.  
+* [Irish Equine Industry Stakeholder Perspectives of Objective Technology for Biomechanical Analyses in the Field.](https://www.ncbi.nlm.nih.gov/pubmed/31398822)
+Egan S, Brama P, McGrath D,
+*Animals : an open access journal from MDPI*.  
+
+* [Ex vivo biomechanical comparison of 2.7 mm string-of-pearl plate versus screw/wire/Polymethylmethacrylate composite fixation and 2.7 mm veterinary acetabular plate for repair of simulated canine acetabular fractures.](https://www.ncbi.nlm.nih.gov/pubmed/31399093)
+Blakely JA, Butler JR, Priddy LB, McCabe EM, Avendaño JN, Elder SH, Wills R,
+*BMC veterinary research*.  
 
 * [Changes in periprosthetic bone mineral density and bone turnover markers after osseointegrated implant surgery: A cohort study of 20 transfemoral amputees with 30-month follow-up.](https://www.ncbi.nlm.nih.gov/pubmed/31385557)
 Hansen RL, Langdahl BL, Jørgensen PH, Petersen KK, Søballe K, Stilling M,
@@ -390,14 +398,6 @@ Hansen RL, Langdahl BL, Jørgensen PH, Petersen KK, Søballe K, Stilling M,
 * [Mirrors Improve Rabbit Natural Behavior in a Free-Range Breeding System.](https://www.ncbi.nlm.nih.gov/pubmed/31390755)
 Mastellone V, Bovera F, Musco N, Panettieri V, Piccolo G, Scandurra A, Di Meo C, Attia YA, Lombardi P,
 *Animals : an open access journal from MDPI*.  
-
-* [Irish Equine Industry Stakeholder Perspectives of Objective Technology for Biomechanical Analyses in the Field.](https://www.ncbi.nlm.nih.gov/pubmed/31398822)
-Egan S, Brama P, McGrath D,
-*Animals : an open access journal from MDPI*.  
-
-* [Ex vivo biomechanical comparison of 2.7 mm string-of-pearl plate versus screw/wire/Polymethylmethacrylate composite fixation and 2.7 mm veterinary acetabular plate for repair of simulated canine acetabular fractures.](https://www.ncbi.nlm.nih.gov/pubmed/31399093)
-Blakely JA, Butler JR, Priddy LB, McCabe EM, Avendaño JN, Elder SH, Wills R,
-*BMC veterinary research*.  
 
 * [Effects of dietary organic minerals, fish oil, and hydrolyzed collagen on growth performance and tibia characteristics of broiler chickens.](https://www.ncbi.nlm.nih.gov/pubmed/31392338)
 Güz BC, Molenaar R, de Jong IC, Kemp B, van den Brand H, van Krimpen M,

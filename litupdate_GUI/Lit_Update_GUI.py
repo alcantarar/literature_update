@@ -116,7 +116,7 @@ def writemarkdown():
     st = st + ' University of Colorado Boulder\n\n'
     md_file.write(st)
 
-    papers = new_papers_df
+    papers = pd.read_csv(new_litupdate_fname)
     for topic in topic_list:
         papers_subset = pd.DataFrame(papers[papers.topic == topic].reset_index(drop = True))
         md_file.write('----\n')
