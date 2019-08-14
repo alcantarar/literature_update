@@ -1,9 +1,12 @@
 from tkinter import *
 import pandas as pd
-
-litupdate_fname = '../Literature_Updates/2019-8-8-litupdate.csv'
+import numpy as np
+import grip as gr
+import webbrowser
+import os
+litupdate_fname = '../Literature_Updates/2019-8-13-litupdate.csv'
 new_litupdate_fname = litupdate_fname[0:-4] + '-ADJUSTED.csv'
-
+new_litupdate_mdname = litupdate_fname[0:-4] + '-ADJUSTED.md'
 papers_df = pd.read_csv(litupdate_fname)
 new_papers_df = papers_df
 new_papers_df['new_topic'] = ''
@@ -48,7 +51,7 @@ def cat_buttons(frm, index, paper_list):
         new_papers_df['new_topic'].iloc[index] = str(var.get()).split()[1]
         print(new_papers_df.head(10)) # for debugging
         updateselect(index)
-        new_papers_df.to_csv(new_litupdate_fname)
+        new_papers_df.sort_values('topic').to_csv(new_litupdate_fname, index = False)
 
     def change_dropdown(*args):
         # text = tkvar.get()
@@ -88,6 +91,57 @@ def onselect(event):
     abstract_info.config(text = papers_df['abstract'][index])
     # print(papers_df['full_title'][index])
     cat_buttons(button_frame, index, papers_df)
+
+def writemarkdown():
+
+    # Markdown header
+    urlname = new_litupdate_mdname[0:-3].split('/')[-1]  # Keep just last part of file for website
+    print(urlname)
+    md_file = open(new_litupdate_mdname, 'w', encoding='utf-8')
+    md_file.write('---  \n')
+    md_file.write('layout: single  \n')
+    md_file.write('title: Biomechanics Literature Update  \n')
+    md_file.write('collection: literature  \n')
+    md_file.write('permalink: /literature/%s  \n' % urlname)
+    md_file.write('excerpt: <br>\n')
+    md_file.write('toc: true  \n')
+    md_file.write('toc_sticky: true  \n')
+    md_file.write('toc_label: Topics  \n')
+    md_file.write('---\n')
+    # Add Paper Entries
+    topic_list = np.unique(papers_df.sort_values('topic')['topic'])
+    st = '### Created by: [Ryan Alcantara](https://twitter.com/Ryan_Alcantara_)'
+    st = st + ' & [Gary Bruening](https://twitter.com/garebearbru) -'
+    st = st + ' University of Colorado Boulder\n\n'
+    md_file.write(st)
+    for topic in topic_list:
+        papers_subset = pd.DataFrame(papers_df[papers_df.topic == topic].reset_index(drop = True))
+        md_file.write('----\n')
+        if topic == 'unknown':
+            md_file.write('# %s: Num=%i\n' % (topic,len(papers_subset)))
+        else:
+            md_file.write('# %s\n' % topic)
+        md_file.write('----\n')
+        md_file.write('\n')
+        md_file.write('[Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)')
+        md_file.write('\n')
+        for i,paper in enumerate(papers_subset['links']):
+            md_file.write('%s\n' % paper)
+            md_file.write('%s\n' % papers_subset['authors'][i])
+            md_file.write('%s.  \n' % papers_subset['journal'][i])
+            # try: #don't include percentages
+            #     md_file.write('(%.1f%%) \n' % papers_subset['pred_val'][i])
+            # except:
+            #     md_file.write('%s\n' % papers_subset['pred_val'][i])
+            md_file.write('\n')
+
+    md_file.close() #saves markdown
+    print('Literature Update Exported as Markdown')
+    # Preview Markdown offline
+    gr.export(path=new_litupdate_mdname) # open markdown and save as html for previewing (offline)
+    htmlname = (new_litupdate_mdname[0:-3] + '.html')
+    webbrowser.open(os.path.realpath(htmlname), new = 2) #open html in browser
+    print('Opening Preview of Markdown')
 
 
 HEIGHT = 900
@@ -136,5 +190,8 @@ cat_buttons
 
 close_bttn = Button(button_frame, text = 'CLOSE', relief = FLAT, bg = 'azure4', fg = 'black', bd = 4, width = 25, font = ('Helvetica',10,'bold'), command = window.destroy)
 close_bttn.grid(row = 5, column = 0, pady = 5, sticky = 'nw')
+
+gen_md_bttn = Button(button_frame, text = 'Generate Markdown', relief = FLAT, bg = 'azure4', fg = 'black', bd = 4, width = 25, font = ('Helvetica',10,'bold'), command = writemarkdown)
+gen_md_bttn.grid(row = 4, column = 0, pady = 5, sticky = 'nw')
 
 mainloop()
