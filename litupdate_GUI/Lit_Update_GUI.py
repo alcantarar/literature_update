@@ -48,7 +48,7 @@ def cat_buttons(frm, index, paper_list):
     def select_topic():
         # print(var.get())
         # print(index)
-        new_papers_df['new_topic'].iloc[index] = str(var.get()).split()[1]
+        new_papers_df['topic'].iloc[index] = str(var.get()).split()[1]
         print(new_papers_df.head(10)) # for debugging
         updateselect(index)
         new_papers_df.sort_values('topic').to_csv(new_litupdate_fname, index = False)
@@ -56,7 +56,7 @@ def cat_buttons(frm, index, paper_list):
     def change_dropdown(*args):
         # text = tkvar.get()
         # print(text)
-        new_papers_df['new_topic'].iloc[index] = str(tkvar.get())
+        new_papers_df['topic'].iloc[index] = str(tkvar.get())
         print(new_papers_df.head(10)) # for debugging
         updateselect(index)
 
@@ -114,8 +114,10 @@ def writemarkdown():
     st = st + ' & [Gary Bruening](https://twitter.com/garebearbru) -'
     st = st + ' University of Colorado Boulder\n\n'
     md_file.write(st)
+
+    papers = new_papers_df
     for topic in topic_list:
-        papers_subset = pd.DataFrame(papers_df[papers_df.topic == topic].reset_index(drop = True))
+        papers_subset = pd.DataFrame(papers[papers.topic == topic].reset_index(drop = True))
         md_file.write('----\n')
         if topic == 'unknown':
             md_file.write('# %s: Num=%i\n' % (topic,len(papers_subset)))
