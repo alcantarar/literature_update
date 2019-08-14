@@ -12,8 +12,8 @@ def search(query):
                             retmode='xml', 
                             datetype = 'pdat',
                             # reldate = 7, #only within n days from now
-                            mindate = '2019/07/30',
-                            maxdate = '2019/08/06', #for searching date range
+                            mindate = '2019/08/06',
+                            maxdate = '2019/08/13', #for searching date range
                             term=query)
     results = Entrez.read(handle)
     return results
@@ -308,10 +308,10 @@ for topic in topic_list:
         md_file.write('%s\n' % paper)
         md_file.write('%s\n' % papers_subset['authors'][i])
         md_file.write('%s.  \n' % papers_subset['journal'][i])
-        try:
-            md_file.write('(%.1f%%) \n' % papers_subset['pred_val'][i])
-        except:
-            md_file.write('%s\n' % papers_subset['pred_val'][i])
+        # try:
+        #     md_file.write('(%.1f%%) \n' % papers_subset['pred_val'][i])
+        # except:
+        #     md_file.write('%s\n' % papers_subset['pred_val'][i])
         md_file.write('\n')
 
 md_file.close()
