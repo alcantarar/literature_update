@@ -15,14 +15,6 @@ toc_label: Topics
 ----
 
 [Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)
-* [Biomechanical and tomographic differences in the microarchitecture and strength of trabecular and cortical bone in the early stage of male osteoporosis.](https://www.ncbi.nlm.nih.gov/pubmed/31393911)
-Yeh PS, Lee YW, Chang WH, Wang W, Wang JL, Liu SH, Chen RM,
-*PloS one*.  
-
-* [Changes in periprosthetic bone mineral density and bone turnover markers after osseointegrated implant surgery: A cohort study of 20 transfemoral amputees with 30-month follow-up.](https://www.ncbi.nlm.nih.gov/pubmed/31385557)
-Hansen RL, Langdahl BL, Jørgensen PH, Petersen KK, Søballe K, Stilling M,
-*Prosthetics and orthotics international*.  
-
 * [Osteocalcin affects bone mineral and mechanical properties in female mice.](https://www.ncbi.nlm.nih.gov/pubmed/31401301)
 Berezovska O, Yildirim G, Budell W, Yagerman S, Pidhaynyy B, Bastien C, van der Meulen MCH, Dowd TL,
 *Bone*.  
@@ -387,6 +379,14 @@ Zhou K, Yu P, Shi X, Ling T, Zeng W, Chen A, Yang W, Zhou Z,
 ----
 
 [Back to top](#created-by-ryan-alcantara--gary-bruening---university-of-colorado-boulder)
+* [Biomechanical and tomographic differences in the microarchitecture and strength of trabecular and cortical bone in the early stage of male osteoporosis.](https://www.ncbi.nlm.nih.gov/pubmed/31393911)
+Yeh PS, Lee YW, Chang WH, Wang W, Wang JL, Liu SH, Chen RM,
+*PloS one*.  
+
+* [Changes in periprosthetic bone mineral density and bone turnover markers after osseointegrated implant surgery: A cohort study of 20 transfemoral amputees with 30-month follow-up.](https://www.ncbi.nlm.nih.gov/pubmed/31385557)
+Hansen RL, Langdahl BL, Jørgensen PH, Petersen KK, Søballe K, Stilling M,
+*Prosthetics and orthotics international*.  
+
 * [Mirrors Improve Rabbit Natural Behavior in a Free-Range Breeding System.](https://www.ncbi.nlm.nih.gov/pubmed/31390755)
 Mastellone V, Bovera F, Musco N, Panettieri V, Piccolo G, Scandurra A, Di Meo C, Attia YA, Lombardi P,
 *Animals : an open access journal from MDPI*.  

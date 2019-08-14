@@ -9,7 +9,7 @@ new_litupdate_fname = litupdate_fname[0:-4] + '-ADJUSTED.csv'
 new_litupdate_mdname = litupdate_fname[0:-4] + '-ADJUSTED.md'
 papers_df = pd.read_csv(litupdate_fname)
 new_papers_df = papers_df
-new_papers_df['new_topic'] = ''
+# new_papers_df['new_topic'] = ''
 
 all_topics = {'BONE', 'CARDIOVASCULAR/CARDOPULMONARY', 'CELLULAR/SUBCELLULAR', 'COMPARATIVE', 'DENTAL/ORAL/FACIAL',
               'EVOLUTION/ANTHROPOLOGY', 'GAIT/LOCOMOTION', 'JOINT/CARTILAGE', 'METHODS', 'MODELING', 'NEURAL',
@@ -52,12 +52,13 @@ def cat_buttons(frm, index, paper_list):
         print(new_papers_df.head(10)) # for debugging
         updateselect(index)
         new_papers_df.sort_values('topic').to_csv(new_litupdate_fname, index = False)
-
+        print(new_litupdate_fname)
     def change_dropdown(*args):
         # text = tkvar.get()
         # print(text)
         new_papers_df['topic'].iloc[index] = str(tkvar.get())
         print(new_papers_df.head(10)) # for debugging
+        new_papers_df.sort_values('topic').to_csv(new_litupdate_fname, index = False)
         updateselect(index)
 
 
