@@ -12,8 +12,8 @@ def search(query):
                             retmode='xml', 
                             datetype = 'pdat',
                             # reldate = 7, #only within n days from now
-                            mindate = '2019/08/06',
-                            maxdate = '2019/08/13', #for searching date range
+                            mindate = '2019/09/10',
+                            maxdate = '2019/09/17', #for searching date range
                             term=query)
     results = Entrez.read(handle)
     return results
@@ -289,7 +289,8 @@ for i,t in enumerate(topic_list):
 
 #==============================================================================
 #========================= Make Markdown File =================================
-st = '### Created by: [Ryan Alcantara](https://twitter.com/Ryan_Alcantara_)'
+st = '### Learn more about this Machine Learning-assisted literature update [here!](https://alcantarar.github.io/projects/p98_literature/)\n'
+st = st + '### Created by: [Ryan Alcantara](https://twitter.com/Ryan_Alcantara_)'
 st = st + ' & [Gary Bruening](https://twitter.com/garebearbru) -'
 st = st + ' University of Colorado Boulder\n\n'
 md_file.write(st)

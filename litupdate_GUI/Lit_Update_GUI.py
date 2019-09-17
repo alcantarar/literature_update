@@ -4,7 +4,7 @@ import numpy as np
 import grip as gr
 import webbrowser
 import os
-litupdate_fname = '../Literature_Updates/2019-8-13-litupdate.csv'
+litupdate_fname = '../Literature_Updates/2019-9-17-litupdate.csv'
 new_litupdate_fname = litupdate_fname[0:-4] + '-ADJUSTED.csv'
 new_litupdate_mdname = litupdate_fname[0:-4] + '-ADJUSTED.md'
 papers_df = pd.read_csv(litupdate_fname)
@@ -13,7 +13,7 @@ new_papers_df = papers_df
 
 all_topics = {'BONE', 'CARDIOVASCULAR/CARDOPULMONARY', 'CELLULAR/SUBCELLULAR', 'COMPARATIVE', 'DENTAL/ORAL/FACIAL',
               'EVOLUTION/ANTHROPOLOGY', 'GAIT/LOCOMOTION', 'JOINT/CARTILAGE', 'METHODS', 'MODELING', 'NEURAL',
-              'ORTHOPAEDICS/SPINE', 'ORTHOPAEDICS/SURGERY', 'REHABILITATION', 'SPORT/EXERCISE', 'TENDON/LIGAMENT',
+              'ORTHOPAEDICS/SPINE', 'ORTHOPAEDICS/SURGERY', 'REHABILITATION', 'ROBOTICS', 'SPORT/EXERCISE', 'TENDON/LIGAMENT',
               'TISSUE/BIOMATERIAL', 'VETERINARY/AGRICULTURAL'}
 
 def cat_buttons(frm, index, paper_list):
