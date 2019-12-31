@@ -300,7 +300,7 @@ callbacks = [EarlyStopping(monitor='val_loss', patience=2),
 from itertools import product
 param_grid = {'InputSize': [100,200,500],
               'DropOut': [.3,.75,.9],
-              'n_2nd_layers': [0,2,4],
+              'n_2nd_layers': [0,2,3],
               '2nd_layer_size': [10,20]}
 hyper_params = []
 accuracies = []
@@ -378,7 +378,7 @@ for hyper_params_iter in list(product(*param_grid.values())):
 
     model_pred = model.predict(X_test)
     topic_pred = [topic_unique[np.argmax(row)] for row in model_pred]
-    topic_act = [topic_unique[np.argmax(row)] for row in y_test]
+    topic_act  = [topic_unique[np.argmax(row)] for row in y_test]
 
     conf_mat = confusion_matrix(topic_act, topic_pred)
     print('The hyper parameters were: \nLayer 1 Size: '+str(hyper_params_iter[0])+'\nDropout Rate: '+str(hyper_params_iter[1])+
