@@ -56,7 +56,12 @@ def clean_str(abs_string,stop):
 # Make the Stop Words for string cleaning
 from nltk.corpus import stopwords
 import string
-stop = list(stopwords.words('english'))
+try:
+    stop = list(stopwords.words('english'))
+except:
+    import nltk
+    nltk.download('stopwords')
+    stop = list(stopwords.words('english'))
 stop_c = [string.capwords(word) for word in stop]
 for word in stop_c:
     stop.append(word)
