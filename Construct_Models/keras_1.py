@@ -25,7 +25,14 @@ To test the model run keras_eval.py
 import pandas as pd
 import numpy as np
 import string
+import os
 
+import warnings
+warnings.filterwarnings("ignore")
+
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
 #========================= Read in the Data ===================================
 
 data = pd.read_csv('../Data/RYANDATA.csv')
@@ -66,7 +73,7 @@ for top in top_lengths.Topics.unique():
     if not top == 'UNIQUETOPIC':
         filtered_data = filtered_data.append(data[data['Topics']==top],sort=True)
 
-filtered_data_even = filtered_data.groupby('Topics').apply(lambda s: s.sample(1000))
+filtered_data_even = filtered_data.groupby('Topics').apply(lambda s: s.sample(min(top_lengths['Length'])))
 filtered_data_even.fillna('')
 data = filtered_data_even[['Topics_split',
                            'Topics',
@@ -87,9 +94,9 @@ data.columns = ['topic_split',
                 'DOI',
                 'abstract']
 
-papers = pd.DataFrame(data['title'])
-topic = pd.DataFrame(data['topic'])
-author = pd.DataFrame(data['authors'])
+papers   = pd.DataFrame(data['title'])
+topic    = pd.DataFrame(data['topic'])
+author   = pd.DataFrame(data['authors'])
 abstract = pd.DataFrame(data['abstract'])
 print("Number of Papers: " + str(len(papers)))
 topic['topic'].unique()
@@ -246,7 +253,7 @@ from keras import regularizers
 from keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import GridSearchCV
 
-def create_model(first_layer, dropout_rate, n_2nd_layers):
+def create_model(first_layer, dropout_rate, n_2nd_layers, n_2nd_layer_size):
     activation = 'relu'
     
     model = Sequential()
@@ -255,8 +262,8 @@ def create_model(first_layer, dropout_rate, n_2nd_layers):
     model.add(layers.Dense(first_layer, input_dim=input_dim, activation=activation))
     model.add(Dropout(dropout_rate))
 #    model.add(layers.Dense(200,activation = 'relu'))
-#    for k in np.arange(n_2nd_layers):
-#        model.add(layers.Dense(100,activation = 'relu'))
+    for k in np.arange(n_2nd_layers):
+        model.add(layers.Dense(n_2nd_layer_size,activation = 'relu'))
     model.add(layers.Dense(y_test.shape[1], activation='softmax'))
     
     model.compile(loss='categorical_crossentropy', 
@@ -290,101 +297,121 @@ from keras.callbacks import EarlyStopping, ModelCheckpoint
 callbacks = [EarlyStopping(monitor='val_loss', patience=2),
              ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
 
-model = create_model(1000, .9, 0)
-model.summary()
-history = model.fit(X_train, y_train,
-                    epochs=10,
-                    callbacks = callbacks,
-                    verbose=1,
-                    validation_data=(X_test, y_test),
-                    batch_size=1010)
+from itertools import product
+param_grid = {'InputSize': [100,200,500],
+              'DropOut': [.3,.75,.9],
+              'n_2nd_layers': [0,2,4],
+              '2nd_layer_size': [10,20]}
+hyper_params = []
+accuracies = []
 
-import matplotlib.pyplot as plt
-# Plot training & validation accuracy values
-plt.plot(history.history['acc'])
-plt.plot(history.history['val_acc'])
-plt.title('Model accuracy')
-plt.ylabel('Accuracy')
-plt.xlabel('Epoch')
-plt.legend(['Train', 'Test'], loc='upper left')
-plt.show()
+for hyper_params_iter in list(product(*param_grid.values())):
+    model = create_model(hyper_params_iter[0], hyper_params_iter[1], hyper_params_iter[2], hyper_params_iter[3])
+    model.summary()
+    history = model.fit(X_train, y_train,
+                        epochs=200,
+                        callbacks = callbacks,
+                        verbose=0, # Set to one to see progress
+                        validation_data=(X_test, y_test),
+                        batch_size=1010)
 
-#========================= Save the Model =====================================
-from keras.models import model_from_json
-import pickle
-model.save('../Models/Keras_model/model_DNN.h5')
-#model_json = model.to_json()
-#with open("../Models/Keras_model/model_4_24.json", "w") as json_file:
-#    json_file.write(model_json)
-# serialize weights to HDF5
-#model.save_weights("../Models/Keras_model/model_4_24.h5")
-print("Saved model to disk: model_DNN.h5")
-    
-import os
-if os.path.isfile('../Models/Keras_model/LabelEncoder.npy'):
-    print('Saved Label Encoder: LabelEncoder.npy')
-else:
-    print('NO LABEL ENCODER SAVED')
+    import matplotlib.pyplot as plt
+    # Plot training & validation accuracy values
+    plt.plot(history.history['acc'])
+    plt.plot(history.history['val_acc'])
+    plt.title('Model accuracy')
+    plt.ylabel('Accuracy')
+    plt.xlabel('Epoch')
+    plt.legend(['Train', 'Test'], loc='upper left')
+    # plt.show()
 
-if os.path.isfile('../Models/Keras_model/unique_topics.txt'):
-    print('Saved Unique Topics: unique_topics.txt')
-else:
-    print('NO UNIQUE TOPICS SAVED')
-    
-if os.path.isfile('../Models/Keras_model/Vectorizer_tdif.pkl'):
-    print('Saved Vectorizer: Vectorizer.pkl')
-else:
-    print('NO VECTORIZER SAVED')
+    # #========================= Save the Model =====================================
+    # from keras.models import model_from_json
+    # import pickle
+    # model.save('../Models/Keras_model/model_DNN.h5')
+    # #model_json = model.to_json()
+    # #with open("../Models/Keras_model/model_4_24.json", "w") as json_file:
+    # #    json_file.write(model_json)
+    # # serialize weights to HDF5
+    # #model.save_weights("../Models/Keras_model/model_4_24.h5")
+    # print("Saved model to disk: model_DNN.h5")
+        
+    # import os
+    # if os.path.isfile('../Models/Keras_model/LabelEncoder.npy'):
+    #     print('Saved Label Encoder: LabelEncoder.npy')
+    # else:
+    #     print('NO LABEL ENCODER SAVED')
 
-#========================= Load the Model =====================================
-from keras.models import model_from_json
-from keras.models import load_model
-model = load_model('../Models/Keras_model/model_DNN.h5')
-model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
-print("Loaded model from disk")
+    # if os.path.isfile('../Models/Keras_model/unique_topics.txt'):
+    #     print('Saved Unique Topics: unique_topics.txt')
+    # else:
+    #     print('NO UNIQUE TOPICS SAVED')
+        
+    # if os.path.isfile('../Models/Keras_model/Vectorizer_tdif.pkl'):
+    #     print('Saved Vectorizer: Vectorizer.pkl')
+    # else:
+    #     print('NO VECTORIZER SAVED')
 
-import pickle
-import numpy as np
-import pandas as pd
-from sklearn.preprocessing import LabelEncoder
+    # #========================= Load the Model =====================================
+    # from keras.models import model_from_json
+    # from keras.models import load_model
+    # model = load_model('../Models/Keras_model/model_DNN.h5')
+    # model.compile(loss='binary_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
+    # print("Loaded model from disk")
 
-vect = pickle.load(open('../Models/Keras_model/Vectorizer_tdif.pkl','rb'))
-print('Loaded Vectorizer')
+    # import pickle
+    # import numpy as np
+    # import pandas as pd
+    # from sklearn.preprocessing import LabelEncoder
 
-with open('../Models/Keras_model/unique_topics.txt', "rb") as fp: # Unpickling
-    unique_topic = pickle.load(fp)
-print('Loaded Unique Topics')
+    # vect = pickle.load(open('../Models/Keras_model/Vectorizer_tdif.pkl','rb'))
+    # print('Loaded Vectorizer')
 
-#========================= Plot Confusion Matrix ==============================
-import seaborn as sns
-import matplotlib.pyplot as plt
-from sklearn.metrics import confusion_matrix
+    # with open('../Models/Keras_model/unique_topics.txt', "rb") as fp: # Unpickling
+    #     unique_topic = pickle.load(fp)
+    # print('Loaded Unique Topics')
 
-model_pred = model.predict(X_test)
-topic_pred = [topic_unique[np.argmax(row)] for row in model_pred]
-topic_act = [topic_unique[np.argmax(row)] for row in y_test]
+    #========================= Plot Confusion Matrix ==============================
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    from sklearn.metrics import confusion_matrix
 
-conf_mat = confusion_matrix(topic_act, topic_pred)
-print('Accuracy: ' + str(round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)) + '%')
-accuracy = round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)
-conf_mat_rowsum = [sum(row) for row in conf_mat]
-conf_mat_perc = [row/sum(row) for row in conf_mat]
-conf_mat_perc = np.stack(conf_mat_perc)
+    model_pred = model.predict(X_test)
+    topic_pred = [topic_unique[np.argmax(row)] for row in model_pred]
+    topic_act = [topic_unique[np.argmax(row)] for row in y_test]
 
-fig, ax = plt.subplots(figsize=(16,9))
-sns.set(font_scale=1.2) #font size multiplier
-sns.heatmap(conf_mat_perc, annot=True, fmt='.0%', cmap = 'magma', annot_kws={"size": 12},
-            xticklabels=topic_unique, yticklabels=topic_unique)
+    conf_mat = confusion_matrix(topic_act, topic_pred)
+    print('The hyper parameters were: \nLayer 1 Size: '+str(hyper_params_iter[0])+'\nDropout Rate: '+str(hyper_params_iter[1])+
+          '\nNumber 2nd layers: '+str(hyper_params_iter[2])+'\nSize 2nd Layers: '+str(hyper_params_iter[3]))
+    print('Accuracy: ' + str(round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)) + '%')
+    accuracy = round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)
 
-plt.ylabel('Actual',fontsize = 20)
-plt.xlabel('Predicted',fontsize = 20)
-plt.yticks(size = 9)
-plt.xticks(size = 9, rotation=30,ha='right')
-title_str = 'Percent Predicted Correct, Global Accuracy: ' + str(accuracy) + '%'
-plt.title(title_str, fontsize = 26)
-plt.yticks( rotation='horizontal')
-fig.tight_layout(pad = 2)
-plt.savefig('../Plots/biomchL_predict_plot_DNN.png')
+    hyper_params.append(hyper_params_iter)
+    accuracies.append(accuracy)
+
+    # conf_mat_rowsum = [sum(row) for row in conf_mat]
+    # conf_mat_perc = [row/sum(row) for row in conf_mat]
+    # conf_mat_perc = np.stack(conf_mat_perc)
+
+    # fig, ax = plt.subplots(figsize=(16,9))
+    # sns.set(font_scale=1.2) #font size multiplier
+    # sns.heatmap(conf_mat_perc, annot=True, fmt='.0%', cmap = 'magma', annot_kws={"size": 12},
+    #             xticklabels=topic_unique, yticklabels=topic_unique)
+
+    # plt.ylabel('Actual',fontsize = 20)
+    # plt.xlabel('Predicted',fontsize = 20)
+    # plt.yticks(size = 9)
+    # plt.xticks(size = 9, rotation=30,ha='right')
+    # title_str = 'Percent Predicted Correct, Global Accuracy: ' + str(accuracy) + '%'
+    # plt.title(title_str, fontsize = 26)
+    # plt.yticks( rotation='horizontal')
+    # fig.tight_layout(pad = 2)
+    # plt.savefig('../Plots/biomchL_predict_plot_DNN.png')
+
+accuracy_data = pd.DataFrame(data =  {'Hyper Parameters': hyper_params,
+                                      'Accuracy': accuracies})
+os.chdir(dname)
+accuracy_data.to_csv('../Data/accuracy_data.csv')
 
 ##========================= Find how many it missed ============================
 ##model_pred = model.predict(X_test)
