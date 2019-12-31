@@ -41,17 +41,33 @@ def is_good_response(resp):
             and content_type.find('html') > -1)
     
 def string_parse1(entry, topic):
+    if 'Jones M.L.H., Ebert S.M., Reed M.P..' in entry:
+        author  = 'Jones M.L.H., Ebert S.M., Reed M.P.'
+        title   = 'Investigating the effect of task parameters on force exertion rating of one-handed pulling tasks. '
+        journal = 'Proceedings Of The Human Factors And Ergonomics Society'
+        year    = '2018'
+        vol_isu = '2:833-837'
+        doi     = ''
+        return topic, author, title, journal, year, vol_isu, doi
+
     if entry[0:10] == 'http://dx.':
         entry = entry[entry.find(' ')+1:]
         
     if entry[0:3] == '01. ':
         entry = entry[4:]
-        
-    author = entry[0:entry.find('.')].split(';')                
+    
+    if '..' in entry and entry.find('..') < len(entry)-50:
+        author = entry[0:entry.find('..')+1].split(',')
+        entry = entry[entry.find('..')+3:]
+    else:
+        author = entry[0:entry.find('.')].split(';')
+        entry = entry[entry.find('.')+2:]             
     authors_temp = [author[1:] if author[0]== ' ' else author for author in author]
     
-    entry   = entry[entry.find('.')+2:]
-    titles_temp = (entry[0:entry.find('.')])
+    if entry.find('.') > 20:
+        titles_temp = (entry[0:entry.find('.')])
+    else:
+        titles_temp = entry[0:entry[20:-1].find('.')+20]
     if len(titles_temp)<5:
         entry   = entry[entry.find('.')+2:]
         if entry[0:109] == 'elegans locomotion: finding balance in imbalance. Biochemical And Biophysical Roles Of Cell Surface Molecules':
@@ -92,21 +108,29 @@ def string_parse1(entry, topic):
     return topic, author, title, journal, year, vol_isu, doi
 
 def string_parse2(entry, topic):
+    if 'Jones M.L.H., Ebert S.M., Reed M.P..' in entry:
+        author  = 'Jones M.L.H., Ebert S.M., Reed M.P.'
+        title   = 'Investigating the effect of task parameters on force exertion rating of one-handed pulling tasks. '
+        journal = 'Proceedings Of The Human Factors And Ergonomics Society'
+        year    = '2018'
+        vol_isu = '2:833-837'
+        doi     = ''
+        return topic, author, title, journal, year, vol_isu, doi
     if 'Carey, J, Craig, M, Kerstein, RB, Radke, J,' in entry:
-        author = 'Carey, J, Craig, M, Kerstein, RB, Radke, J,'.split(',')
-        title = 'Determining a relationship between applied occlusal load and articulating paper mark area'
+        author  = 'Carey, J, Craig, M, Kerstein, RB, Radke, J,'.split(',')
+        title   = 'Determining a relationship between applied occlusal load and articulating paper mark area'
         journal = 'The Open Dentistry Journal'
-        year = '2007'
+        year    = '2007'
         vol_isu = '1;1-7'
-        doi = ''
+        doi     = ''
         return topic, author, title, journal, year, vol_isu, doi
     if 'Coulon M, Baudoin C, Depaulis-Carre M, Heyman Y, Renard JP, Richard C' in entry:
-        author = 'Coulon M, Baudoin C, Depaulis-Carre M, Heyman Y, Renard JP, Richard C'.split(',')
-        title = 'Dairy cattle exploratory and social behaviors: Is there an effect of cloning?'
+        author  = 'Coulon M, Baudoin C, Depaulis-Carre M, Heyman Y, Renard JP, Richard C'.split(',')
+        title   = 'Dairy cattle exploratory and social behaviors: Is there an effect of cloning?'
         journal = 'Theriogenology'
-        year = '2007'
+        year    = '2007'
         vol_isu = '68(8):1097-103'
-        doi = ''
+        doi     = ''
         return topic, author, title, journal, year, vol_isu, doi
     if entry[0:10] == 'http://dx.':
         entry = entry[entry.find(' ')+1:]
