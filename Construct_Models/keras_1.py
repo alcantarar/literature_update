@@ -260,7 +260,7 @@ def create_model(first_layer, dropout_rate, n_2nd_layers, n_2nd_layer_size):
 #    model.add(layers.Conv1D(128, 5, activation='relu'))
 #    model.add(Dropout(.2)),
     model.add(layers.Dense(first_layer, input_dim=input_dim, activation=activation))
-    model.add(Dropout(dropout_rate))
+    model.add(Dropout(rate = dropout_rate))
 #    model.add(layers.Dense(200,activation = 'relu'))
     for k in np.arange(n_2nd_layers):
         model.add(layers.Dense(n_2nd_layer_size,activation = 'relu'))
@@ -298,10 +298,10 @@ callbacks = [EarlyStopping(monitor='val_loss', patience=2),
              ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
 
 from itertools import product
-param_grid = {'InputSize': [100,200,500],
-              'DropOut': [.3,.75,.9],
-              'n_2nd_layers': [0,2,3],
-              '2nd_layer_size': [10,20]}
+param_grid = {'InputSize': [10,20,30,40,50,75,125,150,175,200,250],
+              'DropOut': [.6,.7,.8,.9],
+              'n_2nd_layers': [0,1,2],
+              '2nd_layer_size': [5,10,20]}
 hyper_params = []
 accuracies = []
 
@@ -309,11 +309,11 @@ for hyper_params_iter in list(product(*param_grid.values())):
     model = create_model(hyper_params_iter[0], hyper_params_iter[1], hyper_params_iter[2], hyper_params_iter[3])
     model.summary()
     history = model.fit(X_train, y_train,
-                        epochs=200,
+                        epochs = 200,
                         callbacks = callbacks,
-                        verbose=0, # Set to one to see progress
-                        validation_data=(X_test, y_test),
-                        batch_size=1010)
+                        verbose = 1, # Set to one to see progress
+                        validation_data = (X_test, y_test),
+                        batch_size = 1010)
 
     import matplotlib.pyplot as plt
     # Plot training & validation accuracy values
