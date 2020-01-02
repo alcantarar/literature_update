@@ -198,6 +198,7 @@ vectorizer = TfidfVectorizer(min_df=5, #min occurances needed
                              sublinear_tf=True, 
                              stop_words = 'english')
     
+#    print(i,topic2[item,:])
 vectors = vectorizer.fit_transform(data['everything'])
 with open('../Models/Keras_model/Vectorizer_tdif.pkl', 'wb') as f:
     pickle.dump(vectorizer, f)
@@ -298,14 +299,16 @@ callbacks = [EarlyStopping(monitor='val_loss', patience=2),
              ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
 
 from itertools import product
-param_grid = {'InputSize': [10,20,30,40,50,75,125,150,175,200,250],
+param_grid = {'InputSize': [150,30,40,50,75,125],
               'DropOut': [.6,.7,.8,.9],
-              'n_2nd_layers': [0,1,2],
-              '2nd_layer_size': [5,10,20]}
+              'n_2nd_layers': [1,0],
+              '2nd_layer_size': [10,5]}
 hyper_params = []
 accuracies = []
 
 for hyper_params_iter in list(product(*param_grid.values())):
+    print('Testing hyper parameters: \nLayer 1 Size: '+str(hyper_params_iter[0])+'\nDropout Rate: '+str(hyper_params_iter[1])+
+          '\nNumber 2nd layers: '+str(hyper_params_iter[2])+'\nSize 2nd Layers: '+str(hyper_params_iter[3]))
     model = create_model(hyper_params_iter[0], hyper_params_iter[1], hyper_params_iter[2], hyper_params_iter[3])
     model.summary()
     history = model.fit(X_train, y_train,
@@ -313,7 +316,7 @@ for hyper_params_iter in list(product(*param_grid.values())):
                         callbacks = callbacks,
                         verbose = 1, # Set to one to see progress
                         validation_data = (X_test, y_test),
-                        batch_size = 1010)
+                        batch_size = 505)
 
     import matplotlib.pyplot as plt
     # Plot training & validation accuracy values
@@ -386,6 +389,7 @@ for hyper_params_iter in list(product(*param_grid.values())):
     print('Accuracy: ' + str(round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)) + '%')
     accuracy = round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)
 
+    del model
     hyper_params.append(hyper_params_iter)
     accuracies.append(accuracy)
 
@@ -442,7 +446,6 @@ accuracy_data.to_csv('../Data/accuracy_data.csv')
 #        topic_unique_indx.append(i)
 #    
 #for i, item in enumerate(topic_unique_indx):
-#    print(i,topic2[item,:])
 
 ##========================= Extra Layers  =====================================  
 #model.add(layers.Embedding(vocab_size, embedding_dim, input_length=maxlen))
