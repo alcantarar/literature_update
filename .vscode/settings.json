@@ -2,5 +2,5 @@
     "python.linting.pylintEnabled": true,
     "python.linting.flake8Enabled": false,
     "python.linting.enabled": true,
-    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\envs\\PythonGPU\\python.exe"
+    "python.pythonPath": "C:\\ProgramData\\Anaconda3\\envs\\tensorflow\\python.exe"
 }

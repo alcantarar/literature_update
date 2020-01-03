@@ -34,6 +34,10 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
+from keras import backend as K
+if K.backend() == 'tensorflow':
+        K.clear_session()
+
 # #========================= Set CPU or GPU Compute ==============================
 # from keras import backend as K
 # import tensorflow as tf
@@ -335,10 +339,10 @@ callbacks = [EarlyStopping(monitor='val_loss', patience=2),\
 
 from itertools import product
 if 'grid' not in locals():
-    param_grid = {'first_layer': [250,200,150,30,40,50,75,125],\
+    param_grid = {'first_layer': [500,250,200,150,30,40,50,75,125],\
                 'dropout_rate': [.6,.7,.8,.9],\
-                'n_2nd_layers': [1,0],\
-                'n_2nd_layer_size': [10,5]}
+                'n_2nd_layers': [2,1,0],\
+                'n_2nd_layer_size': [20,10,5]}
     # param_grid = {'first_layer': [500],\
     #               'dropout_rate': [.8],\
     #               'n_2nd_layers': [2],\
