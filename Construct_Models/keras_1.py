@@ -33,6 +33,28 @@ warnings.filterwarnings("ignore")
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
+
+from keras import backend as K
+
+#========================= Set CPU or GPU Compute ==============================
+import tensorflow as tf
+num_cores = 4
+
+CPU = 1
+GPU = 0
+if GPU:
+    num_GPU = 1
+    num_CPU = 1
+if CPU:
+    num_CPU = 4
+    num_GPU = 0
+
+config = tf.ConfigProto(intra_op_parallelism_threads=num_cores,\
+        inter_op_parallelism_threads=num_cores, allow_soft_placement=True,\
+        device_count = {'CPU' : num_CPU, 'GPU' : num_GPU})
+session = tf.Session(config=config)
+K.set_session(session)
+
 #========================= Read in the Data ===================================
 
 data = pd.read_csv('../Data/RYANDATA.csv')
@@ -59,14 +81,14 @@ min_num = len(topics)
 min_num = 1000
 top_lengths = top_lengths.query('Length>=' + str(min_num))
 
-filtered_data = pd.DataFrame(data =  {'Topics_split': [],
-                                      'Topics': [],
-                                      'Authors': [],
-                                      'Titles': [],
-                                      'Journals': [],
-                                      'Years': [],
-                                      'Vol_Isue': [],
-                                      'DOI': [],
+filtered_data = pd.DataFrame(data =  {'Topics_split': [],\
+                                      'Topics': [],\
+                                      'Authors': [],\
+                                      'Titles': [],\
+                                      'Journals': [],\
+                                      'Years': [],\
+                                      'Vol_Isue': [],\
+                                      'DOI': [],\
                                       'Abstract': []})
 
 for top in top_lengths.Topics.unique():
@@ -75,23 +97,23 @@ for top in top_lengths.Topics.unique():
 
 filtered_data_even = filtered_data.groupby('Topics').apply(lambda s: s.sample(min(top_lengths['Length'])))
 filtered_data_even.fillna('')
-data = filtered_data_even[['Topics_split',
-                           'Topics',
-                           'Authors',
-                           'Titles',
-                           'Journals',
-                           'Years',
-                           'Vol_Isue',
-                           'DOI',
+data = filtered_data_even[['Topics_split',\
+                           'Topics',\
+                           'Authors',\
+                           'Titles',\
+                           'Journals',\
+                           'Years',\
+                           'Vol_Isue',\
+                           'DOI',\
                            'Abstract']]
-data.columns = ['topic_split',
-                'topic',
-                'authors',
-                'title',
-                'Journals',
-                'Years',
-                'Vol_Isue',
-                'DOI',
+data.columns = ['topic_split',\
+                'topic',\
+                'authors',\
+                'title',\
+                'Journals',\
+                'Years',\
+                'Vol_Isue',\
+                'DOI',\
                 'abstract']
 
 papers   = pd.DataFrame(data['title'])
@@ -186,16 +208,16 @@ from sklearn.utils.validation import check_is_fitted
 #                                     sublinear_tf=True, 
 #                                     stop_words = 'english')
 #except:
-vectorizer = TfidfVectorizer(min_df=5, #min occurances needed
-                             max_df=0.75, #max occuraces allowed (%)
-                             ngram_range=(1,2), #size range of grams (1-3 words)
-                             strip_accents='unicode',
-                             lowercase =True,
-                             analyzer='word', 
-                             token_pattern=r'\w+', 
-                             use_idf=True, 
-                             smooth_idf=True, 
-                             sublinear_tf=True, 
+vectorizer = TfidfVectorizer(min_df=5, #min occurances needed\
+                             max_df=0.75, #max occuraces allowed (%)\
+                             ngram_range=(1,2), #size range of grams (1-3 words)\
+                             strip_accents='unicode',\
+                             lowercase =True,\
+                             analyzer='word',\
+                             token_pattern=r'\w+',\
+                             use_idf=True,\
+                             smooth_idf=True,\
+                             sublinear_tf=True,\
                              stop_words = 'english')
     
 #    print(i,topic2[item,:])
@@ -267,57 +289,73 @@ def create_model(first_layer, dropout_rate, n_2nd_layers, n_2nd_layer_size):
         model.add(layers.Dense(n_2nd_layer_size,activation = 'relu'))
     model.add(layers.Dense(y_test.shape[1], activation='softmax'))
     
-    model.compile(loss='categorical_crossentropy', 
-                  optimizer='adam', 
+    model.compile(loss='categorical_crossentropy',\
+                  optimizer='adam',\
                   metrics=['accuracy'])
     return model
 
 # ========================= Trying Random Search ===============================
 from keras.wrappers.scikit_learn import KerasRegressor
 from sklearn.model_selection     import RandomizedSearchCV
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 
-clf = KerasRegressor(build_fn=create_model, verbose=0)
-param_grid = dict(first_layer = [500,1000,1500], 
-                 dropout_rate = [.2,.5,.8], 
-                 n_2nd_layers = [0,1,2],
+callbacks = [EarlyStopping(monitor='val_loss', patience=2),\
+             ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
+
+clf = KerasRegressor(build_fn=create_model, verbose=1)
+param_grid = dict(first_layer = [25,50,75,100,200,500],\
+                 dropout_rate = [.2,.5,.8],\
+                 n_2nd_layers = [0,1,2],\
                  n_2nd_layer_size = [20,10,5])
 
-# Apply grid search
-grid = RandomizedSearchCV(clf, 
-                         param_distributions=param_grid,
-                         n_jobs=1, cv=3,
-                         verbose=2, n_iter=30)
-grid.fit(X_train,y_train)
 
-# What were the best hyperparameters that we found?
-print(grid.best_params_)
-breakhere
-    
+try:
+    # Apply grid search
+    grid = RandomizedSearchCV(clf,\
+                            param_distributions=param_grid,\
+                            n_jobs=-1, cv=2,\
+                            verbose=1, n_iter=30)
+                            
+    grid.fit(vectors,topic_dense,\
+            epochs = 200,\
+            batch_size = 200,\
+            verbose = 1,\
+            callbacks = callbacks)
+
+    # What were the best hyperparameters that we found?
+    print(grid.best_params_)
+    fasdasfdasdfafsd
+except:
+    1
 #========================= Fit the Neural net =================================
 # Set callback functions to early stop training and save the best model so far
 from keras.callbacks import EarlyStopping, ModelCheckpoint
-callbacks = [EarlyStopping(monitor='val_loss', patience=2),
+callbacks = [EarlyStopping(monitor='val_loss', patience=2),\
              ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
 
 from itertools import product
-param_grid = {'InputSize': [150,30,40,50,75,125],
-              'DropOut': [.6,.7,.8,.9],
-              'n_2nd_layers': [1,0],
-              '2nd_layer_size': [10,5]}
+if grid is None:
+    param_grid = {'first_layer': [250,200,150,30,40,50,75,125],\
+                'dropout_rate': [.6,.7,.8,.9],\
+                'n_2nd_layers': [1,0],\
+                'n_2nd_layer_size': [10,5]}
+else:
+    param_grid = grid.best_params_
+
 hyper_params = []
 accuracies = []
 
 for hyper_params_iter in list(product(*param_grid.values())):
-    print('Testing hyper parameters: \nLayer 1 Size: '+str(hyper_params_iter[0])+'\nDropout Rate: '+str(hyper_params_iter[1])+
+    print('Testing hyper parameters: \nLayer 1 Size: '+str(hyper_params_iter[0])+'\nDropout Rate: '+str(hyper_params_iter[1])+\
           '\nNumber 2nd layers: '+str(hyper_params_iter[2])+'\nSize 2nd Layers: '+str(hyper_params_iter[3]))
     model = create_model(hyper_params_iter[0], hyper_params_iter[1], hyper_params_iter[2], hyper_params_iter[3])
     model.summary()
-    history = model.fit(X_train, y_train,
-                        epochs = 200,
-                        callbacks = callbacks,
-                        verbose = 1, # Set to one to see progress
-                        validation_data = (X_test, y_test),
-                        batch_size = 505)
+    history = model.fit(X_train, y_train,\
+                        epochs = 200,\
+                        callbacks = callbacks,\
+                        verbose = 1, # Set to one to see progress\
+                        validation_data = (X_test, y_test),\
+                        batch_size = 200)
 
     import matplotlib.pyplot as plt
     # Plot training & validation accuracy values
@@ -329,10 +367,52 @@ for hyper_params_iter in list(product(*param_grid.values())):
     plt.legend(['Train', 'Test'], loc='upper left')
     # plt.show()
 
+    #========================= Plot Confusion Matrix ==============================
+    import seaborn as sns
+    import matplotlib.pyplot as plt
+    from sklearn.metrics import confusion_matrix
+
+    model_pred = model.predict(X_test)
+    topic_pred = [topic_unique[np.argmax(row)] for row in model_pred]
+    topic_act  = [topic_unique[np.argmax(row)] for row in y_test]
+
+    conf_mat = confusion_matrix(topic_act, topic_pred)
+    print('The hyper parameters were: \nLayer 1 Size: '+str(hyper_params_iter[0])+'\nDropout Rate: '+str(hyper_params_iter[1])+\
+          '\nNumber 2nd layers: '+str(hyper_params_iter[2])+'\nSize 2nd Layers: '+str(hyper_params_iter[3]))
+    print('Accuracy: ' + str(round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)) + '%')
+    accuracy = round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)
+
+    hyper_params.append(hyper_params_iter)
+    accuracies.append(accuracy)
+
+    # conf_mat_rowsum = [sum(row) for row in conf_mat]
+    # conf_mat_perc = [row/sum(row) for row in conf_mat]
+    # conf_mat_perc = np.stack(conf_mat_perc)
+
+    # fig, ax = plt.subplots(figsize=(16,9))
+    # sns.set(font_scale=1.2) #font size multiplier
+    # sns.heatmap(conf_mat_perc, annot=True, fmt='.0%', cmap = 'magma', annot_kws={"size": 12},
+    #             xticklabels=topic_unique, yticklabels=topic_unique)
+
+    # plt.ylabel('Actual',fontsize = 20)
+    # plt.xlabel('Predicted',fontsize = 20)
+    # plt.yticks(size = 9)
+    # plt.xticks(size = 9, rotation=30,ha='right')
+    # title_str = 'Percent Predicted Correct, Global Accuracy: ' + str(accuracy) + '%'
+    # plt.title(title_str, fontsize = 26)
+    # plt.yticks( rotation='horizontal')
+    # fig.tight_layout(pad = 2)
+    # plt.savefig('../Plots/biomchL_predict_plot_DNN.png')
+
     #========================= Save the Model =====================================
     from keras.models import model_from_json
     import pickle
-    model.save('../Models/Keras_model/model_DNN'+''+'.h5')
+    if grid is None:
+        model.save('../Models/Keras_model/model_DNN'+str(accuracy)+\
+                    str(hyper_params_iter[0])+str(hyper_params_iter[1])+\
+                    str(hyper_params_iter[2])+str(hyper_params_iter[3])+'.h5')
+    else:
+        model.save('../Models/Keras_model/model_DNN.h5')
     #model_json = model.to_json()
     #with open("../Models/Keras_model/model_4_24.json", "w") as json_file:
     #    json_file.write(model_json)
@@ -356,6 +436,8 @@ for hyper_params_iter in list(product(*param_grid.values())):
     else:
         print('NO VECTORIZER SAVED')
 
+    del model
+    del history
     # #========================= Load the Model =====================================
     # from keras.models import model_from_json
     # from keras.models import load_model
@@ -375,49 +457,12 @@ for hyper_params_iter in list(product(*param_grid.values())):
     #     unique_topic = pickle.load(fp)
     # print('Loaded Unique Topics')
 
-    #========================= Plot Confusion Matrix ==============================
-    import seaborn as sns
-    import matplotlib.pyplot as plt
-    from sklearn.metrics import confusion_matrix
+if grid is None:
+    accuracy_data = pd.DataFrame(data =  {'Hyper Parameters': hyper_params,\
+                                        'Accuracy': accuracies})
+    os.chdir(dname)
+    accuracy_data.to_csv('../Data/accuracy_data.csv')
 
-    model_pred = model.predict(X_test)
-    topic_pred = [topic_unique[np.argmax(row)] for row in model_pred]
-    topic_act  = [topic_unique[np.argmax(row)] for row in y_test]
-
-    conf_mat = confusion_matrix(topic_act, topic_pred)
-    print('The hyper parameters were: \nLayer 1 Size: '+str(hyper_params_iter[0])+'\nDropout Rate: '+str(hyper_params_iter[1])+
-          '\nNumber 2nd layers: '+str(hyper_params_iter[2])+'\nSize 2nd Layers: '+str(hyper_params_iter[3]))
-    print('Accuracy: ' + str(round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)) + '%')
-    accuracy = round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)
-
-    del model
-    del history
-    hyper_params.append(hyper_params_iter)
-    accuracies.append(accuracy)
-
-    # conf_mat_rowsum = [sum(row) for row in conf_mat]
-    # conf_mat_perc = [row/sum(row) for row in conf_mat]
-    # conf_mat_perc = np.stack(conf_mat_perc)
-
-    # fig, ax = plt.subplots(figsize=(16,9))
-    # sns.set(font_scale=1.2) #font size multiplier
-    # sns.heatmap(conf_mat_perc, annot=True, fmt='.0%', cmap = 'magma', annot_kws={"size": 12},
-    #             xticklabels=topic_unique, yticklabels=topic_unique)
-
-    # plt.ylabel('Actual',fontsize = 20)
-    # plt.xlabel('Predicted',fontsize = 20)
-    # plt.yticks(size = 9)
-    # plt.xticks(size = 9, rotation=30,ha='right')
-    # title_str = 'Percent Predicted Correct, Global Accuracy: ' + str(accuracy) + '%'
-    # plt.title(title_str, fontsize = 26)
-    # plt.yticks( rotation='horizontal')
-    # fig.tight_layout(pad = 2)
-    # plt.savefig('../Plots/biomchL_predict_plot_DNN.png')
-
-accuracy_data = pd.DataFrame(data =  {'Hyper Parameters': hyper_params,
-                                      'Accuracy': accuracies})
-os.chdir(dname)
-accuracy_data.to_csv('../Data/accuracy_data.csv')
 
 ##========================= Find how many it missed ============================
 ##model_pred = model.predict(X_test)
