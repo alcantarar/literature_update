@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+ # -*- coding: utf-8 -*-
 """
 This script will fit a CNN to our webscrapped data saved in "RYANDATA_filt.csv'
 
@@ -272,25 +272,26 @@ def create_model(first_layer, dropout_rate, n_2nd_layers, n_2nd_layer_size):
                   metrics=['accuracy'])
     return model
 
-#========================= Trying Random Search ===============================
-#from keras.wrappers.scikit_learn import KerasRegressor
-#from sklearn.model_selection     import RandomizedSearchCV
-#
-#clf = KerasRegressor(build_fn=create_model, verbose=0)
-#param_grid = dict(first_layer = [500,1000,1500], 
-#                  dropout_rate = [.2,.5,.8], 
-#                  n_2nd_layers = [0,1,2])
-#
-## Apply grid search
-#grid = RandomizedSearchCV(clf, 
-#                          param_distributions=param_grid,
-#                          n_jobs=1, cv=3,
-#                          verbose=2, n_iter=30)
-#grid.fit(vectors,topic2)
-#
-## What were the best hyperparameters that we found?
-#print(grid.best_params_)
-#breakhere
+# ========================= Trying Random Search ===============================
+from keras.wrappers.scikit_learn import KerasRegressor
+from sklearn.model_selection     import RandomizedSearchCV
+
+clf = KerasRegressor(build_fn=create_model, verbose=0)
+param_grid = dict(first_layer = [500,1000,1500], 
+                 dropout_rate = [.2,.5,.8], 
+                 n_2nd_layers = [0,1,2],
+                 n_2nd_layer_size = [20,10,5])
+
+# Apply grid search
+grid = RandomizedSearchCV(clf, 
+                         param_distributions=param_grid,
+                         n_jobs=1, cv=3,
+                         verbose=2, n_iter=30)
+grid.fit(X_train,y_train)
+
+# What were the best hyperparameters that we found?
+print(grid.best_params_)
+breakhere
     
 #========================= Fit the Neural net =================================
 # Set callback functions to early stop training and save the best model so far
@@ -328,32 +329,32 @@ for hyper_params_iter in list(product(*param_grid.values())):
     plt.legend(['Train', 'Test'], loc='upper left')
     # plt.show()
 
-    # #========================= Save the Model =====================================
-    # from keras.models import model_from_json
-    # import pickle
-    # model.save('../Models/Keras_model/model_DNN.h5')
-    # #model_json = model.to_json()
-    # #with open("../Models/Keras_model/model_4_24.json", "w") as json_file:
-    # #    json_file.write(model_json)
-    # # serialize weights to HDF5
-    # #model.save_weights("../Models/Keras_model/model_4_24.h5")
-    # print("Saved model to disk: model_DNN.h5")
+    #========================= Save the Model =====================================
+    from keras.models import model_from_json
+    import pickle
+    model.save('../Models/Keras_model/model_DNN'+''+'.h5')
+    #model_json = model.to_json()
+    #with open("../Models/Keras_model/model_4_24.json", "w") as json_file:
+    #    json_file.write(model_json)
+    # serialize weights to HDF5
+    #model.save_weights("../Models/Keras_model/model_4_24.h5")
+    print("Saved model to disk: model_DNN.h5")
         
-    # import os
-    # if os.path.isfile('../Models/Keras_model/LabelEncoder.npy'):
-    #     print('Saved Label Encoder: LabelEncoder.npy')
-    # else:
-    #     print('NO LABEL ENCODER SAVED')
+    import os
+    if os.path.isfile('../Models/Keras_model/LabelEncoder.npy'):
+        print('Saved Label Encoder: LabelEncoder.npy')
+    else:
+        print('NO LABEL ENCODER SAVED')
 
-    # if os.path.isfile('../Models/Keras_model/unique_topics.txt'):
-    #     print('Saved Unique Topics: unique_topics.txt')
-    # else:
-    #     print('NO UNIQUE TOPICS SAVED')
+    if os.path.isfile('../Models/Keras_model/unique_topics.txt'):
+        print('Saved Unique Topics: unique_topics.txt')
+    else:
+        print('NO UNIQUE TOPICS SAVED')
         
-    # if os.path.isfile('../Models/Keras_model/Vectorizer_tdif.pkl'):
-    #     print('Saved Vectorizer: Vectorizer.pkl')
-    # else:
-    #     print('NO VECTORIZER SAVED')
+    if os.path.isfile('../Models/Keras_model/Vectorizer_tdif.pkl'):
+        print('Saved Vectorizer: Vectorizer.pkl')
+    else:
+        print('NO VECTORIZER SAVED')
 
     # #========================= Load the Model =====================================
     # from keras.models import model_from_json
@@ -390,6 +391,7 @@ for hyper_params_iter in list(product(*param_grid.values())):
     accuracy = round(sum(np.diagonal(conf_mat))/X_test.shape[0]*100,1)
 
     del model
+    del history
     hyper_params.append(hyper_params_iter)
     accuracies.append(accuracy)
 
