@@ -34,26 +34,25 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-from keras import backend as K
+# #========================= Set CPU or GPU Compute ==============================
+# from keras import backend as K
+# import tensorflow as tf
+# num_cores = 4
 
-#========================= Set CPU or GPU Compute ==============================
-import tensorflow as tf
-num_cores = 4
+# CPU = 0
+# GPU = 1
+# if GPU:
+#     num_GPU = 1
+#     num_CPU = 4
+# if CPU:
+#     num_CPU = 4
+#     num_GPU = 0
 
-CPU = 1
-GPU = 0
-if GPU:
-    num_GPU = 1
-    num_CPU = 1
-if CPU:
-    num_CPU = 4
-    num_GPU = 0
-
-config = tf.ConfigProto(intra_op_parallelism_threads=num_cores,\
-        inter_op_parallelism_threads=num_cores, allow_soft_placement=True,\
-        device_count = {'CPU' : num_CPU, 'GPU' : num_GPU})
-session = tf.Session(config=config)
-K.set_session(session)
+# config = tf.ConfigProto(intra_op_parallelism_threads=num_cores,\
+#         inter_op_parallelism_threads=num_cores, allow_soft_placement=True,\
+#         device_count = {'CPU' : num_CPU, 'GPU' : num_GPU})
+# session = tf.Session(config=config)
+# K.set_session(session)
 
 #========================= Read in the Data ===================================
 
@@ -294,53 +293,59 @@ def create_model(first_layer, dropout_rate, n_2nd_layers, n_2nd_layer_size):
                   metrics=['accuracy'])
     return model
 
-# ========================= Trying Random Search ===============================
-from keras.wrappers.scikit_learn import KerasRegressor
-from sklearn.model_selection     import RandomizedSearchCV
-from keras.callbacks import EarlyStopping, ModelCheckpoint
+# # ========================= Trying Random Search ===============================
+# from keras.wrappers.scikit_learn import KerasRegressor
+# from sklearn.model_selection     import RandomizedSearchCV
+# from keras.callbacks import EarlyStopping, ModelCheckpoint
 
-callbacks = [EarlyStopping(monitor='val_loss', patience=2),\
-             ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
+# callbacks = [EarlyStopping(monitor='val_loss', patience=2),\
+#              ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
 
-clf = KerasRegressor(build_fn=create_model, verbose=1)
-param_grid = dict(first_layer = [25,50,75,100,200,500],\
-                 dropout_rate = [.2,.5,.8],\
-                 n_2nd_layers = [0,1,2],\
-                 n_2nd_layer_size = [20,10,5])
+# clf = KerasRegressor(build_fn=create_model, verbose=1)
+# param_grid = dict(first_layer = [25,50,75,100,200,500],\
+#                  dropout_rate = [.2,.5,.8],\
+#                  n_2nd_layers = [0,1,2],\
+#                  n_2nd_layer_size = [20,10,5])
 
 
-try:
-    # Apply grid search
-    grid = RandomizedSearchCV(clf,\
-                            param_distributions=param_grid,\
-                            n_jobs=-1, cv=2,\
-                            verbose=1, n_iter=30)
+# try:
+#     # Apply grid search
+#     grid = RandomizedSearchCV(clf,\
+#                             param_distributions=param_grid,\
+#                             n_jobs=-1, cv=2,\
+#                             verbose=1, n_iter=30)
                             
-    grid.fit(vectors,topic_dense,\
-            epochs = 200,\
-            batch_size = 200,\
-            verbose = 1,\
-            callbacks = callbacks)
+#     grid.fit(vectors,topic_dense,\
+#             epochs = 200,\
+#             batch_size = 200,\
+#             verbose = 1,\
+#             callbacks = callbacks)
 
-    # What were the best hyperparameters that we found?
-    print(grid.best_params_)
-    fasdasfdasdfafsd
-except:
-    1
+#     # What were the best hyperparameters that we found?
+#     print(grid.best_params_)
+#     fasdasfdasdfafsd
+# except:
+#     1
 #========================= Fit the Neural net =================================
 # Set callback functions to early stop training and save the best model so far
 from keras.callbacks import EarlyStopping, ModelCheckpoint
+from keras import backend as K
 callbacks = [EarlyStopping(monitor='val_loss', patience=2),\
              ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
 
 from itertools import product
-if grid is None:
+if 'grid' not in locals():
     param_grid = {'first_layer': [250,200,150,30,40,50,75,125],\
                 'dropout_rate': [.6,.7,.8,.9],\
                 'n_2nd_layers': [1,0],\
                 'n_2nd_layer_size': [10,5]}
+    # param_grid = {'first_layer': [500],\
+    #               'dropout_rate': [.8],\
+    #               'n_2nd_layers': [2],\
+    #               'n_2nd_layer_size': [20]}
 else:
-    param_grid = grid.best_params_
+    1
+    # param_grid = grid.best_params_
 
 hyper_params = []
 accuracies = []
@@ -355,7 +360,7 @@ for hyper_params_iter in list(product(*param_grid.values())):
                         callbacks = callbacks,\
                         verbose = 1, # Set to one to see progress\
                         validation_data = (X_test, y_test),\
-                        batch_size = 200)
+                        batch_size = 1010)
 
     import matplotlib.pyplot as plt
     # Plot training & validation accuracy values
@@ -407,10 +412,10 @@ for hyper_params_iter in list(product(*param_grid.values())):
     #========================= Save the Model =====================================
     from keras.models import model_from_json
     import pickle
-    if grid is None:
-        model.save('../Models/Keras_model/model_DNN'+str(accuracy)+\
-                    str(hyper_params_iter[0])+str(hyper_params_iter[1])+\
-                    str(hyper_params_iter[2])+str(hyper_params_iter[3])+'.h5')
+    if 'grid' not in locals():
+        model.save('../Models/Keras_model/model_DNN_'+str(accuracy)+'_'+\
+                    str(hyper_params_iter[0])+'_'+str(hyper_params_iter[1])+'_'+\
+                    str(hyper_params_iter[2])+'_'+str(hyper_params_iter[3])+'.h5')
     else:
         model.save('../Models/Keras_model/model_DNN.h5')
     #model_json = model.to_json()
@@ -435,9 +440,9 @@ for hyper_params_iter in list(product(*param_grid.values())):
         print('Saved Vectorizer: Vectorizer.pkl')
     else:
         print('NO VECTORIZER SAVED')
-
-    del model
-    del history
+        
+    if K.backend() == 'tensorflow':
+        K.clear_session()
     # #========================= Load the Model =====================================
     # from keras.models import model_from_json
     # from keras.models import load_model
@@ -457,7 +462,7 @@ for hyper_params_iter in list(product(*param_grid.values())):
     #     unique_topic = pickle.load(fp)
     # print('Loaded Unique Topics')
 
-if grid is None:
+if 'grid' not in locals():
     accuracy_data = pd.DataFrame(data =  {'Hyper Parameters': hyper_params,\
                                         'Accuracy': accuracies})
     os.chdir(dname)
