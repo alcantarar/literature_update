@@ -6,7 +6,7 @@
 We use [Machine Learning](Assets/ML.gif) to predict the general topic of a biomechanics-related paper given its title. To accomplish this, we:
 
 1. Developed an HTML [web scraper](Webscraper) to extract the paper information and assigned paper topic from every [Biomch-L](https://biomch-l.isbweb.org/forums/7-Literature-Update) Literature Update since 2010. (`webscraper.py`)
-2. Trained and compared multiple classification Machine Learning algorithms ([`keras_1.py`](Construct_Models) & [`test_many_ML_algorithms_nn.ipynb`](Construct_Models))
+2. Trained and compared multiple classification Machine Learning algorithms and used grid searches to tune the hyperparameters ([`keras_1.py`](Construct_Models) & [`test_many_ML_algorithms_nn.ipynb`](Construct_Models))
 3. Created a python script (`literature_search.ipynb`) that: 
     1. Searches [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/) for Biomechanics-related papers published in the past week,
     2. Uses the top-performing Machine Learning model (`keras-1`, a Deep Neural Network with 73.5% accuracy) to predict the paper topic for the week’s papers,

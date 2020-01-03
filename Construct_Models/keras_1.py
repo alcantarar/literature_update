@@ -339,7 +339,7 @@ callbacks = [EarlyStopping(monitor='val_loss', patience=2),\
 
 from itertools import product
 if 'grid' not in locals():
-    param_grid = {'first_layer': [500,250,200,150,30,40,50,75,125],\
+    param_grid = {'first_layer': [500,250,200,150,100,30,40,50,75,125],\
                 'dropout_rate': [.6,.7,.8,.9],\
                 'n_2nd_layers': [2,1,0],\
                 'n_2nd_layer_size': [20,10,5]}
@@ -364,7 +364,7 @@ for hyper_params_iter in list(product(*param_grid.values())):
                         callbacks = callbacks,\
                         verbose = 1, # Set to one to see progress\
                         validation_data = (X_test, y_test),\
-                        batch_size = 1010)
+                        batch_size = 505)
 
     import matplotlib.pyplot as plt
     # Plot training & validation accuracy values
