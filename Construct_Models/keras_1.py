@@ -334,19 +334,21 @@ def create_model(first_layer, dropout_rate, n_2nd_layers, n_2nd_layer_size):
 # Set callback functions to early stop training and save the best model so far
 from keras.callbacks import EarlyStopping, ModelCheckpoint
 from keras import backend as K
+import tensorflow as tf
+
 callbacks = [EarlyStopping(monitor='val_loss', patience=2),\
              ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
 
 from itertools import product
 if 'grid' not in locals():
-    param_grid = {'first_layer': [500,250,200,150,100,30,40,50,75,125],\
-                'dropout_rate': [.6,.7,.8,.9],\
-                'n_2nd_layers': [2,1,0],\
-                'n_2nd_layer_size': [20,10,5]}
-    # param_grid = {'first_layer': [500],\
-    #               'dropout_rate': [.8],\
-    #               'n_2nd_layers': [2],\
-    #               'n_2nd_layer_size': [20]}
+    # param_grid = {'first_layer': [200,150,100,30,40,50,75,125],\
+    #             'dropout_rate': [.6,.7,.8,.9],\
+    #             'n_2nd_layers': [1,0],\
+    #             'n_2nd_layer_size': [10,5]}
+    param_grid = {'first_layer': [50],\
+                  'dropout_rate': [.6],\
+                  'n_2nd_layers': [0],\
+                  'n_2nd_layer_size': [10]}
 else:
     1
     # param_grid = grid.best_params_
@@ -394,39 +396,32 @@ for hyper_params_iter in list(product(*param_grid.values())):
     hyper_params.append(hyper_params_iter)
     accuracies.append(accuracy)
 
-    # conf_mat_rowsum = [sum(row) for row in conf_mat]
-    # conf_mat_perc = [row/sum(row) for row in conf_mat]
-    # conf_mat_perc = np.stack(conf_mat_perc)
+    conf_mat_rowsum = [sum(row) for row in conf_mat]
+    conf_mat_perc = [row/sum(row) for row in conf_mat]
+    conf_mat_perc = np.stack(conf_mat_perc)
 
-    # fig, ax = plt.subplots(figsize=(16,9))
-    # sns.set(font_scale=1.2) #font size multiplier
-    # sns.heatmap(conf_mat_perc, annot=True, fmt='.0%', cmap = 'magma', annot_kws={"size": 12},
-    #             xticklabels=topic_unique, yticklabels=topic_unique)
+    fig, ax = plt.subplots(figsize=(16,9))
+    sns.set(font_scale=1.2) #font size multiplier
+    sns.heatmap(conf_mat_perc, annot=True, fmt='.0%', cmap = 'magma', annot_kws={"size": 12},
+                xticklabels=topic_unique, yticklabels=topic_unique)
 
-    # plt.ylabel('Actual',fontsize = 20)
-    # plt.xlabel('Predicted',fontsize = 20)
-    # plt.yticks(size = 9)
-    # plt.xticks(size = 9, rotation=30,ha='right')
-    # title_str = 'Percent Predicted Correct, Global Accuracy: ' + str(accuracy) + '%'
-    # plt.title(title_str, fontsize = 26)
-    # plt.yticks( rotation='horizontal')
-    # fig.tight_layout(pad = 2)
-    # plt.savefig('../Plots/biomchL_predict_plot_DNN.png')
+    plt.ylabel('Actual',fontsize = 20)
+    plt.xlabel('Predicted',fontsize = 20)
+    plt.yticks(size = 9)
+    plt.xticks(size = 9, rotation=30,ha='right')
+    title_str = 'Percent Predicted Correct, Global Accuracy: ' + str(accuracy) + '%'
+    plt.title(title_str, fontsize = 26)
+    plt.yticks( rotation='horizontal')
+    fig.tight_layout(pad = 2)
+    plt.savefig('../Plots/biomchL_predict_plot_DNN.png')
 
     #========================= Save the Model =====================================
     from keras.models import model_from_json
     import pickle
-    if 'grid' not in locals():
-        model.save('../Models/Keras_model/model_DNN_'+str(accuracy)+'_'+\
-                    str(hyper_params_iter[0])+'_'+str(hyper_params_iter[1])+'_'+\
-                    str(hyper_params_iter[2])+'_'+str(hyper_params_iter[3])+'.h5')
-    else:
-        model.save('../Models/Keras_model/model_DNN.h5')
-    #model_json = model.to_json()
-    #with open("../Models/Keras_model/model_4_24.json", "w") as json_file:
-    #    json_file.write(model_json)
-    # serialize weights to HDF5
-    #model.save_weights("../Models/Keras_model/model_4_24.h5")
+    model.save('../Models/Keras_model/model_DNN_'+str(accuracy)+'_'+\
+                str(hyper_params_iter[0])+'_'+str(hyper_params_iter[1])+'_'+\
+                str(hyper_params_iter[2])+'_'+str(hyper_params_iter[3])+'.h5')
+    model.save('../Models/Keras_model/model_DNN.h5')
     print("Saved model to disk: model_DNN.h5")
         
     import os
@@ -445,8 +440,9 @@ for hyper_params_iter in list(product(*param_grid.values())):
     else:
         print('NO VECTORIZER SAVED')
         
-    if K.backend() == 'tensorflow':
-        K.clear_session()
+    # if K.backend() == 'tensorflow':
+    K.clear_session()
+    tf.reset_default_graph()
     # #========================= Load the Model =====================================
     # from keras.models import model_from_json
     # from keras.models import load_model
@@ -466,11 +462,12 @@ for hyper_params_iter in list(product(*param_grid.values())):
     #     unique_topic = pickle.load(fp)
     # print('Loaded Unique Topics')
 
-if 'grid' not in locals():
-    accuracy_data = pd.DataFrame(data =  {'Hyper Parameters': hyper_params,\
-                                        'Accuracy': accuracies})
-    os.chdir(dname)
-    accuracy_data.to_csv('../Data/accuracy_data.csv')
+# #========================= This saves the accuracy data=======================
+# if 'grid' not in locals():
+#     accuracy_data = pd.DataFrame(data =  {'Hyper Parameters': hyper_params,\
+#                                         'Accuracy': accuracies})
+#     os.chdir(dname)
+#     accuracy_data.to_csv('../Data/accuracy_data.csv')
 
 
 ##========================= Find how many it missed ============================
