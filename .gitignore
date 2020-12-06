@@ -84,4 +84,5 @@ Rplots.pdf
 ### Pycharm IDE files
 .idea
 
-# End of https://www.gitignore.io/api/r,matlab
+### Directory files ###
+/__pycache__/
