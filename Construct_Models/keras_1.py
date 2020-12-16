@@ -24,11 +24,12 @@ To test the model run keras_eval.py
 
 import pandas as pd
 import numpy as np
+from tensorflow import keras
 import string
 
 #========================= Read in the Data ===================================
 
-data = pd.read_csv('../Data/RYANDATA.csv')
+data = pd.read_csv('Data/RYANDATA.csv')
 print('Loading Data')   
 unique_topics = list(data.Topics.unique())
 topics = list(data.Topics)
@@ -122,15 +123,15 @@ papers['title'] = [clean_str(item,stop) for item in papers['title']]
 # X is size Number of Articles by Number of Words in bag
 # Y is size Number of Articles by Number of Unique Topics
 from sklearn.preprocessing import LabelEncoder
-from sklearn.externals import joblib
+# from sklearn.externals import joblib
 
 feat = ['topic']
 for x in feat:
     le = LabelEncoder()
     le.fit(list(topic[x].values))
 
-np.save('../Models/Keras_model/LabelEncoder.npy',le.classes_)
-print('Saved Label Encoder: LabelEncoder.npy')
+np.save('Models/Keras_model/LabelEncoder_RA.npy',le.classes_)
+print('Saved Label Encoder: LabelEncoder_RA.npy')
 
 data['everything'] = pd.DataFrame(papers['title'].astype(str)*4+data['abstract'].astype(str))
 print(data['everything'].head(5))
@@ -191,10 +192,10 @@ vectorizer = TfidfVectorizer(min_df=5, #min occurances needed
                              sublinear_tf=True, 
                              stop_words = 'english')
     
-vectors = vectorizer.fit_transform(data['everything'])
-with open('../Models/Keras_model/Vectorizer_tdif.pkl', 'wb') as f:
+vectors = vectorizer.fit_transform(data['everything']).toarray()
+with open('Models/Keras_model/Vectorizer_tdif_RA.pkl', 'wb') as f:
     pickle.dump(vectorizer, f)
-print('Saved Tdif Vectorizer: Vectorizer_tdif.pkl')
+print('Saved Tdif Vectorizer: Vectorizer_tdif_RA.pkl')
 
 # Make the Sparse Topic Matrix
 topic_dense = np.zeros(shape = [len(topic),len(topic.topic.unique())])
@@ -205,9 +206,9 @@ for i, item in enumerate(topic.topic):
 from scipy import sparse
 topic_sparse = sparse.csr_matrix(topic_dense)
 # Save the unique topics
-with open('../Models/Keras_model/unique_topics.txt','wb') as fp:
+with open('Models/Keras_model/unique_topics_RA.txt','wb') as fp:
     pickle.dump(topic_unique, fp)
-    print('Saved Unique Topics: topic_unique.txt')
+    print('Saved Unique Topics: topic_unique_RA.txt')
 
 #========================= Split Into Test/Train ==============================
 # Even Split
@@ -239,11 +240,11 @@ embedding_dim = 100
 # Have 3 layers, first layer with 500 units, next two with 100 each.
 # Output layer needs to have the same number of units as Num Topics
 
-from keras.models import Sequential
-from keras import layers
-from keras.layers import LSTM, Dense, Dropout, Masking, Embedding, Flatten
-from keras import regularizers
-from keras.wrappers.scikit_learn import KerasClassifier
+from tensorflow.keras.models import Sequential
+from tensorflow.keras import layers
+from tensorflow.keras.layers import LSTM, Dense, Dropout, Masking, Embedding, Flatten
+from tensorflow.keras import regularizers
+from tensorflow.keras.wrappers.scikit_learn import KerasClassifier
 from sklearn.model_selection import GridSearchCV
 
 def create_model(first_layer, dropout_rate, n_2nd_layers):
@@ -286,9 +287,9 @@ def create_model(first_layer, dropout_rate, n_2nd_layers):
     
 #========================= Fit the Neural net =================================
 # Set callback functions to early stop training and save the best model so far
-from keras.callbacks import EarlyStopping, ModelCheckpoint
-callbacks = [EarlyStopping(monitor='val_loss', patience=2),
-             ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True)]
+from tensorflow.keras.callbacks import EarlyStopping, ModelCheckpoint
+callbacks = [EarlyStopping(monitor='val_loss', patience=2, restore_best_weights=True),
+             ModelCheckpoint(filepath='../Models/Keras_model/best_model.h5', monitor='vaL_acc', save_best_only=True, save_weights_only=False)]
 
 model = create_model(1000, .9, 0)
 model.summary()
