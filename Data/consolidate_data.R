@@ -5,14 +5,14 @@ data <- read.csv('RYANDATA.csv', stringsAsFactors = F)
 
 data.complete <- data[(complete.cases(data$Topics)),]
 nrow(data.complete)
-table(data.complete$Topics)
-unique(data.complete$Topics)
+# table(data.complete$Topics)
+# unique(data.complete$Topics)
 #combine categories
 data.complete$Topics[grepl('ANIMAL',data.complete$Topics)] <- 'COMPARATIVE'
 data.complete$Topics[grepl('COMPARATIVE',data.complete$Topics)] <- 'COMPARATIVE'
 data.complete$Topics[grepl('VETERINARY',data.complete$Topics)] <- 'COMPARATIVE'
 data.complete$Topics[grepl('EVOLUTION', data.complete$Topics)] <- 'COMPARATIVE'
-data.complete$Topics[grepl('COMPARATIVE', data.complete$Topics)] <- 'EVO/COMP'
+data.complete$Topics[grepl('COMPARATIVE', data.complete$Topics)] <- 'EVO COMP'
 data.complete$Topics[grepl('DENTAL', data.complete$Topics)] <- 'HEAD'
 data.complete$Topics[grepl('VISUAL', data.complete$Topics)] <- 'HEAD'
 data.complete$Topics[grepl('WEARABLE', data.complete$Topics)] <- 'WEARABLES'
@@ -43,15 +43,12 @@ data.complete$Topics[grepl('CARDIO',data.complete$Topics)] <- 'CARDIO'
 data.complete$Topics[grepl('TISSUE',data.complete$Topics)] <- 'BIOMATERIAL'
 data.complete$Topics[grepl('CARDIO',data.complete$Topics)] <- 'CARDIO'
 data.complete$Topics[grepl('CELL',data.complete$Topics)] <- 'CELLULAR'
-data.complete$Topics[grepl('HAND',data.complete$Topics)] <- 'HAND/FOOT'
-data.complete$Topics[grepl('TRAUMA',data.complete$Topics)] <- 'IMPACT/TRAUMA'
+data.complete$Topics[grepl('HAND',data.complete$Topics)] <- 'HAND FOOT'
+data.complete$Topics[grepl('TRAUMA',data.complete$Topics)] <- 'IMPACT TRAUMA'
 data.complete$Topics[grepl('ORTHO',data.complete$Topics)] <- 'ORTHOPAEDICS'
 
-# keep only all caps
-View(unique(data.complete$Topics))
-data.complete$Topics[!grepl('^[A-Z]+S', data.complete$Topics)] <- NA
-
 # keep topics with more 10 entries
+df <- data.frame(table(data.complete$Topics))
 keep_topics <- df$Var1[df$Freq > 10]
 keep_topics <- droplevels(keep_topics)
 
@@ -62,7 +59,8 @@ data.complete <- data.complete %>% filter_at(vars(Topics), any_vars(. %in% keep_
 View(table(data.complete$Topics))
 data.complete <- data.complete[(complete.cases(data.complete$Topics)),]
 nrow(data.complete)
-write.csv(data.complete, file = 'RYANDATA_consolidated.csv')
+data.complete <- data.complete[,2:ncol(data.complete)]
+write.csv(data.complete, file = 'RYANDATA_consolidated.csv', row.names = F)
 
 ## trim data ----
 #laptop memory couldn't handle more than 400 per section
