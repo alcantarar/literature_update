@@ -85,4 +85,4 @@ Rplots.pdf
 .idea
 
 ### Directory files ###
-*/__pycache__/
+__pycache__/
