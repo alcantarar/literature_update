@@ -87,3 +87,4 @@ Rplots.pdf
 ### Directory files ###
 __pycache__/
 */__pycache__/
+Webscraper/__pycache__/
