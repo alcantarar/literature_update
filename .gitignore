@@ -88,3 +88,6 @@ Rplots.pdf
 __pycache__/
 */__pycache__/
 Webscraper/__pycache__/
+
+### Large Files ###
+Data/BERT32/
