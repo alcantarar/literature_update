@@ -21,7 +21,7 @@ from webscraper_functions import search, fetch_details, search2, get_abstract
 from webscraper_functions import string_parse1, string_parse2, clean_str
 
 try:
-    data = pd.read_csv('../Data/RYANDATA.csv')
+    data = pd.read_csv('../Data/Biomch-L_papers.csv')
     print('Loading Data')   
     unique_topics = list(data.Topics.unique())
     
@@ -241,7 +241,7 @@ data = pd.DataFrame(data = {'Topics_split': topics_split,
                             'DOI':dois,
                             'Abstract': abstracts})
 
-data.to_csv('../Data/RYANDATA.csv')
+data.to_csv('../Data/Biomch-L_papers.csv')
 
 #========================= This is now done in keras1.py ======================
 #top = []

@@ -22,7 +22,7 @@ Contains the files to contstruct the models. Two main files `keras_1.py` and `te
 3. `keras_eval.py` - A small script to evaluate the keras neural network on test strings.
 #### Data  
 Where the webscraped data is stored.  
-1. [RYANDATA.csv](Data/RYANDATA.csv) - The full csv file including paper number, Category/Topic, Authors, Title, Journal, Year, Volume and Issue, DOI, and Abstract. Named this way because Gary just thought he would hand the data off and not get really really caught up in this. Boy, was he wrong.
+1. [RYANDATA.csv](Data/Biomch-L_papers.csv) - The full csv file including paper number, Category/Topic, Authors, Title, Journal, Year, Volume and Issue, DOI, and Abstract. Named this way because Gary just thought he would hand the data off and not get really really caught up in this. Boy, was he wrong.
 2. [RYANDATA_filt.csv](RYANDATA_filt.csv) - Has all the same headers as RYANDATA.csv, but filters out topics that represent less than 5% of the total papers.
 3. [RYANDATA_filt_even.csv](RYANDATA_filt_even.csv) - An evenly downsampled (by topic) csv of RYANDATA_filt.csv. Each topic has the same number of representations in this csv.
 #### Literature_Updates  
