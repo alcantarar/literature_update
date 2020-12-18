@@ -270,10 +270,10 @@ data.to_csv('../Data/Biomch-L_papers.csv')
 #    if not top == 'UNIQUETOPIC':
 #        filtered_data = filtered_data.append(data[data['Topics']==top],sort=True)
 #filtered_data = filtered_data[['Topics_split','Topics','Authors','Titles','Journals','Years','Vol_Isue','DOI','Abstract']]
-#filtered_data.to_csv('../Data/RYANDATA_filt.csv')
+#filtered_data.to_csv('../Data/Biomch-L_papers_filt.csv')
 #
 #filtered_data_even = filtered_data.groupby('Topics').apply(lambda s: s.sample(500))
-#filtered_data_even.to_csv('../Data/RYANDATA_filt_even.csv')
+#filtered_data_even.to_csv('../Data/Biomch-L_papers_filt_even.csv')
 
 # %% Test
     
