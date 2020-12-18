@@ -90,7 +90,7 @@ __pycache__/
 Webscraper/__pycache__/
 
 ### Large Files ###
-Data/BERT32/
+Data/BiomchBERT/
 BERT32_backup/
 ### Old Biomch-L Files ###
 OLD_BIOMCH-L_LIT_UPDATE/

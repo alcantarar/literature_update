@@ -26,12 +26,13 @@ fine-tuned a [version of BERT trained on text from MEDLINE/PubMed](https://tfhub
 classify publications into 1 of 20 categories. This fine-tuned BERT network, named BiomchBERT, can now be used to classify 
 new publications based on their title and abstract with 75.2% accuracy:
 
-![BiomchBERT_Accuracy](Plots/BERT32_predict.png) *BiomchBERT has a prediction accuracy of 75.2% across 20 categories (tested on 3,238 publications)*
+![BiomchBERT_Accuracy](Plots/BiomchBERT_confusion_matrix.png) *BiomchBERT has a prediction accuracy of 75.2% across 20 categories (tested on 3,238 publications)*
 
 Starting January 1st, 2021, BiomchBERT will be used to categorize the publications in the Biomch-L Literature Update. 
 Don't worry, a human will still be involved in double checking BiomchBERT's work. Source code for BiomchBERT can be found
 [here](Construct_Models/BERT_lit_up.ipynb) and the training data can be found [here](Data). Weekly Literature Updates
-are located [here](Updates).
+are located [here](Updates). BiomchBERT (1.1 GB) is archived at [Zenodo](https://zenodo.org/search?page=1&size=20&q=alcantarar%20BiomchBERT)
+due to GitHub file size limitations. 
 
 ## Major Dependencies
 * [BERT trained on MEDLINE/PubMed](https://tfhub.dev/google/experts/bert/pubmed/2)
