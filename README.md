@@ -10,7 +10,7 @@ We use [Machine Learning](Assets/ML.gif) to predict the general topic of a biome
 3. Created a python script (`literature_search.ipynb`) that: 
     1. Searches [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/) for Biomechanics-related papers published in the past week,
     2. Uses the top-performing Machine Learning model (`keras-1`, a Deep Neural Network with 73.5% accuracy) to predict the paper topic for the week’s papers,
-    3. Compiles papers, formats their citation, and organizes them by topic, saving to .md file here: [Literature Updates](/Literature_Updates).
+    3. Compiles papers, formats their citation, and organizes them by topic, saving to .md file here: [Literature Updates](/Updates).
 
 ## Files
 #### Assets  
@@ -36,7 +36,7 @@ Model validation plots are saved here. Usually a confusion matrix.
 #### Webscraper  
 The python file to scrape the [Biomch-L](https://biomch-l.isbweb.org/forums/7-Literature-Update) forum.  
 #### `literature_search.ipynb`  
-Ipython Notebook to generate the literature update. Uses Biopython `v1.73` to perfrom a literature search, then the a given ML model to classify the papers. Saves the results in a markdown file in [literature update](Literature_Updates).  
+Ipython Notebook to generate the literature update. Uses Biopython `v1.73` to perfrom a literature search, then the a given ML model to classify the papers. Saves the results in a markdown file in [literature update](Updates).  
 ### Unique Packages
 * [BeautifySoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) is used to scrape the web for the articles to feed into the ML models.
 * [Keras](https://keras.io/) and [Scikit-learn](https://scikit-learn.org/stable/) are used to construct ML models.
