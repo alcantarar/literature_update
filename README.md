@@ -31,7 +31,7 @@ new publications based on their title and abstract with 75.2% accuracy:
 Starting January 1st, 2021, BiomchBERT will be used to categorize the publications in the Biomch-L Literature Update. 
 Don't worry, a human will still be involved in double checking BiomchBERT's work. Source code for BiomchBERT can be found
 [here](Construct_Models/BERT_lit_up.ipynb) and the training data can be found [here](Data). Weekly Literature Updates
-are located [here](Updates). BiomchBERT (1.1 GB) is archived at [Zenodo](https://zenodo.org/search?page=1&size=20&q=alcantarar%20BiomchBERT)
+are located [here](Updates). BiomchBERT (1.1 GB) is archived at [Zenodo](https://zenodo.org/record/4356055)
 due to GitHub file size limitations. 
 
 ## Major Dependencies
