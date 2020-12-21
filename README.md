@@ -23,10 +23,13 @@ In order to fine-tune BERT to classify biomechanics publications, we needed to c
 Biomch-L Literature Updates. Gary Bruening developed a webscraper that extracted the publication information (title,
 abstract, authors, journal) and assigned topic for each Literature Update published from 2010-2018. Then, Ryan Alcantara
 fine-tuned a [version of BERT trained on text from MEDLINE/PubMed](https://tfhub.dev/google/experts/bert/pubmed/2) to
-classify publications into 1 of 20 categories. This fine-tuned BERT network, named BiomchBERT, can now be used to classify 
-new publications based on their title and abstract with 75.2% accuracy:
+classify publications into 1 of 28 categories. This fine-tuned BERT network, named BiomchBERT, can now be used to classify 
+new publications based on their title and abstract with 72% accuracy. That level of accuracy may not seem very impressive
+at first, but consider the overlap between categories like "Comparative" and "Evolution/Anthropology", or "Tendon/Ligament",
+"Joints/Cartilage", and "Orthopaedics/Surgery". Many publications can reasonably be categorized into one of several 
+categories.
 
-![BiomchBERT_Accuracy](Plots/BiomchBERT_confusion_matrix.png) *BiomchBERT has a prediction accuracy of 75.2% across 20 categories (tested on 3,238 publications)*
+![BiomchBERT_Accuracy](Plots/BiomchBERT_confusion_matrix.png) *BiomchBERT has a prediction accuracy of 72% across 28 categories (tested on 3,238 publications)*
 
 Starting January 1st, 2021, BiomchBERT will be used to categorize the publications in the Biomch-L Literature Update. 
 Don't worry, a human will still be involved in double checking BiomchBERT's work. Source code for BiomchBERT can be found
