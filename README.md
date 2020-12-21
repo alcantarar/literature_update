@@ -29,7 +29,7 @@ at first, but consider the overlap between categories like "Comparative" and "Ev
 "Joints/Cartilage", and "Orthopaedics/Surgery". Many publications can reasonably be categorized into one of several 
 categories.
 
-![BiomchBERT_Accuracy](Plots/BiomchBERT_confusion_matrix.png) *BiomchBERT has a prediction accuracy of 72% across 28 categories (tested on 3,238 publications)*
+![BiomchBERT_Accuracy](Plots/BiomchBERT_confusion_matrix.png) *BiomchBERT has a prediction accuracy of 72% across 28 categories (tested on 2,563 publications)*
 
 Starting January 1st, 2021, BiomchBERT will be used to categorize the publications in the Biomch-L Literature Update. 
 Don't worry, a human will still be involved in double checking BiomchBERT's work. Source code for BiomchBERT can be found
