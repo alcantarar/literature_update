@@ -84,4 +84,13 @@ Rplots.pdf
 ### Pycharm IDE files
 .idea
 
-# End of https://www.gitignore.io/api/r,matlab
+### Directory files ###
+__pycache__/
+*/__pycache__/
+Webscraper/__pycache__/
+
+### Large Files ###
+Data/BiomchBERT/
+Data/BiomchBERT.zip
+### Old Biomch-L Files ###
+OLD_BIOMCH-L_LIT_UPDATE/

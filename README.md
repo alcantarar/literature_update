@@ -1,43 +1,48 @@
-# Biomechanics Literature Update
-#### [Ryan Alcantara](https://twitter.com/Ryan_Alcantara_) & [Gary Bruening](https://twitter.com/garebearbru)
+# BiomchBERT 
+## Using Google's BERT neural network to automatically categorize biomechanics publications
 
-![Model_Accuracy](https://github.com/alcantarar/literature_update/blob/master/Plots/biomchL_predict_plot_DNN.png)
+Since 1998, volunteers in the Biomechanics community have searched publication databases for relevant 
+articles, categorized them, and shared them via the 
+[Biomch-L Literature Update](https://biomch-l.isbweb.org/forum/biomch-l-forums/literature-update). While parts of the 
+current Literature Update process are automated (e.g. publication search, parsing of publication information), a 
+substantial amount of time is required to go through the papers and categorize them. Neural networks performed well
+in classification tasks and may be a viable solution to automating the Biomch-L Literature Update process, but large
+datasets are needed to train neural networks. Thanks to those who have diligently maintained the Literature Updates over
+the years, there are tens of thousands of categorized publications ready to be used to train a neural network!
 
-We use [Machine Learning](Assets/ML.gif) to predict the general topic of a biomechanics-related paper given its title. To accomplish this, we:
+### Who's BERT?
+[BERT](https://ai.googleblog.com/2018/11/open-sourcing-bert-state-of-art-pre.html) is an open-source neural network
+developed by Google AI and originally trained on all the Wikipedia text to discern the relationship between
+sentences (semantic similarity) in a given corpus and improve the quality of Google search results. BERT has been used
+to improve a computer's ability to accomplish a variety of natural language processing tasks, such as sentiment
+analysis, question answering, and document classification. Using BERT to classify biomechanics publications would
+reduce the time required to generate the Biomch-L Literature Update. 
 
-1. Developed an HTML [web scraper](Webscraper) to extract the paper information and assigned paper topic from every [Biomch-L](https://biomch-l.isbweb.org/forums/7-Literature-Update) Literature Update since 2010. (`webscraper.py`)
-2. Trained and compared multiple classification Machine Learning algorithms ([`keras_1.py`](Construct_Models) & [`test_many_ML_algorithms_nn.ipynb`](Construct_Models))
-3. Created a python script (`literature_search.ipynb`) that: 
-    1. Searches [PubMed](https://www.ncbi.nlm.nih.gov/pubmed/) for Biomechanics-related papers published in the past week,
-    2. Uses the top-performing Machine Learning model (`keras-1`, a Deep Neural Network with 73.5% accuracy) to predict the paper topic for the week’s papers,
-    3. Compiles papers, formats their citation, and organizes them by topic, saving to .md file here: [Literature Updates](/Literature_Updates).
+### Introducing BiomchBERT
+In order to fine-tune BERT to classify biomechanics publications, we needed to create a dataset from the previous Biomch-L 
+Literature Updates (16,000 papers). Gary Bruening developed a webscraper that extracted the publication information (title,
+abstract, authors, journal) and assigned topic for each Literature Update published from 2010-2018. Then, Ryan Alcantara
+fine-tuned a [version of BERT trained on text from MEDLINE/PubMed](https://tfhub.dev/google/experts/bert/pubmed/2) to
+classify publications into 1 of 28 categories. This fine-tuned BERT network, named BiomchBERT, can now be used to classify 
+new publications based on their title and abstract with 72% accuracy. That level of accuracy may not seem very impressive
+at first, but consider the overlap between categories like "Comparative" and "Evolution/Anthropology", or 
+"Joints/Cartilage", and "Orthopaedics/Surgery". Many publications can reasonably be categorized into one of several 
+categories.
 
-## Files
-#### Assets  
-A neato gif.
-#### Construct_Models  
-Contains the files to contstruct the models. Two main files `keras_1.py` and `test_many_ML_algorithms_nn.ipynb`.  
-1. `keras_1.py` - Fits a deep neural network to data contained in [Data](Data). Saves the models into [models](Models/Keras_model). The vectorizer and label encoders are saved here as well.
-2. `test_many_ML_algorithms_nn.ipynb` - Fits multiple machine learning methods to the [Data](Data). Includes [Multinomial Naive Payes](https://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.MultinomialNB.html), [Logistic Regression](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegression.html), [Stochastic Gradient Descent (SGD)](https://scikit-learn.org/stable/modules/generated/sklearn.linear_model.SGDClassifier.html), [Linear Support Vector Classification](https://scikit-learn.org/stable/modules/generated/sklearn.svm.LinearSVC.html)), and [Multi-layer Perceptron Classifier](https://scikit-learn.org/stable/modules/generated/sklearn.neural_network.MLPClassifier.html). Saves the data into [models](Models/Many_ML_models). The vectorizer and label encoders are saved here as well.
-3. `keras_eval.py` - A small script to evaluate the keras neural network on test strings.
-#### Data  
-Where the webscraped data is stored.  
-1. [RYANDATA.csv](Data/RYANDATA.csv) - The full csv file including paper number, Category/Topic, Authors, Title, Journal, Year, Volume and Issue, DOI, and Abstract. Named this way because Gary just thought he would hand the data off and not get really really caught up in this. Boy, was he wrong.
-2. [RYANDATA_filt.csv](RYANDATA_filt.csv) - Has all the same headers as RYANDATA.csv, but filters out topics that represent less than 5% of the total papers.
-3. [RYANDATA_filt_even.csv](RYANDATA_filt_even.csv) - An evenly downsampled (by topic) csv of RYANDATA_filt.csv. Each topic has the same number of representations in this csv.
-#### Literature_Updates  
-Where weekly updates can be stored in markdown & csv format for publishing.  
-#### Models  
-Where all the model files are saved after being created.  
-1. Keras_model - Location of all the Keras Neural Net files. Some neural net files are to large to upload to Git on their own so are split. Using [7-zip](https://www.howtogeek.com/howto/36947/how-to-upload-really-large-files-to-skydrive-dropbox-or-email/)(Windows) or [Keka](https://github.com/aonez/Keka) (MacOS) you can recombine these files to create the model file and weights file.
-2. Many_ML_models - Location of all the many ML testing files are saved. The mpl file will need to be recombined using 7-zip/Keka similar to the Keras Neural Net files.
-#### Plots  
-Model validation plots are saved here. Usually a confusion matrix.  
-#### Webscraper  
-The python file to scrape the [Biomch-L](https://biomch-l.isbweb.org/forums/7-Literature-Update) forum.  
-#### `literature_search.ipynb`  
-Ipython Notebook to generate the literature update. Uses Biopython `v1.73` to perfrom a literature search, then the a given ML model to classify the papers. Saves the results in a markdown file in [literature update](Literature_Updates).  
-### Unique Packages
-* [BeautifySoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/) is used to scrape the web for the articles to feed into the ML models.
-* [Keras](https://keras.io/) and [Scikit-learn](https://scikit-learn.org/stable/) are used to construct ML models.
-* [Biopython](https://biopython.org/wiki/Download) is used to access PubMed. Requires version `1.73` or newer.
+![BiomchBERT_Accuracy](Plots/BiomchBERT_confusion_matrix.png) *BiomchBERT has a prediction accuracy of 72% across 27 categories (tested on 1,600 publications)*
+
+Starting January 1st, 2021, BiomchBERT will be used to categorize the publications in the Biomch-L Literature Update. 
+Don't worry, a human will still be involved in double checking BiomchBERT's work. Source code for BiomchBERT can be found
+[here](Construct_Models/BERT_lit_up.ipynb) and the training data can be found [here](Data). Weekly Literature Updates
+are located [here](Updates). BiomchBERT (1.1 GB) is archived at [Zenodo](https://zenodo.org/record/4356055)
+due to GitHub file size limitations. 
+
+## Major Dependencies
+* [BERT trained on MEDLINE/PubMed](https://tfhub.dev/google/experts/bert/pubmed/2)
+* [Tensorflow](https://www.tensorflow.org/install)
+* [Biopython](https://biopython.org/wiki/Download)
+* [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/)
+
+## Contributors
+- Ryan Alcantara ([twitter](https://twitter.com/Ryan_Alcantara_) // [website](https://ryan-alcantara.com) // [github](https://github.com/alcantarar)) 
+- Gary Bruening ([twitter](https://twitter.com/garebearbru) // [website](https://gbruening.github.io/) // [github](https://github.com/GBruening))

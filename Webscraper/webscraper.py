@@ -21,7 +21,7 @@ from webscraper_functions import search, fetch_details, search2, get_abstract
 from webscraper_functions import string_parse1, string_parse2, clean_str
 
 try:
-    data = pd.read_csv('../Data/RYANDATA.csv')
+    data = pd.read_csv('../Data/Biomch-L_papers.csv')
     print('Loading Data')   
     unique_topics = list(data.Topics.unique())
     
@@ -241,7 +241,7 @@ data = pd.DataFrame(data = {'Topics_split': topics_split,
                             'DOI':dois,
                             'Abstract': abstracts})
 
-data.to_csv('../Data/RYANDATA.csv')
+data.to_csv('../Data/Biomch-L_papers.csv')
 
 #========================= This is now done in keras1.py ======================
 #top = []
@@ -270,10 +270,10 @@ data.to_csv('../Data/RYANDATA.csv')
 #    if not top == 'UNIQUETOPIC':
 #        filtered_data = filtered_data.append(data[data['Topics']==top],sort=True)
 #filtered_data = filtered_data[['Topics_split','Topics','Authors','Titles','Journals','Years','Vol_Isue','DOI','Abstract']]
-#filtered_data.to_csv('../Data/RYANDATA_filt.csv')
+#filtered_data.to_csv('../Data/Biomch-L_papers_filt.csv')
 #
 #filtered_data_even = filtered_data.groupby('Topics').apply(lambda s: s.sample(500))
-#filtered_data_even.to_csv('../Data/RYANDATA_filt_even.csv')
+#filtered_data_even.to_csv('../Data/Biomch-L_papers_filt_even.csv')
 
 # %% Test
     
