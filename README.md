@@ -1,4 +1,7 @@
 # Biomechanics Literature Update
+
+## This repository has been migrated to [https://github.com/alcantarar/BiomchBERT](https://github.com/alcantarar/BiomchBERT), where it is being loosely maintained. 
+
 #### [Ryan Alcantara](https://twitter.com/Ryan_Alcantara_) & [Gary Bruening](https://twitter.com/garebearbru)
 
 ![Model_Accuracy](https://github.com/alcantarar/literature_update/blob/master/Plots/biomchL_predict_plot_DNN.png)
